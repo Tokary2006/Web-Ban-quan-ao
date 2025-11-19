@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
   <link rel="stylesheet" href="./assets/vendor/libs/apex-charts/apex-charts.css" />
-  <link rel="stylesheet" href="//cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">  
+  <link rel="stylesheet" href="//cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
 
   <!-- Page CSS -->
 
@@ -112,31 +112,32 @@
 
         <ul class="menu-inner py-1">
           <!-- Dashboard -->
-          <li class="menu-item active">
+          <li class="menu-item <?= ($page == '') ? 'active open' : '' ?>">
             <a href="admin.php" class="menu-link">
               <i class="menu-icon tf-icons bx bx-home-circle"></i>
-              <div data-i18n="Analytics">Tổng quan</div>
+              <div data-i18n="Analytics">Thống kê</div>
             </a>
           </li>
 
-          <li class="menu-item">
+          <li class="menu-item <?= ($page == 'category') ? 'active open' : '' ?>">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-detail"></i>
               <div data-i18n="Form Elements">Quản lí</div>
             </a>
             <ul class="menu-sub">
-              <li class="menu-item">
+              <li class="menu-item <?= ($page == 'category' && $action == 'index') ? 'active' : '' ?>">
                 <a href="admin.php?page=category&action=index" class="menu-link">
                   <div data-i18n="Basic Inputs">Danh sách</div>
                 </a>
               </li>
-              <li class="menu-item">
+
+              <li class="menu-item <?= ($page == 'category' && $action == 'create') ? 'active' : '' ?>">
                 <a href="admin.php?page=category&action=create" class="menu-link">
                   <div data-i18n="Input groups">Thêm</div>
                 </a>
               </li>
             </ul>
-          </li>
+          </li> 
         </ul>
       </aside>
       <!-- / Menu -->
@@ -159,7 +160,7 @@
             <div class="navbar-nav align-items-center">
               <div class="nav-item d-flex align-items-center">
                 <i class="bx bx-search fs-4 lh-0"></i>
-                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Tìm kiếm..."
                   aria-label="Search..." />
               </div>
             </div>
@@ -171,7 +172,7 @@
               <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                   <div class="avatar avatar-online">
-                    <img src="./assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                    <img src="http://i.pinimg.com/736x/bc/43/98/bc439871417621836a0eeea768d60944.jpg" alt class="w-px-40 h-auto rounded-circle" />
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -180,12 +181,12 @@
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="./assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                            <img src="http://i.pinimg.com/736x/bc/43/98/bc439871417621836a0eeea768d60944.jpg" alt class="w-px-40 h-auto rounded-circle" />
                           </div>
                         </div>
                         <div class="flex-grow-1">
                           <span class="fw-semibold d-block">John Doe</span>
-                          <small class="text-muted">Admin</small>
+                          <small class="text-muted">Quản trị viên</small>
                         </div>
                       </div>
                     </a>
@@ -196,7 +197,7 @@
                   <li>
                     <a class="dropdown-item" href="#">
                       <i class="bx bx-user me-2"></i>
-                      <span class="align-middle">My Profile</span>
+                      <span class="align-middle">Hồ sơ</span>
                     </a>
                   </li>
 
@@ -206,7 +207,7 @@
                   <li>
                     <a class="dropdown-item" href="auth-login-basic.html">
                       <i class="bx bx-power-off me-2"></i>
-                      <span class="align-middle">Log Out</span>
+                      <span class="align-middle">Đăng xuất</span>
                     </a>
                   </li>
                 </ul>
