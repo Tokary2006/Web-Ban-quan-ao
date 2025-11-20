@@ -158,6 +158,26 @@
               </li>
             </ul>
           </li>
+
+          <li class="menu-item <?= ($page == 'user') ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-detail"></i>
+              <div data-i18n="Form Elements">Quản lí</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item <?= ($page == 'user' && $action == 'index') ? 'active' : '' ?>">
+                <a href="admin.php?page=user&action=index" class="menu-link">
+                  <div data-i18n="Basic Inputs">Danh sách</div>
+                </a>
+              </li>
+
+              <li class="menu-item <?= ($page == 'user' && $action == 'create') ? 'active' : '' ?>">
+                <a href="admin.php?page=user&action=create" class="menu-link">
+                  <div data-i18n="Input groups">Thêm</div>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </aside>
       <!-- / Menu -->
