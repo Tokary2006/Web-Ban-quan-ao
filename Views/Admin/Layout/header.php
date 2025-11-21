@@ -122,7 +122,7 @@
           <li class="menu-item <?= ($page == 'category') ? 'active open' : '' ?>">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Elements">Quản lí</div>
+              <div data-i18n="Form Elements">Quản lí danh mục</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item <?= ($page == 'category' && $action == 'index') ? 'active' : '' ?>">
@@ -142,7 +142,7 @@
           <li class="menu-item <?= ($page == 'product') ? 'active open' : '' ?>">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Elements">Quản lí</div>
+              <div data-i18n="Form Elements">Quản lí sản phẩm</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item <?= ($page == 'product' && $action == 'index') ? 'active' : '' ?>">
@@ -162,7 +162,7 @@
           <li class="menu-item <?= ($page == 'user') ? 'active open' : '' ?>">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Elements">Quản lí</div>
+              <div data-i18n="Form Elements">Quản lí khách hàng</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item <?= ($page == 'user' && $action == 'index') ? 'active' : '' ?>">
