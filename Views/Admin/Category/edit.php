@@ -10,30 +10,62 @@
             <div class="card mb-4">
                 <h5 class="card-header">Sửa</h5>
                 <div class="card-body">
+                    <!-- id -->
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Tên</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="..." />
+                        <label for="" class="form-label">Mã danh mục</label>
+                        <input type="text" class="form-control" id="id" placeholder="Vui lòng nhập mã danh mục." />
+                        <small id="id_error" class="text-danger"></small>
                     </div>
 
+                    <!-- name -->
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="..." />
+                        <label for="exampleFormControlInput1" class="form-label">Tên danh mục</label>
+                        <input type="text" class="form-control" id="name" placeholder="Vui lòng nhập vào tên." />
+                        <small id="name_error" class="text-danger"></small>
                     </div>
 
+                    <!-- description -->
                     <div class="mb-3">
-                        <label for="exampleFormControlSelect1" class="form-label">Example select</label>
-                        <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-                            <option selected>Open this select menu</option>
+                        <label for="" class="form-label">Mô tả</label>
+                        <textarea type="text" class="form-control" id="description"
+                            placeholder="Vui lòng nhập vào mô tả."></textarea>
+                        <small id="description_error" class="text-danger"></small>
+
+                    </div>
+
+                    <!-- slug -->
+                    <div class="mb-3">
+                        <label for="" class="form-label">Đường dẫn</label>
+                        <input type="tẽt" class="form-control" id="slug" placeholder="Vui lòng nhập vào đường dẫn." />
+                        <small id="slug_error" class="text-danger"></small>
+                    </div>
+
+                    <!-- status -->
+                    <div class="mb-3">
+                        <label for="" class="form-label">Trạng thái</label>
+                        <select class="form-select" id="status" aria-label="Default select example">
+                            <option selected>Vui lòng chọn...</option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
                         </select>
+                        <small id="parent_id_error" class="text-danger"></small>
                     </div>
 
-                    <div>
-                        <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <!-- parend_id -->
+                    <div class="mb-3">
+                        <label for="" class="form-label">Danh mục cha</label>
+                        <select class="form-select" id="parend_id" aria-label="Default select example">
+                            <option selected>Vui lòng chọn...</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <small id="status_error" class="text-danger"></small>
                     </div>
                 </div>
+                <button type="button" class="btn btn-primary">
+                    Cập nhật
+                </button>
             </div>
         </div>

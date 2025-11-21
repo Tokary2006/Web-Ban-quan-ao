@@ -32,6 +32,25 @@ switch ($page) {
                 break;
         }
         break;
+
+        case "product":
+        require "Controllers/Admin/ProductController.php";
+        $productControl = new ProductController();
+        switch ($action) {
+            case "index":
+                $productControl->index();
+                break;
+            case "create":
+                $productControl->create();
+                break;
+            case "edit":
+                $productControl->store();
+                break;
+            default:
+                $productControl->index();
+                break;
+        }
+        break;
     default:
         require "Controllers/Admin/HomeController.php";
         $homeControl = new HomeController();

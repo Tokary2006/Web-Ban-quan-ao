@@ -137,7 +137,27 @@
                 </a>
               </li>
             </ul>
-          </li> 
+          </li>
+
+          <li class="menu-item <?= ($page == 'product') ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-detail"></i>
+              <div data-i18n="Form Elements">Quản lí</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item <?= ($page == 'product' && $action == 'index') ? 'active' : '' ?>">
+                <a href="admin.php?page=product&action=index" class="menu-link">
+                  <div data-i18n="Basic Inputs">Danh sách</div>
+                </a>
+              </li>
+
+              <li class="menu-item <?= ($page == 'product' && $action == 'create') ? 'active' : '' ?>">
+                <a href="admin.php?page=product&action=create" class="menu-link">
+                  <div data-i18n="Input groups">Thêm</div>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </aside>
       <!-- / Menu -->
@@ -172,7 +192,8 @@
               <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                   <div class="avatar avatar-online">
-                    <img src="http://i.pinimg.com/736x/bc/43/98/bc439871417621836a0eeea768d60944.jpg" alt class="w-px-40 h-auto rounded-circle" />
+                    <img src="http://i.pinimg.com/736x/bc/43/98/bc439871417621836a0eeea768d60944.jpg" alt
+                      class="w-px-40 h-auto rounded-circle" />
                   </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -181,7 +202,8 @@
                       <div class="d-flex">
                         <div class="flex-shrink-0 me-3">
                           <div class="avatar avatar-online">
-                            <img src="http://i.pinimg.com/736x/bc/43/98/bc439871417621836a0eeea768d60944.jpg" alt class="w-px-40 h-auto rounded-circle" />
+                            <img src="http://i.pinimg.com/736x/bc/43/98/bc439871417621836a0eeea768d60944.jpg" alt
+                              class="w-px-40 h-auto rounded-circle" />
                           </div>
                         </div>
                         <div class="flex-grow-1">

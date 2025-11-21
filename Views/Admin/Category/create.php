@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-primary">
-                    Sửa
+                    Thêm
                 </button>
             </div>
         </div>
