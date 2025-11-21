@@ -31,23 +31,25 @@ switch ($page) {
                 $categoryControl->index();
                 break;
         }
-        case "user":
-            require "Controllers/Admin/UserController.php";
-            $userControl = new UserController();
-            switch ($action) {
-                case "index":
-                    $userControl->index();
-                    break;
-                case "create":
-                    $userControl->create();
-                    break;
-                case "edit":
-                    $userControl->store();
-                    break;
-                default:
-                    $userControl->index();
-                    break;
-            }
+        break;
+   
+    case "user":
+        require "Controllers/Admin/UserController.php";
+        $userControl = new UserController();
+        switch ($action) {
+            case "index":
+                $userControl->index();
+                break;
+            case "create":
+                $userControl->create();
+                break;
+            case "edit":
+                $userControl->store();
+                break;
+            default:
+                $userControl->index();
+                break;
+        }
         break;
 
     case "user":
