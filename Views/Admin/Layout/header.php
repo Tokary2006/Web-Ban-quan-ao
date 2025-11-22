@@ -178,8 +178,51 @@
               </li>
             </ul>
           </li>
+
+          <li class="menu-item <?= ($page == 'order') ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-detail"></i>
+              <div data-i18n="Form Elements">Quản lí đơn hàng</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item <?= ($page == 'order' && $action == 'index') ? 'active' : '' ?>">
+                <a href="admin.php?page=order&action=index" class="menu-link">
+                  <div data-i18n="Basic Inputs">Danh sách</div>
+                </a>
+              </li>
+
+              <li class="menu-item <?= ($page == 'order' && $action == 'create') ? 'active' : '' ?>">
+                <a href="admin.php?page=order&action=create" class="menu-link">
+                  <div data-i18n="Input groups">Thêm</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="menu-item <?= ($page == 'blogscomment') ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-detail"></i>
+              <div data-i18n="Form Elements">Quản lí bình luận bài viết</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item <?= ($page == 'blogscomment' && $action == 'index') ? 'active' : '' ?>">
+                <a href="admin.php?page=blogs&action=index" class="menu-link">
+                  <div data-i18n="Basic Inputs">Danh sách</div>
+                </a>
+              </li>
+
+              <li class="menu-item <?= ($page == 'blogscomment' && $action == 'create') ? 'active' : '' ?>">
+                <a href="admin.php?page=blogs&action=create" class="menu-link">
+                  <div data-i18n="Input groups">Thêm</div>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
+
+        
       </aside>
+
       <!-- / Menu -->
 
       <!-- Layout container -->

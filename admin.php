@@ -70,6 +70,43 @@ switch ($page) {
                 break;
         }
         break;
+
+        case "order":
+            require "Controllers/Admin/OrderController.php";
+            $orderControl = new OrderController();
+            switch ($action) {
+                case "index":
+                    $orderControl->index();
+                    break;
+                case "create":
+                    $orderControl->create();
+                    break;
+                case "edit":
+                    $orderControl->store();
+                    break;
+                default:
+                    $orderControl->index();
+                    break;
+            }
+            break;
+            case "blogs":
+                require "Controllers/Admin/BlogsCommentController.php";
+                $blogscmControl = new BlogsCommentController();
+                switch ($action) {
+                    case "index":
+                        $blogscmControl->index();
+                        break;
+                    case "create":
+                        $blogscmControl->create();
+                        break;
+                    case "edit":
+                        $blogscmControl->store();
+                        break;
+                    default:
+                        $blogsControl->index();
+                        break;
+                }
+                break;
     default:
         require "Controllers/Admin/HomeController.php";
         $homeControl = new HomeController();
