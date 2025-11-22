@@ -55,7 +55,7 @@
 
       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
-          <a href="index.html" class="app-brand-link">
+          <a href="admin.php" class="app-brand-link">
             <span class="app-brand-logo demo">
               <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -100,7 +100,7 @@
                 </g>
               </svg>
             </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">Sneat</span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">Trang Admin</span>
           </a>
 
           <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -206,16 +206,12 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item <?= ($page == 'blogscomment' && $action == 'index') ? 'active' : '' ?>">
-                <a href="admin.php?page=blogs&action=index" class="menu-link">
+                <a href="admin.php?page=blogscomment&action=index" class="menu-link">
                   <div data-i18n="Basic Inputs">Danh sách</div>
                 </a>
               </li>
 
-              <li class="menu-item <?= ($page == 'blogscomment' && $action == 'create') ? 'active' : '' ?>">
-                <a href="admin.php?page=blogs&action=create" class="menu-link">
-                  <div data-i18n="Input groups">Thêm</div>
-                </a>
-              </li>
+          
             </ul>
           </li>
 
@@ -227,6 +223,14 @@
             <ul class="menu-sub">
               <li class="menu-item <?= ($page == 'blog' && $action == 'index') ? 'active' : '' ?>">
                 <a href="admin.php?page=blog&action=index" class="menu-link">
+            <li class="menu-item <?= ($page == 'productscomment') ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-detail"></i>
+              <div data-i18n="Form Elements">Quản lí bình luận bài viết</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item <?= ($page == 'productscomment' && $action == 'index') ? 'active' : '' ?>">
+                <a href="admin.php?page=productscomment&action=index" class="menu-link">
                   <div data-i18n="Basic Inputs">Danh sách</div>
                 </a>
               </li>
@@ -238,6 +242,10 @@
               </li>
             </ul>
           </li>
+              
+            </ul>
+          </li>
+
         </ul>
 
         

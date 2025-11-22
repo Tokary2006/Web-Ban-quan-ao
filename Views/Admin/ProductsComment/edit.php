@@ -10,6 +10,7 @@
                 <form action="process_edit_comment.php" method="POST">
                     <input type="hidden" name="comment_id" value="102">
 
+                    <!-- Thông tin bài viết và tác giả -->
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Bài Viết Liên Quan (Blog ID)</label>
@@ -25,14 +26,16 @@
                         </div>
                     </div>
 
+                    <!-- Nội dung bình luận -->
                     <div class="mb-4">
                         <label for="comment_content" class="form-label fw-bold">Nội Dung Bình Luận (*)</label>
-                        <textarea class="form-control" id="comment_content" name="comment_content" rows="6" required>Bài viết rất hay, xem thêm giải pháp SEO tại link này: http://spam.com</textarea>
+                        <textarea class="form-control" id="comment_content" name="comment_content" rows="6" required>Sản phẩm này rất tốt</textarea>
                         <small class="form-text text-muted">Có thể chỉnh sửa nội dung nếu cần thiết.</small>
                     </div>
 
                     <hr>
 
+                    <!-- Trạng thái và ngày bình luận -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="comment_status" class="form-label fw-bold">Cập Nhật Trạng Thái (*)</label>
@@ -49,10 +52,13 @@
                         </div>
                     </div>
 
-                    <div class="mt-4">
-                        <button type="submit" class="btn btn-primary me-2">Lưu Thay Đổi</button>
-                        <a href="admin.php?page=blogscomment&action=index" class="btn btn-secondary">Hủy / Quay lại</a>
-                        <button type="button" class="btn btn-danger float-end">Xóa Bình Luận</button>
+                    <!-- Nút hành động -->
+                    <div class="mt-4 d-flex justify-content-between">
+                        <div>
+                            <button type="submit" class="btn btn-primary me-2">Lưu Thay Đổi</button>
+                            <a href="admin.php?page=blogs&action=index" class="btn btn-secondary">Hủy / Quay lại</a>
+                        </div>
+                        <button type="button" class="btn btn-danger">Xóa Bình Luận</button>
                     </div>
 
                 </form>

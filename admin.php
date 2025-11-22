@@ -32,25 +32,6 @@ switch ($page) {
                 break;
         }
         break;
-   
-    case "user":
-        require "Controllers/Admin/UserController.php";
-        $userControl = new UserController();
-        switch ($action) {
-            case "index":
-                $userControl->index();
-                break;
-            case "create":
-                $userControl->create();
-                break;
-            case "edit":
-                $userControl->store();
-                break;
-            default:
-                $userControl->index();
-                break;
-        }
-        break;
 
     case "user":
         require "Controllers/Admin/UserController.php";
@@ -144,6 +125,43 @@ switch ($page) {
                 break;
         }
         break;
+    case "blogscomment":
+        require "Controllers/Admin/BlogsCommentController.php";
+        $blogscmControl = new BlogsCommentController();
+        switch ($action) {
+            case "index":
+                $blogscmControl->index();
+                break;
+            case "create":
+                $blogscmControl->create();
+                break;
+            case "edit":
+                $blogscmControl->store();
+                break;
+            default:
+                $blogsControl->index();
+                break;
+        }
+        break;
+    case "productscomment":
+        require "Controllers/Admin/ProductsCommentController.php";
+        $blogscmControl = new ProductsCommentController();
+        switch ($action) {
+            case "index":
+                $blogscmControl->index();
+                break;
+            case "create":
+                $blogscmControl->create();
+                break;
+            case "edit":
+                $blogscmControl->store();
+                break;
+            default:
+                $blogsControl->index();
+                break;
+        }
+        break;
+
     default:
         require "Controllers/Admin/HomeController.php";
         $homeControl = new HomeController();
