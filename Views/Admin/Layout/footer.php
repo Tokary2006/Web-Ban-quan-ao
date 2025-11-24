@@ -44,6 +44,9 @@
 <!-- Page JS -->
 <script src="./assets/js/dashboards-analytics.js"></script>
 <script src="//cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
+<script src="./assets/Admin/js/editor.js"></script>
+
 <script>let table = new DataTable('#myTable');
 </script>
 

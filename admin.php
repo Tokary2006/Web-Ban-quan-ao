@@ -32,7 +32,7 @@ switch ($page) {
                 break;
         }
         break;
-   
+
     case "user":
         require "Controllers/Admin/UserController.php";
         $userControl = new UserController();
@@ -71,42 +71,60 @@ switch ($page) {
         }
         break;
 
-        case "order":
-            require "Controllers/Admin/OrderController.php";
-            $orderControl = new OrderController();
-            switch ($action) {
-                case "index":
-                    $orderControl->index();
-                    break;
-                case "create":
-                    $orderControl->create();
-                    break;
-                case "edit":
-                    $orderControl->store();
-                    break;
-                default:
-                    $orderControl->index();
-                    break;
-            }
-            break;
-            case "blogs":
-                require "Controllers/Admin/BlogsCommentController.php";
-                $blogscmControl = new BlogsCommentController();
-                switch ($action) {
-                    case "index":
-                        $blogscmControl->index();
-                        break;
-                    case "create":
-                        $blogscmControl->create();
-                        break;
-                    case "edit":
-                        $blogscmControl->store();
-                        break;
-                    default:
-                        $blogsControl->index();
-                        break;
-                }
+    case "order":
+        require "Controllers/Admin/OrderController.php";
+        $orderControl = new OrderController();
+        switch ($action) {
+            case "index":
+                $orderControl->index();
                 break;
+            case "create":
+                $orderControl->create();
+                break;
+            case "edit":
+                $orderControl->store();
+                break;
+            default:
+                $orderControl->index();
+                break;
+        }
+        break;
+    case "blogs":
+        require "Controllers/Admin/BlogsCommentController.php";
+        $blogscmControl = new BlogsCommentController();
+        switch ($action) {
+            case "index":
+                $blogscmControl->index();
+                break;
+            case "create":
+                $blogscmControl->create();
+                break;
+            case "edit":
+                $blogscmControl->store();
+                break;
+            default:
+                $blogsControl->index();
+                break;
+        }
+        break;
+    case "blog":
+        require "Controllers/Admin/BlogController.php";
+        $blogcmControl = new BlogController();
+        switch ($action) {
+            case "index":
+                $blogcmControl->index();
+                break;
+            case "create":
+                $blogcmControl->create();
+                break;
+            case "edit":
+                $blogcmControl->store();
+                break;
+            default:
+                $blogControl->index();
+                break;
+        }
+        break;
     default:
         require "Controllers/Admin/HomeController.php";
         $homeControl = new HomeController();

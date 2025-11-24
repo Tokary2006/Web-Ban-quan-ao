@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="">
 
   <!-- Core CSS -->
-  <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="./assets/admin/vendor/css/core.css" class="template-customizer-core-css" />
   <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="./assets/css/demo.css" />
 
@@ -213,6 +213,26 @@
 
               <li class="menu-item <?= ($page == 'blogscomment' && $action == 'create') ? 'active' : '' ?>">
                 <a href="admin.php?page=blogs&action=create" class="menu-link">
+                  <div data-i18n="Input groups">Thêm</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="menu-item <?= ($page == 'blog') ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-detail"></i>
+              <div data-i18n="Form Elements">Quản lí bài viết</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item <?= ($page == 'blog' && $action == 'index') ? 'active' : '' ?>">
+                <a href="admin.php?page=blog&action=index" class="menu-link">
+                  <div data-i18n="Basic Inputs">Danh sách</div>
+                </a>
+              </li>
+
+              <li class="menu-item <?= ($page == 'blog' && $action == 'create') ? 'active' : '' ?>">
+                <a href="admin.php?page=blog&action=create" class="menu-link">
                   <div data-i18n="Input groups">Thêm</div>
                 </a>
               </li>
