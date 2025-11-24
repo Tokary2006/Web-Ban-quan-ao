@@ -25,6 +25,9 @@ switch ($page) {
     case "contact":
         include "Views/Client/contact.php";
         break;
+          case "about":
+        include "Views/Client/about.php";
+        break;
     case "cart":
         include "Views/Client/cart.php";
         break;
@@ -33,6 +36,12 @@ switch ($page) {
         break;
     case "checkout":
         include "Views/Client/checkout.php";
+        break;
+         case "blog":
+        include "Views/Client/blog.php";
+        break;
+         case "blog-single":
+        include "Views/Client/blog-single.php";
         break;
     default:
         include "Views/Client/index.php";
