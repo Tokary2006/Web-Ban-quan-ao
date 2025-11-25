@@ -1,7 +1,7 @@
    <div class="bg-light py-3">
       <div class="container">
         <div class="row">
-          <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Cart</strong></div>
+          <div class="col-md-12 mb-0"><a href="index.html">Trang chủ</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Giỏ hàng</strong></div>
         </div>
       </div>
     </div>
@@ -14,12 +14,12 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th class="product-thumbnail">Image</th>
-                    <th class="product-name">Product</th>
-                    <th class="product-price">Price</th>
-                    <th class="product-quantity">Quantity</th>
-                    <th class="product-total">Total</th>
-                    <th class="product-remove">Remove</th>
+                    <th class="product-thumbnail">Hình ảnh</th>
+                    <th class="product-name">Sản phẩm</th>
+                    <th class="product-price">Giá</th>
+                    <th class="product-quantity">Số lượng</th>
+                    <th class="product-total">Tổng</th>
+                    <th class="product-remove">Xóa</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -28,9 +28,9 @@
                       <img src="Assets/Client/images/cloth_1.jpg" alt="Image" class="img-fluid">
                     </td>
                     <td class="product-name">
-                      <h2 class="h5 text-black">Top Up T-Shirt</h2>
+                      <h2 class="h5 text-black">Áo thun</h2>
                     </td>
-                    <td>$49.00</td>
+                    <td><?= number_format($value["price"] = 200000) ?> đ</td>
                     <td>
                       <div class="input-group mb-3" style="max-width: 120px;">
                         <div class="input-group-prepend">
@@ -43,7 +43,7 @@
                       </div>
 
                     </td>
-                    <td>$49.00</td>
+                    <td><?= number_format($value["price"] = 200000) ?> đ</td>
                     <td><a href="#" class="btn btn-primary height-auto btn-sm">X</a></td>
                   </tr>
 
@@ -52,9 +52,9 @@
                       <img src="Assets/Client/images/cloth_2.jpg" alt="Image" class="img-fluid">
                     </td>
                     <td class="product-name">
-                      <h2 class="h5 text-black">Polo Shirt</h2>
+                      <h2 class="h5 text-black">Áo polo</h2>
                     </td>
-                    <td>$49.00</td>
+                    <td><?= number_format($value["price"] = 150000) ?> đ</td>
                     <td>
                       <div class="input-group mb-3" style="max-width: 120px;">
                         <div class="input-group-prepend">
@@ -67,7 +67,7 @@
                       </div>
 
                     </td>
-                    <td>$49.00</td>
+                    <td><?= number_format($value["price"] = 150000) ?> đ</td>
                     <td><a href="#" class="btn btn-primary height-auto btn-sm">X</a></td>
                   </tr>
                 </tbody>
@@ -80,22 +80,22 @@
           <div class="col-md-6">
             <div class="row mb-5">
               <div class="col-md-6 mb-3 mb-md-0">
-                <button class="btn btn-primary btn-sm btn-block">Update Cart</button>
+                <button class="btn btn-primary btn-sm btn-block">Cập nhật giỏ hàng</button>
               </div>
               <div class="col-md-6">
-                <button class="btn btn-outline-primary btn-sm btn-block">Continue Shopping</button>
+                <button class="btn btn-outline-primary btn-sm btn-block">Tiếp tục mua sắm</button>
               </div>
             </div>
             <div class="row">
               <div class="col-md-12">
-                <label class="text-black h4" for="coupon">Coupon</label>
-                <p>Enter your coupon code if you have one.</p>
+                <label class="text-black h4" for="coupon">Mã giảm giá</label>
+                <p>Nhập vào mã giảm giá.</p>
               </div>
               <div class="col-md-8 mb-3 mb-md-0">
-                <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
+                <input type="text" class="form-control py-3" id="coupon" placeholder="Nhập vào mã giảm giá.">
               </div>
               <div class="col-md-4">
-                <button class="btn btn-primary btn-sm px-4">Apply Coupon</button>
+                <button class="btn btn-primary btn-sm px-4">Áp dụng</button>
               </div>
             </div>
           </div>
@@ -104,15 +104,15 @@
               <div class="col-md-7">
                 <div class="row">
                   <div class="col-md-12 text-right border-bottom mb-5">
-                    <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
+                    <h3 class="text-black h4 text-uppercase">Tổng</h3>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <span class="text-black">Subtotal</span>
+                    <span class="text-black">Tổng phụ</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">$230.00</strong>
+                    <strong class="text-black"><?= number_format($value["price"] = 350000) ?> đ</strong>
                   </div>
                 </div>
                 <div class="row mb-5">
@@ -120,13 +120,13 @@
                     <span class="text-black">Total</span>
                   </div>
                   <div class="col-md-6 text-right">
-                    <strong class="text-black">$230.00</strong>
+                    <strong class="text-black"><?= number_format($value["price"] = 350000) ?> đ</strong>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-md-12">
-                    <button class="btn btn-primary btn-lg btn-block" onclick="window.location='checkout.html'">Proceed To Checkout</button>
+                    <button class="btn btn-primary btn-lg btn-block" onclick="window.location='checkout.html'">Tiến hành thanh toán</button>
                   </div>
                 </div>
               </div>
