@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ShopMax &mdash; Colorlib e-Commerce Template</title>
+    <title>Wearlya &mdash; Phong cách gói gọn trong bạn.</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -40,33 +40,33 @@
         <div class="d-flex align-items-center justify-content-between">
           <div class="logo">
             <div class="site-logo">
-              <a href="index.php" class="js-logo-clone">ShopMax</a>
+              <a href="index.php" class="js-logo-clone">Wearly</a>
             </div>
           </div>
           <div class="main-nav d-none d-lg-block">
             <nav class="site-navigation text-right text-md-center" role="navigation">
               <ul class="site-menu js-clone-nav d-none d-lg-block">
                 <li class="has-children active">
-                  <a href="index.php">Home</a>
+                  <a href="index.php">Trang chủ</a>
                   <ul class="dropdown">
                     <li><a href="index.php?page=checkout">Check out</a></li>
-                    <li><a href="index.php?page=shop-single">Shop single</a></li>
-                    <li><a href="#">Menu Three</a></li>
+                    <li><a href="index.php?page=shop-single">Chi tiết sản ph</a></li>
+                    <li><a href="#">Menu ba</a></li>
                     <li class="has-children">
-                      <a href="#">Sub Menu</a>
+                      <a href="#">Menu con</a>
                       <ul class="dropdown">
-                        <li><a href="#">Menu One</a></li>
-                        <li><a href="#">Menu Two</a></li>
-                        <li><a href="#">Menu Three</a></li>
+                        <li><a href="#">Menu một</a></li>
+                        <li><a href="#">Menu hai</a></li>
+                        <li><a href="#">Menu ba</a></li>
                       </ul>
                     </li>
                   </ul>
                 </li>
                 
-                <li><a href="index.php?page=shop">Shop</a></li>
-                <li><a href="#">Catalogue</a></li>
-                <li><a href="#">New Arrivals</a></li>
-                <li><a href="index.php?page=contact">Contact</a></li>
+                <li><a href="index.php?page=shop">Cửa hàng</a></li>
+                <li><a href="#">Danh mục sản phẩm</a></li>
+                <li><a href="#">Sản phẩm mới về</a></li>
+                <li><a href="index.php?page=contact">Liên hệ</a></li>
               </ul>
             </nav>
           </div>
