@@ -37,11 +37,17 @@ switch ($page) {
     case "checkout":
         include "Views/Client/checkout.php";
         break;
-         case "blog":
+    case "blog":
         include "Views/Client/blog.php";
         break;
-         case "blog-single":
+    case "blog-single":
         include "Views/Client/blog-single.php";
+        break;
+    case "register":
+        include "Views/Client/register.php";
+        break;
+    case "login":
+        include "Views/Client/login.php";
         break;
     default:
         include "Views/Client/index.php";
