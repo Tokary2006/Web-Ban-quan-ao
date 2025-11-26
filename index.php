@@ -49,6 +49,9 @@ switch ($page) {
     case "login":
         include "Views/Client/login.php";
         break;
+        case "account":
+        include "Views/Client/account.php";
+        break;
     default:
         include "Views/Client/index.php";
         break;
