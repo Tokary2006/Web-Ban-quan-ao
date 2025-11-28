@@ -1,10 +1,15 @@
 <?php
+require_once 'Models/Database.php';
+require_once 'config.php';
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 $page = isset($_GET["page"]) ? $_GET["page"] : "";
 $action = isset($_GET["action"]) ? $_GET["action"] : "";
+
+$db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
+$connection = $db->connect();
 
 require "Views/Admin/Layout/header.php";
 switch ($page) {
@@ -16,7 +21,7 @@ switch ($page) {
 
     case "category":
         require "Controllers/Admin/CategoryController.php";
-        $categoryControl = new CategoryController();
+        $categoryControl = new CategoryController($connection);
         switch ($action) {
             case "index":
                 $categoryControl->index();
@@ -24,9 +29,10 @@ switch ($page) {
             case "create":
                 $categoryControl->create();
                 break;
-            case "edit":
-                $categoryControl->store();
-                break;
+                case "edit": 
+                    $categoryControl->edit();
+                    break;
+
             default:
                 $categoryControl->index();
                 break;
