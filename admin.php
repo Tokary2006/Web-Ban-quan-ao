@@ -46,6 +46,9 @@ switch ($page) {
             case "edit":
                 $userControl->store();
                 break;
+            case "profile":
+                $userControl->profile();
+                break;
             default:
                 $userControl->index();
                 break;

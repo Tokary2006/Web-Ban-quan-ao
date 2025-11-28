@@ -9,5 +9,8 @@ Class UserController {
     public function create(){
         include "Views/Admin/User/create.php";
     }
+    public function profile(){
+        include "Views/Admin/User/profile.php";
+    }
 }
 ?>
