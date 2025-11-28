@@ -213,6 +213,20 @@
             </ul>
           </li>
 
+            <li class="menu-item <?= ($page == 'productscomment') ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-detail"></i>
+              <div data-i18n="Form Elements">Quản lí bình luận sản phẩm</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item <?= ($page == 'productscomment' && $action == 'index') ? 'active' : '' ?>">
+                <a href="admin.php?page=productscomment&action=index" class="menu-link">
+                  <div data-i18n="Basic Inputs">Danh sách</div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
           <li class="menu-item <?= ($page == 'blog') ? 'active open' : '' ?>">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-detail"></i>
@@ -317,7 +331,7 @@
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="admin.php?page=user&action=project">
+                    <a class="dropdown-item" href="admin.php?page=user&action=profile">
                       <i class="bx bx-user me-2"></i>
                       <span class="align-middle">Hồ sơ</span>
                     </a>
