@@ -210,8 +210,6 @@
                   <div data-i18n="Basic Inputs">Danh sách</div>
                 </a>
               </li>
-
-          
             </ul>
           </li>
 
@@ -223,14 +221,6 @@
             <ul class="menu-sub">
               <li class="menu-item <?= ($page == 'blog' && $action == 'index') ? 'active' : '' ?>">
                 <a href="admin.php?page=blog&action=index" class="menu-link">
-            <li class="menu-item <?= ($page == 'productscomment') ? 'active open' : '' ?>">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Elements">Quản lí bình luận bài viết</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item <?= ($page == 'productscomment' && $action == 'index') ? 'active' : '' ?>">
-                <a href="admin.php?page=productscomment&action=index" class="menu-link">
                   <div data-i18n="Basic Inputs">Danh sách</div>
                 </a>
               </li>
@@ -242,13 +232,32 @@
               </li>
             </ul>
           </li>
-              
+
+          <li class="menu-item <?= ($page == 'variant') ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-detail"></i>
+              <div data-i18n="Form Elements">Quản lí biến thể</div>
+            </a>
+            <ul class="menu-sub">
+              <li class="menu-item <?= ($page == 'variant' && $action == 'index') ? 'active' : '' ?>">
+                <a href="admin.php?page=variant&action=index" class="menu-link">
+                  <div data-i18n="Basic Inputs">Danh sách</div>
+                </a>
+              </li>
+
+              <li class="menu-item <?= ($page == 'variant' && $action == 'create') ? 'active' : '' ?>">
+                <a href="admin.php?page=variant&action=create" class="menu-link">
+                  <div data-i18n="Input groups">Thêm</div>
+                </a>
+              </li>
             </ul>
           </li>
+        </ul>
+        </li>
 
         </ul>
 
-        
+
       </aside>
 
       <!-- / Menu -->
@@ -308,7 +317,7 @@
                     <div class="dropdown-divider"></div>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="admin.php?page=user&action=project">
                       <i class="bx bx-user me-2"></i>
                       <span class="align-middle">Hồ sơ</span>
                     </a>

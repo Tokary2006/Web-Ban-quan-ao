@@ -161,7 +161,22 @@ switch ($page) {
                 break;
         }
         break;
-
+    case "variant":
+        require "Controllers/Admin/VariantController.php";
+        $variantControl = new VariantController();
+        switch ($action) {
+            case "index":
+                $variantControl->index();
+                $variantControl->indexVariantId();
+                break;
+            case "create":
+                $variantControl->create();
+                break;
+            case "edit":
+                $variantControl->edit();
+                break;
+        }
+        break;
     default:
         require "Controllers/Admin/HomeController.php";
         $homeControl = new HomeController();
