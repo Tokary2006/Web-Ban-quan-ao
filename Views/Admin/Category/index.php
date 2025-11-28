@@ -20,30 +20,45 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0 text-center">
+    <?php foreach ($categories as $cate): ?>
+    <tr>
+        <td><?= $cate['id'] ?></td>
+        <td><?= $cate['parent_id'] ?: 'null' ?></td>
+        <td><?= $cate['name'] ?></td>
+        <td><?= $cate['description'] ?></td>
+        <td><?= $cate['slug'] ?></td>
 
-                        <tr>
-                            <td>1</td>
-                            <td>null</td>
-                            <td>Áo thun</td>
-                            <td>Áo thun</td>
-                            <td>ao-thun</td>
-                            <td><span class="badge bg-label-success me-1">Active</span></td>
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="admin.php?page=category&action=edit"><i
-                                                class="bx bx-edit-alt me-1 btn-success"></i> Sửa</a>
-                                        <a class="dropdown-item" href="javascript:void(0);"><i
-                                                class="bx bx-trash me-1 btn-danger"></i> Xóa</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
+        <td>
+            <?php if($cate['status'] == 1): ?>
+                <span class="badge bg-label-success">Active</span>
+            <?php else: ?>
+                <span class="badge bg-label-danger">Inactive</span>
+            <?php endif; ?>
+        </td>
+
+        <td>
+            <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+
+                <div class="dropdown-menu">
+                    <a class="dropdown-item"
+                       href="admin.php?page=category&action=edit&id=<?= $cate['id'] ?>">
+                        <i class="bx bx-edit-alt me-1"></i> Sửa
+                    </a>
+
+                    <a class="dropdown-item"
+                       href="admin.php?page=category&action=delete&id=<?= $cate['id'] ?>"
+                       onclick="return confirm('Bạn chắc chắn muốn xóa?')">
+                        <i class="bx bx-trash me-1"></i> Xóa
+                    </a>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</tbody>  
                 </table>
             </div>
         </div>
