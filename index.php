@@ -12,15 +12,20 @@ $database = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 // Lấy PDO connection
 $connection = $database->connect();
 
-require_once 'router.php'; 
-
 $page = $_GET['page'] ?? '';
 
 require "Views/Client/Layouts/header.php";
 
 switch ($page) {
-    case "shop":
-        include "Views/Client/shop.php";
+    case 'shop':
+        require_once 'Controllers/Client/ProductController.php';
+        $controller = new ProductController($connection);
+        $controller->index();
+        break;
+    case "product":
+        require_once 'Controllers/Client/ProductController.php';
+        $controller = new ProductController($connection);
+        $controller->detail();
         break;
     case "contact":
         include "Views/Client/contact.php";
@@ -30,9 +35,6 @@ switch ($page) {
         break;
     case "cart":
         include "Views/Client/cart.php";
-        break;
-    case "shop-single":
-        include "Views/Client/shop-single.php";
         break;
     case "checkout":
         include "Views/Client/checkout.php";
@@ -59,5 +61,6 @@ switch ($page) {
 
 
 require "Views/Client/Layouts/footer.php";
+
 // Ngắt kết nối
 $database->disconnect();
