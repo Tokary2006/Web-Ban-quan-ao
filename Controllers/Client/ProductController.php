@@ -11,7 +11,7 @@ class ProductController
     {
         $this->productModel = new productModel($connection);
         $this->categoryModel = new categoryModel($connection);
-        
+
     }
 
     public function index()
@@ -20,19 +20,19 @@ class ProductController
         $limit = $_GET['limit'] ?? 10;
         $keyword = $_GET['keyword'] ?? '';
         $categoryId = $_GET['category_id'] ?? null;
-        $optionId = $_GET['option_id'] ??'';
-        $current_page = isset($_GET['pages']) ? (int)$_GET['pages'] : 1;
-        $sortBy = $_GET['sort_by'] ?? 'date'; 
+        $optionId = $_GET['option_id'] ?? '';
+        $current_page = isset($_GET['pages']) ? (int) $_GET['pages'] : 1;
+        $sortBy = $_GET['sort_by'] ?? 'date';
         $sortOrder = $_GET['sort_order'] ?? 'desc';
         $urlPage = 'index.php?page=shop';
 
         if ($keyword) {
-            $urlPage .= '&keyword=' . $keyword; 
+            $urlPage .= '&keyword=' . $keyword;
         }
         if ($categoryId) {
             $urlPage .= '&category_id=' . $categoryId;
         }
-        
+
         if ($sortBy != 'date') {
             $urlPage .= '&sort_by=' . $sortBy;
         }
@@ -46,8 +46,8 @@ class ProductController
             keyword: $keyword,
             status: 1,
             categoryId: $categoryId,
-            sortBy: $sortBy, 
-            sortOrder: $sortOrder 
+            sortBy: $sortBy,
+            sortOrder: $sortOrder
         );
 
         $totalPageProduct = $this->productModel->getTotalProductCount($limit, $categoryId, $keyword, 1);
@@ -58,24 +58,44 @@ class ProductController
         $cateIdGiay = $this->categoryModel->getCategoryDataByName('Giày');
         include "Views/Client/shop.php";
     }
-   
+
     public function detail()
     {
         $slug = $_GET['slug'] ?? null;
-        
+
         if (!$slug) {
             header('Location: index.php?page=shop');
             exit;
         }
 
-        $product = $this->productModel->getProductBySlug($slug, 1); 
+        $product = $this->productModel->getProductBySlug($slug, 1);
 
         if (!$product) {
             echo "Lỗi: Không tìm thấy sản phẩm này.";
             exit;
         }
 
+        $sizes = [];
+        foreach ($product['variants'] as $variant) {
+            foreach ($variant['options'] as $opt) {
+                if (strtolower($opt['option_name']) === 'size') {
+                    $sizes[] = $opt['option_value'];
+                }
+            }
+        }
+
+        $colors = [];
+        foreach ($product['variants'] as $variant) {
+            foreach ($variant['options'] as $opt) {
+                if (strtolower($opt['option_name']) === 'color') {
+                    $colors[] = $opt['option_value'];
+                }
+            }
+        }
+
+        $relatedProducts = $this->productModel->getAllProducts(1, 10, '', 1, $product['category_id']);
+
         $categories = $this->categoryModel->getAllCategory();
-        include "Views/Client/single-product.php";
+        include "Views/Client/shop-single.php";
     }
 }

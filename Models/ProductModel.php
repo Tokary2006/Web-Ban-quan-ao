@@ -159,30 +159,42 @@ class productModel
      * @param mixed $status Trạng thái sản phẩm (ví dụ: 1 cho hiển thị). Mặc định là null (lấy tất cả).
      * @return array|false Thông tin sản phẩm hoặc false nếu không tìm thấy.
      */
+    /** * Lấy thông tin chi tiết của một sản phẩm dựa trên slug. * @param string $slug Slug của sản phẩm. * @param mixed $status Trạng thái sản phẩm (ví dụ: 1 cho hiển thị). Mặc định là null (lấy tất cả). * @return array|false Thông tin sản phẩm hoặc false nếu không tìm thấy. */
     public function getProductBySlug(string $slug, $status = 1)
     {
-        $query = "
-            SELECT p.* FROM products p
-            WHERE p.`slug` = :slug
-        ";
-
+        $queryProduct = " SELECT p.* FROM products p WHERE p.slug = :slug ";
         if ($status !== null) {
-            $query .= " AND p.`status` = :status ";
+            $queryProduct .= " AND p.status = :status ";
         }
-
-        $stmt = $this->connection->prepare($query);
+        $stmt = $this->connection->prepare($queryProduct);
         $stmt->bindValue(':slug', $slug, PDO::PARAM_STR);
-
         if ($status !== null) {
             $stmt->bindValue(':status', $status, PDO::PARAM_INT);
         }
-
-        try {
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            error_log("Lỗi khi lấy sản phẩm theo slug: " . $e->getMessage());
+        $stmt->execute();
+        $product = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$product) {
             return false;
         }
+        $queryVariants = " SELECT pv.id AS variant_id, pv.sku, pv.quantity, pv.additional_price 
+                            FROM product_variants pv 
+                            WHERE pv.product_id = :product_id ";
+        $stmtVar = $this->connection->prepare($queryVariants);
+        $stmtVar->bindValue(':product_id', $product['id'], PDO::PARAM_INT);
+        $stmtVar->execute();
+        $variants = $stmtVar->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($variants as &$variant) {
+            $queryOptions = " SELECT o.name AS option_name, ov.value_name AS option_value 
+                                FROM variant_values vv 
+                                JOIN option_values ov ON ov.id = vv.value_id 
+                                JOIN options o ON o.id = ov.option_id 
+                                WHERE vv.variant_id = :variant_id ";
+            $stmtOpt = $this->connection->prepare($queryOptions);
+            $stmtOpt->bindValue(':variant_id', $variant['variant_id'], PDO::PARAM_INT);
+            $stmtOpt->execute();
+            $variant['options'] = $stmtOpt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        $product['variants'] = $variants;
+        return $product;
     }
 }
