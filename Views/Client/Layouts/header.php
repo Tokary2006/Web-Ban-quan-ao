@@ -46,21 +46,9 @@
           <div class="main-nav d-none d-lg-block">
             <nav class="site-navigation text-right text-md-center" role="navigation">
               <ul class="site-menu js-clone-nav d-none d-lg-block">
-                <li class="has-children active">
-                  <a href="index.php">Trang chủ</a>
-                  <ul class="dropdown">
-                    <li><a href="index.php?page=checkout">Check out</a></li>
-                    <li><a href="index.php?page=shop-single">Chi tiết sản ph</a></li>
-                    <li><a href="#">Menu ba</a></li>
-                    <li class="has-children">
-                      <a href="#">Menu con</a>
-                      <ul class="dropdown">
-                        <li><a href="#">Menu một</a></li>
-                        <li><a href="#">Menu hai</a></li>
-                        <li><a href="#">Menu ba</a></li>
-                      </ul>
-                    </li>
-                  </ul>
+                <li>
+                  <a href="index.php?page=home">Trang chủ</a>
+                  
                 </li>
                 
                 <li><a href="index.php?page=shop">Cửa hàng</a></li>

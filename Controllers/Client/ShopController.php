@@ -13,8 +13,7 @@ class ProductController
         $this->categoryModel = new categoryModel($connection);
 
     }
-
-    public function index()
+    public function shop()
     {
         $pages = $_GET['pages'] ?? 1;
         $limit = $_GET['limit'] ?? 10;

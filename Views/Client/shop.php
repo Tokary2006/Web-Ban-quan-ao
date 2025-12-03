@@ -61,7 +61,7 @@
               <a href="#" class="product-item md-height bg-gray d-block">
                 <img src="Uploads/<?= $product['image'] ?>" alt="Ảnh sản phẩm" class="img-fluid">
               </a>
-              <h2 class="item-title"><a href="index.php?page=product&slug=<?= $product['slug'] ?>"><?= $product['name'] ?></a></h2>
+              <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $product['slug'] ?>"><?= $product['name'] ?></a></h2>
               <?php if ($product['discount_price']): ?>
                 <strong class="item-price"><del><?= number_format($product['price']) ?> VNĐ</del>
                   <?= number_format($product['discount_price']) ?> VNĐ</strong>

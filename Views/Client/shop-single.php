@@ -84,7 +84,7 @@
                   <a href="#" class="product-item md-height bg-gray d-block">
                     <img src="Assets/Client/images/<?= $pro['image'] ?>" alt="Image" class="img-fluid">
                   </a>
-                  <h2 class="item-title"><a href="index.php?page=product&slug=<?= $pro['slug'] ?>"><?= $pro['name'] ?></a></h2>
+                  <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"><?= $pro['name'] ?></a></h2>
                   <?php if ($pro['discount_price']): ?>
                     <strong class="item-price"><del><?= number_format($pro['discount_price']) ?> VNĐ</del>
                       <?= number_format($pro['price']) ?> VNĐ</strong>

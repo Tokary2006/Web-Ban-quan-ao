@@ -12,25 +12,25 @@ $database = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 // Lấy PDO connection
 $connection = $database->connect();
 
-$page = $_GET['page'] ?? '';
+$page = $_GET['page'] ?? 'home';
 
 require "Views/Client/Layouts/header.php";
 
 switch ($page) {
     case 'shop':
-        require_once 'Controllers/Client/ProductController.php';
+        require_once 'Controllers/Client/ShopController.php';
         $controller = new ProductController($connection);
-        $controller->index();
+        $controller->shop();
         break;
-    case "product":
-        require_once 'Controllers/Client/ProductController.php';
+    case "shop-single":
+        require_once 'Controllers/Client/ShopController.php';
         $controller = new ProductController($connection);
         $controller->detail();
         break;
     case "contact":
         include "Views/Client/contact.php";
         break;
-          case "about":
+    case "about":
         include "Views/Client/about.php";
         break;
     case "cart":
@@ -51,11 +51,13 @@ switch ($page) {
     case "login":
         include "Views/Client/login.php";
         break;
-        case "account":
+    case "account":
         include "Views/Client/account.php";
         break;
-    default:
-        include "Views/Client/index.php";
+    case "home":
+        require_once 'Controllers/Client/HomeController.php';
+        $controller = new ProductController($connection);
+        $controller->index();
         break;
 }
 
