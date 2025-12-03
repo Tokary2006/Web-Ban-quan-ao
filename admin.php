@@ -4,18 +4,27 @@ require_once 'config.php';
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
+ob_start();
 
-$page = isset($_GET["page"]) ? $_GET["page"] : "";
-$action = isset($_GET["action"]) ? $_GET["action"] : "";
+require_once 'config.php';
+require_once 'Models/Database.php';
+
+$db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
+$connection = $db->connect();
+
+
+$page = $_GET["page"] ?? "";
+$action = $_GET["action"] ?? "";
 
 $db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 $connection = $db->connect();
 
 require "Views/Admin/Layout/header.php";
 switch ($page) {
+
     case "home":
         require "Controllers/Admin/HomeController.php";
-        $homeControl = new HomeController();
+        $homeControl = new HomeController($connection);
         $homeControl->index();
         break;
 
@@ -23,19 +32,10 @@ switch ($page) {
         require "Controllers/Admin/CategoryController.php";
         $categoryControl = new CategoryController($connection);
         switch ($action) {
-            case "index":
-                $categoryControl->index();
-                break;
-            case "create":
-                $categoryControl->create();
-                break;
-                case "edit": 
-                    $categoryControl->edit();
-                    break;
-
-            default:
-                $categoryControl->index();
-                break;
+            case "index":  $categoryControl->index();  break;
+            case "create": $categoryControl->create(); break;
+            case "edit":   $categoryControl->store();  break;
+            default:       $categoryControl->index();  break;
         }
         break;
 
@@ -43,21 +43,11 @@ switch ($page) {
         require "Controllers/Admin/UserController.php";
         $userControl = new UserController();
         switch ($action) {
-            case "index":
-                $userControl->index();
-                break;
-            case "create":
-                $userControl->create();
-                break;
-            case "edit":
-                $userControl->store();
-                break;
-            case "profile":
-                $userControl->profile();
-                break;
-            default:
-                $userControl->index();
-                break;
+            case "index":   $userControl->index();   break;
+            case "create":  $userControl->create();  break;
+            case "edit":    $userControl->store();   break;
+            case "profile": $userControl->profile(); break;
+            default:        $userControl->index();   break;
         }
         break;
 
@@ -65,18 +55,10 @@ switch ($page) {
         require "Controllers/Admin/ProductController.php";
         $productControl = new ProductController();
         switch ($action) {
-            case "index":
-                $productControl->index();
-                break;
-            case "create":
-                $productControl->create();
-                break;
-            case "edit":
-                $productControl->store();
-                break;
-            default:
-                $productControl->index();
-                break;
+            case "index":  $productControl->index();  break;
+            case "create": $productControl->create(); break;
+            case "edit":   $productControl->store();  break;
+            default:       $productControl->index();  break;
         }
         break;
 
@@ -84,90 +66,43 @@ switch ($page) {
         require "Controllers/Admin/OrderController.php";
         $orderControl = new OrderController();
         switch ($action) {
-            case "index":
-                $orderControl->index();
-                break;
-            case "create":
-                $orderControl->create();
-                break;
-            case "edit":
-                $orderControl->store();
-                break;
-            default:
-                $orderControl->index();
-                break;
-        }
-        break;
-    case "blogs":
-        require "Controllers/Admin/BlogsCommentController.php";
-        $blogscmControl = new BlogsCommentController();
-        switch ($action) {
-            case "index":
-                $blogscmControl->index();
-                break;
-            case "create":
-                $blogscmControl->create();
-                break;
-            case "edit":
-                $blogscmControl->store();
-                break;
-            default:
-                $blogsControl->index();
-                break;
+            case "index":  $orderControl->index();  break;
+            case "create": $orderControl->create(); break;
+            case "edit":   $orderControl->store();  break;
+            default:       $orderControl->index();  break;
         }
         break;
     case "blog":
         require "Controllers/Admin/BlogController.php";
-        $blogcmControl = new BlogController();
+        $blogControl = new BlogController($connection);
         switch ($action) {
-            case "index":
-                $blogcmControl->index();
-                break;
-            case "create":
-                $blogcmControl->create();
-                break;
-            case "edit":
-                $blogcmControl->store();
-                break;
-            default:
-                $blogControl->index();
-                break;
+            case "index":  $blogControl->index();  break;
+            case "create": $blogControl->create(); break;
+            case "store":  $blogControl->store();  break;
+            case "edit":   $blogControl->edit();   break;
+            case "update": $blogControl->update(); break;
+            case "delete": $blogControl->delete(); break;
+            default:       $blogControl->index();  break;
         }
         break;
     case "blogscomment":
         require "Controllers/Admin/BlogsCommentController.php";
         $blogscmControl = new BlogsCommentController();
         switch ($action) {
-            case "index":
-                $blogscmControl->index();
-                break;
-            case "create":
-                $blogscmControl->create();
-                break;
-            case "edit":
-                $blogscmControl->store();
-                break;
-            default:
-                $blogsControl->index();
-                break;
+            case "index":  $blogscmControl->index();  break;
+            case "create": $blogscmControl->create(); break;
+            case "edit":   $blogscmControl->store();  break;
+            default:       $blogscmControl->index();  break;
         }
         break;
     case "productscomment":
         require "Controllers/Admin/ProductsCommentController.php";
-        $blogscmControl = new ProductsCommentController();
+        $pcmControl = new ProductsCommentController();
         switch ($action) {
-            case "index":
-                $blogscmControl->index();
-                break;
-            case "create":
-                $blogscmControl->create();
-                break;
-            case "edit":
-                $blogscmControl->store();
-                break;
-            default:
-                $blogsControl->index();
-                break;
+            case "index":  $pcmControl->index();  break;
+            case "create": $pcmControl->create(); break;
+            case "edit":   $pcmControl->store();  break;
+            default:       $pcmControl->index();  break;
         }
         break;
     case "variant":
@@ -178,18 +113,16 @@ switch ($page) {
                 $variantControl->index();
                 $variantControl->indexVariantId();
                 break;
-            case "create":
-                $variantControl->create();
-                break;
-            case "edit":
-                $variantControl->edit();
-                break;
+            case "create": $variantControl->create(); break;
+            case "edit":   $variantControl->edit();   break;
         }
         break;
     default:
         require "Controllers/Admin/HomeController.php";
-        $homeControl = new HomeController();
+        $homeControl = new HomeController($connection);
         $homeControl->index();
         break;
 }
+
 require "Views/Admin/Layout/footer.php";
+
