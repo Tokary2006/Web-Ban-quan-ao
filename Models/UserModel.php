@@ -110,18 +110,18 @@ class UserModel
     }
 
     public function createUser($fullname, $password, $email, $role)
-{
-    $query = "INSERT INTO `users` 
+    {
+        $query = "INSERT INTO `users` 
         (`full_name`, `password`, `email`, `role`, `active`, `created_at`, `updated_at`)
         VALUES (:full_name, :password, :email, :role, 1, NOW(), null)";
 
-    $stmt = $this->connection->prepare($query);
-    $stmt->bindValue(':full_name', $fullname, PDO::PARAM_STR);
-    $stmt->bindValue(':password', $password, PDO::PARAM_STR);
-    $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-    $stmt->bindValue(':role', $role, PDO::PARAM_INT);
-    return $stmt->execute();
-}
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindValue(':full_name', $fullname, PDO::PARAM_STR);
+        $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->bindValue(':role', $role, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 
 
 }

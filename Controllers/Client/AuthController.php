@@ -35,7 +35,7 @@ class AuthControlller
             header("location: index.php?page=login");
             return;
         }
-
+        
         if (empty($user) || !password_verify($password, $user["password"])) {
             $_SESSION["error"] = "Tài khoản hoặc mật khẩu của bạn không đúng!";
             header("location: index.php?page=login");
