@@ -2,7 +2,7 @@
 ini_set("display_errors", 1);
 ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
-
+session_start();
 require_once 'config.php';
 require_once 'Models/Database.php';
 
@@ -49,7 +49,15 @@ switch ($page) {
         include "Views/Client/register.php";
         break;
     case "login":
-        include "Views/Client/login.php";
+        require_once 'Controllers/Client/AuthController.php';
+        $authController = new AuthControlller($connection);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $authController->handleLogin();
+        } else {
+            $authController->login();
+        }
+
         break;
     case "account":
         include "Views/Client/account.php";
