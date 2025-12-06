@@ -21,11 +21,6 @@ class AuthControlller
         include "Views/Client/login.php";
     }
 
-    public function logout()
-    {
-
-    }
-
     public function handleLogin()
     {
         $email = $_POST["email"];

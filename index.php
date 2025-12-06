@@ -59,6 +59,11 @@ switch ($page) {
         }
 
         break;
+    case 'logout':
+        unset($_SESSION['user']);
+        $_SESSION["success"] = "Bạn đã đăng xuất thành công!";
+        header('Location: index.php?page=home');
+        break;
     case "account":
         include "Views/Client/account.php";
         break;
