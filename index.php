@@ -46,7 +46,15 @@ switch ($page) {
         include "Views/Client/blog-single.php";
         break;
     case "register":
-        include "Views/Client/register.php";
+        require_once 'Controllers/Client/AuthController.php';
+        $authController = new AuthControlller($connection);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $authController->handleRegister();
+        } else {
+            $authController->register();
+        }
+
         break;
     case "login":
         require_once 'Controllers/Client/AuthController.php';

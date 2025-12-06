@@ -1,3 +1,9 @@
+<?php if (isset($_SESSION["success"])): ?>
+    <div class="alert alert-success">
+        <?= $_SESSION["success"] ?>
+    </div>
+    <?php unset($_SESSION["success"]); ?>
+<?php endif; ?>
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
