@@ -1,8 +1,8 @@
 <div class="bg-light py-3">
   <div class="container">
     <div class="row">
-      <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <a
-          href="shop.html">Shop</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Gray Shoe</strong></div>
+      <div class="col-md-12 mb-0"><a href="index.html">Trang chủ</a> <span class="mx-2 mb-0">/</span> <a
+          href="shop.html">Cửa hàng</a> <span class="mx-2 mb-0">/</span> <strong class="text-black"><?= $product['title'] ?></strong></div>
     </div>
   </div>
 </div>
@@ -20,14 +20,14 @@
 
       </div>
       <div class="col-md-6">
-        <h2 class="text-black"><?= $product['name'] ?></h2>
+        <h2 class="text-black"><?= $product['title'] ?></h2>
         <p><?= $product['description'] ?></p>
         <p class="mb-4"><?= $product['short_description'] ?></p>
         <?php if ($product['discount_price']): ?>
           <p><strong class="text-primary h4"><del><?= number_format($product['discount_price']) ?> VNĐ</del>
               <?= number_format($product['price']) ?> VNĐ</strong></p>
         <?php else: ?>
-          <p><strong class="text-primary h4"><del><?= number_format($product['price']) ?> VNĐ</strong>
+          <p><strong class="text-primary h4"><?= number_format($product['price']) ?> VNĐ</strong>
           <?php endif; ?>
         <h5 class="text-black">Kích cỡ</h5>
         <div class="mb-1 d-flex">
@@ -84,7 +84,7 @@
                   <a href="#" class="product-item md-height bg-gray d-block">
                     <img src="Assets/Client/images/<?= $pro['image'] ?>" alt="Image" class="img-fluid">
                   </a>
-                  <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"><?= $pro['name'] ?></a></h2>
+                  <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"><?= $pro['title'] ?></a></h2>
                   <?php if ($pro['discount_price']): ?>
                     <strong class="item-price"><del><?= number_format($pro['discount_price']) ?> VNĐ</del>
                       <?= number_format($pro['price']) ?> VNĐ</strong>

@@ -34,7 +34,9 @@ switch ($page) {
         include "Views/Client/about.php";
         break;
     case "cart":
-        include "Views/Client/cart.php";
+        require_once 'Controllers/Client/CartController.php';
+        $cartcontroller = new CartControlller($connection);
+        $cartcontroller->index();
         break;
     case "checkout":
         include "Views/Client/checkout.php";

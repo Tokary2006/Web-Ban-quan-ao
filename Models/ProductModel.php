@@ -36,7 +36,7 @@
             $search = '';
 
             if (trim($keyword) !== '') {
-                $search = " WHERE p.`name` LIKE :keyword OR p.`description` LIKE :keyword ";
+                $search = " WHERE p.`title` LIKE :keyword OR p.`description` LIKE :keyword ";
             } else {
                 $search = " WHERE 1 ";
             }
@@ -50,15 +50,15 @@
             }
 
             if ($featuredId !== null) {
-                $search .= " AND p.`id_featured` = :featuredId ";
+                $search .= " AND p.`featured_id` = :featuredId ";
             }
 
             $orderBy = '';
             $safeSortOrder = ($sortOrder === 'asc' || $sortOrder === 'desc') ? $sortOrder : 'DESC';
 
             switch ($sortBy) {
-                case 'name':
-                    $orderBy = " ORDER BY p.`name` $safeSortOrder ";
+                case 'title':
+                    $orderBy = " ORDER BY p.`title` $safeSortOrder ";
                     break;
                 case 'price':
                     $orderBy = " ORDER BY COALESCE(p.`discount_price`, p.`price`) $safeSortOrder ";
@@ -184,7 +184,7 @@
             if (!$product) {
                 return false;
             }
-            $queryVariants = " SELECT pv.id AS variant_id, pv.sku, pv.quantity, pv.additional_price 
+            $queryVariants = " SELECT pv.id AS variant_id, pv.sku_id, pv.quantity, pv.additional_price 
                                 FROM product_variants pv 
                                 WHERE pv.product_id = :product_id ";
             $stmtVar = $this->connection->prepare($queryVariants);

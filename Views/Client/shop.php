@@ -44,8 +44,8 @@
                 <button type="button" class="btn btn-white btn-sm dropdown-toggle px-4" id="dropdownMenuReference"
                   data-toggle="dropdown">Sắp xếp</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-                  <a class="dropdown-item" href="<?= $urlPage ?>&sort_by=name&sort_order=asc">Tên, A đến Z</a>
-                  <a class="dropdown-item" href="<?= $urlPage ?>&sort_by=name&sort_order=desc">Tên, Z đến A</a>
+                  <a class="dropdown-item" href="<?= $urlPage ?>&sort_by=title&sort_order=asc">Tên, A đến Z</a>
+                  <a class="dropdown-item" href="<?= $urlPage ?>&sort_by=title&sort_order=desc">Tên, Z đến A</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="<?= $urlPage ?>&sort_by=price&sort_order=asc">Giá, thấp đến cao</a>
                   <a class="dropdown-item" href="<?= $urlPage ?>&sort_by=price&sort_order=desc">Giá, cao đến thấp</a>
@@ -61,7 +61,7 @@
               <a href="#" class="product-item md-height bg-gray d-block">
                 <img src="Uploads/<?= $product['image'] ?>" alt="Ảnh sản phẩm" class="img-fluid">
               </a>
-              <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $product['slug'] ?>"><?= $product['name'] ?></a></h2>
+              <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $product['slug'] ?>"><?= $product['title'] ?></a></h2>
               <?php if ($product['discount_price']): ?>
                 <strong class="item-price"><del><?= number_format($product['price']) ?> VNĐ</del>
                   <?= number_format($product['discount_price']) ?> VNĐ</strong>
