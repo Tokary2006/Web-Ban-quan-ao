@@ -34,7 +34,7 @@ switch ($page) {
         switch ($action) {
             case "index":  $categoryControl->index();  break;
             case "create": $categoryControl->create(); break;
-            case "edit":   $categoryControl->store();  break;
+            case "edit":   $categoryControl->edit();  break;
             default:       $categoryControl->index();  break;
         }
         break;
