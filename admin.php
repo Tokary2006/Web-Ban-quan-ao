@@ -89,9 +89,10 @@ switch ($page) {
         require "Controllers/Admin/BlogsCommentController.php";
         $blogscmControl = new BlogsCommentController();
         switch ($action) {
-            case "index":  $blogscmControl->index();  break;
-            case "create": $blogscmControl->create(); break;
-            case "edit":   $blogscmControl->store();  break;
+            case "index":  $blogscmControl->index();  break; 
+            case "edit":   $blogscmControl->edit();  break;
+              case "update": $blogscmControl->update(); break;  
+        case "delete": $blogscmControl->delete(); break;
             default:       $blogscmControl->index();  break;
         }
         break;
