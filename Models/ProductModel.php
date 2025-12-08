@@ -109,7 +109,7 @@
             $search = '';
 
             if (trim($keyword) !== '') {
-                $search = " WHERE p.`name` LIKE :keyword OR p.`description` LIKE :keyword ";
+                $search = " WHERE p.`title` LIKE :keyword OR p.`description` LIKE :keyword ";
             } else {
                 $search = " WHERE 1 ";
             }
@@ -192,10 +192,10 @@
             $stmtVar->execute();
             $variants = $stmtVar->fetchAll(PDO::FETCH_ASSOC);
             foreach ($variants as &$variant) {
-                $queryOptions = " SELECT o.name AS option_name, ov.value_name AS option_value 
+                $queryOptions = " SELECT o.option_name AS option_name, ov.value_name AS option_value 
                                     FROM variant_values vv 
-                                    JOIN option_values ov ON ov.id = vv.value_id 
-                                    JOIN options o ON o.id = ov.option_id 
+                                    JOIN option_values ov ON ov.value_id = vv.value_id 
+                                    JOIN options o ON o.option_id = ov.option_id 
                                     WHERE vv.variant_id = :variant_id ";
                 $stmtOpt = $this->connection->prepare($queryOptions);
                 $stmtOpt->bindValue(':variant_id', $variant['variant_id'], PDO::PARAM_INT);

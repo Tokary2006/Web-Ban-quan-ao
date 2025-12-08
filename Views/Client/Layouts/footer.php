@@ -74,8 +74,6 @@
     </footer>
   </div>
 
-  <script src="Assets/Client/js/jquery-3.3.1.min.js"></script>
-  <script src="Assets/Client/js/jquery-ui.js"></script>
   <script src="Assets/Client/js/popper.min.js"></script>
   <script src="Assets/Client/js/bootstrap.min.js"></script>
   <script src="Assets/Client/js/owl.carousel.min.js"></script>

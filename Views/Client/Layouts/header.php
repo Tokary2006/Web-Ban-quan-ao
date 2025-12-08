@@ -20,6 +20,8 @@
 
   <link rel="stylesheet" href="Assets/Client/css/style.css">
 
+  <script src="Assets/Client/js/jquery-3.3.1.min.js"></script>
+  <script src="Assets/Client/js/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -64,13 +66,13 @@
                 <span class="icon-user"></span>
               </a>
               <div class="dropdown-menu dropdown-menu-right shadow-sm border-0 mt-2" aria-labelledby="userMenu">
-                <?php if(!isset($_SESSION["user"])): ?>
-                <a class="dropdown-item" href="index.php?page=login">Đăng nhập</a>
-                <a class="dropdown-item" href="index.php?page=register">Đăng ký</a>
+                <?php if (!isset($_SESSION["user"])): ?>
+                  <a class="dropdown-item" href="index.php?page=login">Đăng nhập</a>
+                  <a class="dropdown-item" href="index.php?page=register">Đăng ký</a>
                 <?php endif; ?>
-                <?php if(isset($_SESSION["user"])): ?>
-                <a class="dropdown-item" href="index.php?page=account">Thông tin cá nhân</a>
-                <a class="dropdown-item" href="index.php?page=cart">Giỏ hàng</a>
+                <?php if (isset($_SESSION["user"])): ?>
+                  <a class="dropdown-item" href="index.php?page=account">Thông tin cá nhân</a>
+                  <a class="dropdown-item" href="index.php?page=cart">Giỏ hàng</a>
                 <?php endif; ?>
                 <a class="dropdown-item" href="index.php?page=logout">Đăng xuất</a>
               </div>

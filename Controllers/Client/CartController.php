@@ -7,7 +7,7 @@ class CartControlller
 
     public function __construct($connection)
     {
-        // $this->cartModel = new cartModel($connection);
+        $this->cartModel = new cartModel($connection);
     }
 
     public function index(){
@@ -15,6 +15,8 @@ class CartControlller
             header("location: index.php?page=login");
             return;
         }
+        
+        $carts = $this->cartModel->getAllCart($_SESSION['user']['id']);
 
         include 'Views/Client/cart.php';
     }
