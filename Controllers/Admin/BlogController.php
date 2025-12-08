@@ -16,39 +16,40 @@ class BlogController {
 
     // Form thêm
     public function create() {
+        // Lấy danh sách user để hiển thị select
+        $users = $this->model->getUsers();
         require "Views/Admin/Blog/create.php";
     }
 
     // Lưu blog
+    public function store() {
+        $data = [
+            "user_id" => $_POST["user_id"] ?? 1,
+            "slug" => $_POST["slug"] ?? '',
+            "title" => $_POST["title"] ?? '',
+            "content_text" => $_POST["content_text"] ?? '',
+            "images" => $_POST["images"] ?? '',
+            "meta_keywords" => $_POST["meta_keywords"] ?? '',
+            "meta_description" => $_POST["meta_description"] ?? '',
+            "status_enum" => $_POST["status_enum"] ?? 0,
+        ];
 
-public function store() {
-    $data = [
-        "user_id" => $_POST["user_id"] ?? 1,
-        "slug" => $_POST["slug"] ?? '',
-        "title" => $_POST["title"] ?? '',
-        "content_text" => $_POST["content_text"] ?? '',
-        "images" => $_POST["images"] ?? '',
-        "meta_keywords" => $_POST["meta_keywords"] ?? '',
-        "meta_description" => $_POST["meta_description"] ?? '',
-        "status_enum" => $_POST["status_enum"] ?? 0,
-    ];
+        $this->model->create($data);
 
-    $this->model->create($data);
-
-    // Chuyển về danh sách
-    header("Location: admin.php?page=blog&action=index");
-    exit;
-}
-
+        // Chuyển về danh sách
+        header("Location: admin.php?page=blog&action=index");
+        exit;
+    }
 
     // Form sửa
     public function edit() {
         $id = $_GET["id"];
         $blog = $this->model->getById($id);
+           $users = $this->model->getUsers(); 
         require "Views/Admin/Blog/edit.php";
     }
 
-    // Update
+    // Update blog
     public function update() {
         $id = $_POST["id"];
 
@@ -66,14 +67,13 @@ public function store() {
         header("Location: admin.php?page=blog&action=index");
     }
 
-    // Xóa
-public function delete() {
-    $id = $_GET['id'] ?? null;
-    if ($id) {
-        $this->model->delete($id);
+    // Xóa blog
+    public function delete() {
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            $this->model->delete($id);
+        }
+        header("Location: admin.php?page=blog&action=index");
+        exit();
     }
-    header("Location: admin.php?page=blog&action=index");
-    exit();
-}
-
 }

@@ -50,17 +50,17 @@
                             <input type="text" class="form-control" name="images" 
                                    value="<?= htmlspecialchars($blog['images']) ?>">
                         </div>
-
-                        <!-- author_id -->
-                        <div class="mb-3">
-                            <label class="form-label">Mã tác giả</label>
-                            <select class="form-select" name="author_id" required>
-                                <option value="">Chọn tác giả...</option>
-                                <option value="1" <?= ($blog['user_id'] == 1) ? "selected" : "" ?>>One</option>
-                                <option value="2" <?= ($blog['user_id'] == 2) ? "selected" : "" ?>>Two</option>
-                                <option value="3" <?= ($blog['user_id'] == 3) ? "selected" : "" ?>>Three</option>
-                            </select>
-                        </div>
+<div class="mb-3">
+    <label class="form-label">Tác giả</label>
+    <select class="form-select" name="user_id" required>
+        <option value="">Chọn tác giả...</option>
+        <?php foreach($users as $user): ?>
+            <option value="<?= $user['id'] ?>" <?= ($blog['user_id'] == $user['id']) ? "selected" : "" ?>>
+                <?= htmlspecialchars($user['username']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
 
                         <!-- status -->
                         <div class="mb-3">

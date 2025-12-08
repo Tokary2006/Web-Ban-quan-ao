@@ -43,15 +43,16 @@
                     </div>
 
                     <!-- Mã tác giả -->
-                    <div class="mb-3">
-                        <label class="form-label">Mã tác giả</label>
-                        <select class="form-select" name="user_id" required>
-                            <option value="">Chọn tác giả...</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
+                  <div class="mb-3">
+    <label class="form-label">Tác giả</label>
+    <select class="form-select" name="user_id" required>
+        <option value="">Chọn tác giả...</option>
+        <?php foreach($users as $user): ?>
+            <option value="<?= $user['id'] ?>"><?= htmlspecialchars($user['username']) ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+
 
                     <!-- Trạng thái -->
                     <div class="mb-3">
