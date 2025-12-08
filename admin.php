@@ -53,11 +53,12 @@ switch ($page) {
 
     case "product":
         require "Controllers/Admin/ProductController.php";
-        $productControl = new ProductController();
+        $productControl = new ProductController($connection);
         switch ($action) {
             case "index":  $productControl->index();  break;
             case "create": $productControl->create(); break;
-            case "edit":   $productControl->store();  break;
+            case "edit":   $productControl->edit();  break;
+            case "delete":   $productControl->delete();  break;
             default:       $productControl->index();  break;
         }
         break;

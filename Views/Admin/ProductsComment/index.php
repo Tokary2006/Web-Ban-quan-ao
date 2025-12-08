@@ -43,7 +43,6 @@
                             <td>102</td>
                             <td><a href="#" class="text-primary">#42: Tai nghe Gaming RGB</a><br><small>(Product ID: 42)</small></td>
                             <td><span class="fw-bold">Trần Thị B</span><br><small>(User ID: 48)</small></td>
-x
                             <td><span class="badge bg-label-success me-1">hiển thị</span></td>
                             <td>
                                 <div class="dropdown">
@@ -62,7 +61,6 @@ x
                             <td>103</td>
                             <td><a href="#" class="text-primary">#05: Giày Sneaker Premium</a><br><small>(Product ID: 05)</small></td>
                             <td><span class="fw-bold text-muted">Khách vãng lai</span><br><small>(User ID: null)</small></td>
-x
                             <td><span class="badge bg-label-danger me-1">Đã ẩn</span></td>
                             <td>
                                 <div class="dropdown">

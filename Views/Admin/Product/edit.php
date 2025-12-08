@@ -1,78 +1,89 @@
 <!-- Content wrapper -->
 <div class="content-wrapper">
-    <!-- Content -->
-
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Danh mục /</span> Sửa</h4>
+        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Sản phẩm /</span> Sửa</h4>
 
-        <!-- Form controls -->
-        <div class="col-md-12">
-            <div class="card mb-4">
-                <h3 class="card-header">SỬA SẢN PHẨM</h3>
-                <div class="card-body">
-                    <!-- id -->
-                    <div class="mb-3">
-                        <label for="" class="form-label">Mã sản phẩm</label>
-                        <input type="text" class="form-control" id="id" placeholder="Vui lòng nhập mã sản phẩm." />
-                        <small id="id_error" class="text-danger"></small>
-                    </div>
+        <div class="card mb-4">
+            <h3 class="card-header">SỬA SẢN PHẨM</h3>
+            <div class="card-body">
+
+                <!-- FORM -->
+                <form action="admin.php?page=product&action=edit" method="POST" enctype="multipart/form-data">
+
+                    <!-- hidden ID -->
+                    <input type="hidden" name="id" value="<?= $product['id'] ?>">
 
                     <!-- title -->
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Tên sản phẩm</label>
-                        <input type="text" class="form-control" id="title" placeholder="Vui lòng nhập vào tên." />
-                        <small id="title_error" class="text-danger"></small>
+                        <label class="form-label">Tên sản phẩm</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            name="title"
+                            value="<?= $product['title'] ?>"
+                        >
+                    </div>
+
+                    <!-- price -->
+                    <div class="mb-3">
+                        <label class="form-label">Giá</label>
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            name="price"
+                            value="<?= $product['price'] ?>"
+                        >
+                    </div>
+
+                    <!-- short description -->
+                    <div class="mb-3">
+                        <label class="form-label">Mô tả ngắn</label>
+                        <textarea class="form-control" name="short_description"><?= $product['short_description'] ?></textarea>
                     </div>
 
                     <!-- description -->
                     <div class="mb-3">
-                        <label for="" class="form-label">Mô tả</label>
-                        <textarea type="text" class="form-control" id="description"
-                            placeholder="Vui lòng nhập vào mô tả."></textarea>
-                        <small id="description_error" class="text-danger"></small>
-                    </div>
-
-                    <!-- shot_description -->
-                    <div class="mb-3">
-                        <label for="" class="form-label">Mô tả ngắn</label>
-                        <textarea type="text" class="form-control" id="shot_description"
-                            placeholder="Vui lòng nhập vào mô tả ngắn."></textarea>
-                        <small id="shot_description_error" class="text-danger"></small>
+                        <label class="form-label">Mô tả</label>
+                        <textarea class="form-control" name="description"><?= $product['description'] ?></textarea>
                     </div>
 
                     <!-- image -->
                     <div class="mb-3">
-                        <label for="" class="form-label">Hình ảnh</label>
-                        <input type="file" class="form-control" id="slug" placeholder="Vui lòng nhập vào đường dẫn." />
-                        </select>
-                        <small id="status_error" class="text-danger"></small>
+                        <label class="form-label">Hình ảnh</label>
+                        <input type="file" class="form-control" name="image">
+                        <img src="uploads/products/<?= $product['image'] ?>" width="120" class="mt-2">
+                        <input type="hidden" name="old_image" value="<?= $product['image'] ?>">
                     </div>
 
                     <!-- status -->
                     <div class="mb-3">
-                        <label for="" class="form-label">Trạng thái</label>
-                        <select class="form-select" name="status" required>
-                            <option selected disabled>Vui lòng chọn trạng thái...</option>
-                            <option value="1" <?= (isset($errors['status_old']) && $errors['status_old'] == "1") ? "selected" : "" ?>>Còn hàng</option>
-                            <option value="0" <?= (isset($errors['status_old']) && $errors['status_old'] == "0") ? "selected" : "" ?>>Hết hàng</option>
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select" name="status">
+                            <option value="1" <?= $product['status'] == 1 ? 'selected' : '' ?>>Còn hàng</option>
+                            <option value="0" <?= $product['status'] == 0 ? 'selected' : '' ?>>Hết hàng</option>
                         </select>
-                        <small id="status_error" class="text-danger"></small>
                     </div>
 
-                    <!-- category id -->
+                    <!-- category -->
                     <div class="mb-3">
-                        <label for="exampleFormControlSelect1" class="form-label">Mã danh mục</label>
-                        <select class="form-select" id="category_id" aria-label="Default select example">
-                            <option selected>Vui lòng chọn mã danh mục...</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                        <label class="form-label">Danh mục</label>
+                        <select class="form-select" name="category_id">
+                            <?php foreach ($categories as $cate): ?>
+                                <option 
+                                    value="<?= $cate['id'] ?>" 
+                                    <?= $product['category_id'] == $cate['id'] ? 'selected' : '' ?>>
+                                    <?= $cate['name'] ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
-                        <small id="category_id_error" class="text-danger"></small>
                     </div>
-                </div>
-                <button type="button" class="btn btn-primary">
-                    Cập nhật
-                </button>
+
+                    <!-- submit -->
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+
+                </form>
+
             </div>
         </div>
+    </div>
+</div>

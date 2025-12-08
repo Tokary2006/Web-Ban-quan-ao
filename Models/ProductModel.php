@@ -21,7 +21,7 @@
          */
         public function getAllProducts(
             $page = 1,
-            $limit = 10,
+            $limit = 50,
             $keyword = '',
             $status = null,
             $categoryId = null,
@@ -104,7 +104,21 @@
          * @param int|null $categoryId ID danh mục để lọc sản phẩm (Nếu null, đếm tất cả sản phẩm).
          * @return int Tổng số trang.
          */
-        public function getTotalProductCount(int $limit = 10, $categoryId = null, $keyword = '', $status = null): int
+        public function getProductById($id)
+        {
+            $stmt = $this->connection->prepare("SELECT * FROM products WHERE id = :id");
+            $stmt->execute([':id' => $id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        public function getOne($id)
+{
+    $sql = "SELECT * FROM products WHERE id = ?";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->execute([$id]);
+    return $stmt->fetch();
+}
+
+                public function getTotalProductCount(int $limit = 10, $categoryId = null, $keyword = '', $status = null): int
         {
             $search = '';
 
@@ -205,4 +219,51 @@
             $product['variants'] = $variants;
             return $product;
         }
+        public function updateProduct($id, $data) {
+            $sql = "UPDATE products SET 
+                        category_id = :category_id,
+                        title = :title,
+                        slug = :slug,
+                        price = :price,
+                        short_description = :short_description,
+                        description = :description,
+                        image = :image,
+                        status = :status
+                    WHERE id = :id";
+        
+            $stmt = $this->connection->prepare($sql);
+            return $stmt->execute($data);
+        }
+        
+        public function getAllCategories() {
+            $sql = "SELECT * FROM categories ORDER BY name ASC";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function create($data)
+{
+    $sql = "INSERT INTO products 
+            (category_id, title, slug, price, short_description, description, image, status)
+            VALUES 
+            (:category_id, :title, :slug, :price, :short_description, :description, :image, :status)";
+
+    $stmt = $this->connection->prepare($sql);
+    return $stmt->execute([
+        ':category_id' => $data['category_id'],
+        ':title' => $data['title'],
+        ':slug' => $data['slug'],
+        ':price' => $data['price'],
+        ':short_description' => $data['short_description'],
+        ':description' => $data['description'],
+        ':image' => $data['image'],
+        ':status' => $data['status'],
+    ]);
+}
+public function deleteProduct($id) {
+    $sql = "DELETE FROM products WHERE id = :id";
+    $stmt = $this->connection->prepare($sql);
+    return $stmt->execute([':id' => $id]);
+}
+
     }
