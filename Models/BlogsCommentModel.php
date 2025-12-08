@@ -15,7 +15,7 @@ public function getAll()
 {
     $sql = "SELECT cb.id, cb.blog_id, cb.user_id, cb.content_text, cb.status_enum, cb.created_at,
                    b.title AS blog_title,
-                   u.username AS username
+                   u.full_name AS full_name
             FROM {$this->table} cb
             LEFT JOIN blogs b ON cb.blog_id = b.id
             LEFT JOIN users u ON cb.user_id = u.id
