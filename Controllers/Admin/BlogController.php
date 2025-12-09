@@ -16,27 +16,59 @@ class BlogController {
 
     // Form thêm
     public function create() {
-        // Lấy danh sách user để hiển thị select
+        session_start();
         $users = $this->model->getUsers();
         require "Views/Admin/Blog/create.php";
     }
 
     // Lưu blog
     public function store() {
+        session_start();
+
         $data = [
-            "user_id" => $_POST["user_id"] ?? 1,
+            "user_id" => $_POST["user_id"] ?? '',
             "slug" => $_POST["slug"] ?? '',
             "title" => $_POST["title"] ?? '',
             "content_text" => $_POST["content_text"] ?? '',
             "images" => $_POST["images"] ?? '',
             "meta_keywords" => $_POST["meta_keywords"] ?? '',
             "meta_description" => $_POST["meta_description"] ?? '',
-            "status_enum" => $_POST["status_enum"] ?? 0,
+            "status_enum" => $_POST["status_enum"] ?? '',
         ];
 
-        $this->model->create($data);
+        $errors = [];
 
-        // Chuyển về danh sách
+        // Validate
+        if (empty($data["title"])) {
+            $errors["title"] = "Tiêu đề không được để trống!";
+        }
+
+        if (empty($data["slug"])) {
+            $errors["slug"] = "Slug không được để trống!";
+        }
+
+        if (empty($data["content_text"])) {
+            $errors["content_text"] = "Nội dung bắt buộc!";
+        }
+
+        if (empty($data["user_id"])) {
+            $errors["user_id"] = "Vui lòng chọn tác giả!";
+        }
+
+        if ($data["status_enum"] === "") {
+            $errors["status_enum"] = "Vui lòng chọn trạng thái!";
+        }
+
+        // Nếu có lỗi → quay lại form
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            $_SESSION['old_data'] = $data;
+            header("Location: admin.php?page=blog&action=create");
+            exit;
+        }
+
+        // Lưu blog
+        $this->model->create($data);
         header("Location: admin.php?page=blog&action=index");
         exit;
     }
@@ -45,27 +77,48 @@ class BlogController {
     public function edit() {
         $id = $_GET["id"];
         $blog = $this->model->getById($id);
-           $users = $this->model->getUsers(); 
+        $users = $this->model->getUsers();
         require "Views/Admin/Blog/edit.php";
     }
 
     // Update blog
-    public function update() {
-        $id = $_POST["id"];
+public function update() {
+    session_start();
 
-        $data = [
-            "slug" => $_POST["slug"],
-            "title" => $_POST["title"],
-            "content_text" => $_POST["content_text"],
-            "images" => $_POST["images"],
-            "meta_keywords" => $_POST["meta_keywords"],
-            "meta_description" => $_POST["meta_description"],
-            "status_enum" => $_POST["status_enum"],
-        ];
+    $id = $_POST["id"];
 
-        $this->model->update($id, $data);
-        header("Location: admin.php?page=blog&action=index");
+    $data = [
+        "user_id" => $_POST["user_id"] ?? '',
+        "slug" => $_POST["slug"] ?? '',
+        "title" => $_POST["title"] ?? '',
+        "content_text" => $_POST["content_text"] ?? '',
+        "images" => $_POST["images"] ?? '',
+        "meta_keywords" => $_POST["meta_keywords"] ?? '',
+        "meta_description" => $_POST["meta_description"] ?? '',
+        "status_enum" => $_POST["status_enum"] ?? '',
+    ];
+
+    $errors = [];
+
+    if (empty($data["title"])) $errors["title"] = "Tiêu đề không được để trống!";
+    if (empty($data["slug"])) $errors["slug"] = "Slug không được để trống!";
+    if (empty($data["content_text"])) $errors["content_text"] = "Nội dung bắt buộc!";
+    if (empty($data["user_id"])) $errors["user_id"] = "Vui lòng chọn tác giả!";
+    if ($data["status_enum"] === "") $errors["status_enum"] = "Vui lòng chọn trạng thái!";
+
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        $_SESSION['old_data'] = $data;
+        header("Location: admin.php?page=blog&action=edit&id=" . $id);
+        exit;
     }
+
+    $this->model->update($id, $data);
+
+    header("Location: admin.php?page=blog&action=index");
+    exit;
+}
+
 
     // Xóa blog
     public function delete() {

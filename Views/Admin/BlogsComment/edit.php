@@ -1,3 +1,10 @@
+<?php
+
+$old = $_SESSION['old_data'] ?? [];
+$errors = $_SESSION['errors'] ?? [];
+unset($_SESSION['old_data'], $_SESSION['errors']);
+?>
+
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
 
@@ -18,7 +25,7 @@
                             <label class="form-label fw-bold">Bài Viết Liên Quan (Blog ID)</label>
                             <p class="form-control-static">
                                 <a href="#" class="text-primary fw-bold">
-                                    #<?= $blog['id'] ?>: <?= $blog['title'] ?>
+                                    #<?= $blog['id'] ?>: <?= htmlspecialchars($blog['title']) ?>
                                 </a>
                             </p>
                         </div>
@@ -26,15 +33,22 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Tác Giả (User ID)</label>
                             <p class="form-control-static">
-                                <?= $user['fullname'] ?> (ID: <?= $user['id'] ?>) -
-                                <small><?= $user['email'] ?></small>
+                                <?= htmlspecialchars($user['fullname']) ?> (ID: <?= $user['id'] ?>) -
+                                <small><?= htmlspecialchars($user['email']) ?></small>
                             </p>
                         </div>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold">Nội Dung Bình Luận (*)</label>
-                        <textarea class="form-control" rows="6" name="content_text" required><?= $comment['content_text'] ?></textarea>
+
+                        <textarea class="form-control" rows="6" name="content_text" ><?= 
+                            htmlspecialchars($old['content_text'] ?? $comment['content_text'])
+                        ?></textarea>
+
+                        <?php if (!empty($errors['content_text'])): ?>
+                            <p class="text-danger mt-1"><?= $errors['content_text'] ?></p>
+                        <?php endif; ?>
                     </div>
 
                     <hr>
@@ -42,10 +56,15 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Cập Nhật Trạng Thái</label>
-                            <select class="form-select" name="status_enum" required>
-                                <option value="1" <?= $comment['status_enum'] == 1 ? "selected" : "" ?>>Ẩn</option>
-                                <option value="0" <?= $comment['status_enum'] == 0 ? "selected" : "" ?>>Hiển thị</option>
+
+                            <select class="form-select" name="status_enum" >
+                                <option value="1" <?= ($old['status_enum'] ?? $comment['status_enum']) == 1 ? "selected" : "" ?>>Ẩn</option>
+                                <option value="0" <?= ($old['status_enum'] ?? $comment['status_enum']) == 0 ? "selected" : "" ?>>Hiển thị</option>
                             </select>
+
+                            <?php if (!empty($errors['status_enum'])): ?>
+                                <p class="text-danger mt-1"><?= $errors['status_enum'] ?></p>
+                            <?php endif; ?>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -60,7 +79,6 @@
                         <a href="admin.php?page=blogscomment&action=index" class="btn btn-secondary">
                             Hủy / Quay lại
                         </a>
-    
                     </div>
 
                 </form>
