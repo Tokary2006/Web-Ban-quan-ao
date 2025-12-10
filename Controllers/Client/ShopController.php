@@ -15,6 +15,7 @@ class ProductController
     }
     public function shop()
     {
+        $categories = $this->categoryModel->getAllCategory();
         $pages = $_GET['pages'] ?? 1;
         $limit = $_GET['limit'] ?? 10;
         $keyword = $_GET['keyword'] ?? '';
@@ -24,6 +25,13 @@ class ProductController
         $sortBy = $_GET['sort_by'] ?? 'date';
         $sortOrder = $_GET['sort_order'] ?? 'desc';
         $urlPage = 'index.php?page=shop';
+
+        $categoryIds = array_column($categories, 'id'); // lấy tất cả id category
+
+        if ($categoryId && !in_array($categoryId, $categoryIds)) {
+            header("Location: index.php?page=error");
+            exit;
+        }
 
         if ($keyword) {
             $urlPage .= '&keyword=' . $keyword;
@@ -74,27 +82,10 @@ class ProductController
             exit;
         }
 
-        $sizes = [];
-        foreach ($product['variants'] as $variant) {
-            foreach ($variant['options'] as $opt) {
-                if (strtolower($opt['option_name']) === 'size') {
-                    $sizes[] = $opt['option_value'];
-                }
-            }
-        }
-
-        $colors = [];
-        foreach ($product['variants'] as $variant) {
-            foreach ($variant['options'] as $opt) {
-                if (strtolower($opt['option_name']) === 'color') {
-                    $colors[] = $opt['option_value'];
-                }
-            }
-        }
-
         $relatedProducts = $this->productModel->getAllProducts(1, 10, '', 1, $product['category_id']);
 
         $categories = $this->categoryModel->getAllCategory();
+
         include "Views/Client/shop-single.php";
     }
 }

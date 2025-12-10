@@ -28,20 +28,20 @@
               foreach ($carts as $cart):
 
                 $final_price = $cart['discount_price'] > 0
-                  ? ($cart['discount_price'] + $cart['additional_price'])
-                  : ($cart['product_price'] + $cart['additional_price']);
+                  ? ($cart['discount_price'])
+                  : ($cart['price']);
 
-                $stock = $cart['variant_stock'];
+                $stock = $cart['quantity'];
 
-                $subtotal = $final_price * $cart['cart_quantity'];
+                $subtotal = $final_price * $cart['quantity'];
 
                 ?>
                 <tr>
                   <td class="product-thumbnail">
-                    <img src="Uploads/<?= $cart['product_image'] ?>" alt="Image" class="img-fluid">
+                    <img src="Uploads/<?= $cart['image'] ?>" alt="Image" class="img-fluid">
                   </td>
                   <td class="product-name">
-                    <h2 class="h5 text-black"><?= $cart['product_title'] ?></h2>
+                    <h2 class="h5 text-black"><?= $cart['title'] ?></h2>
                   </td>
                   <td><?= number_format($final_price) ?> VNĐ</td>
                   <td>
@@ -50,8 +50,8 @@
                         <button data-price="<?= $final_price ?>" class="btn btn-outline-primary js-btn-minus"
                           type="button">&minus;</button>
                       </div>
-                      <input type="text" class="form-control text-center" value="<?= $cart['cart_quantity'] ?>"
-                        placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                      <input type="text" class="form-control text-center" value="<?= $cart['quantity'] ?>"
+                        placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" disabled>
                       <div class="input-group-append">
                         <button data-price="<?= $final_price ?>" class="btn btn-outline-primary js-btn-plus"
                           type="button">&plus;</button>
@@ -105,7 +105,7 @@
                 <span class="text-black">Tổng phụ</span>
               </div>
               <div class="col-md-6 text-right">
-                <strong class="text-black"><?= number_format($value["price"] = 350000) ?> đ</strong>
+                <strong class="text-black"><?= number_format($subtotal) ?> đ</strong>
               </div>
             </div>
             <div class="row mb-5">
@@ -137,7 +137,7 @@
       let inputQty = parseInt($(this).closest('.input-group').find('input').val());
       let subtotal = $(this).closest('tr').find('.sub-total');
 
-      subtotal.text(((inputQty + 1) * price + " VNĐ").toLocaleString());
+      subtotal.text((((inputQty + 1) * price).toLocaleString())+ " VNĐ");
       updateTotal();
     })
 
@@ -148,7 +148,7 @@
       if(inputQty <= 1) return;
 
       let subtotal = $(this).closest('tr').find('.sub-total');
-      subtotal.text(((inputQty - 1) * price + " VNĐ").toLocaleString());
+      subtotal.text((((inputQty - 1) * price).toLocaleString())+ " VNĐ");
       updateTotal();
     })
 

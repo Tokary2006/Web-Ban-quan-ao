@@ -38,6 +38,11 @@ switch ($page) {
         $cartcontroller = new CartControlller($connection);
         $cartcontroller->index();
         break;
+    case "add-to-cart":
+        require_once 'Controllers/Client/CartController.php';
+        $cartcontroller = new CartControlller($connection);
+        $cartcontroller->addToCart(); // Gọi hàm xử lý thêm vào giỏ hàng
+        break;
     case "checkout":
         include "Views/Client/checkout.php";
         break;
@@ -76,6 +81,9 @@ switch ($page) {
         break;
     case "account":
         include "Views/Client/account.php";
+        break;
+    case "error":
+        include "Views/Client/error_404.php";
         break;
     case "home":
         require_once 'Controllers/Client/HomeController.php';

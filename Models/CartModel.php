@@ -3,7 +3,7 @@
 class CartModel
 {
     private $connection;
-    private $table = 'cart'; // Thêm tên bảng để dễ quản lý
+    private $table = 'cart'; 
 
     public function __construct($connection)
     {
@@ -26,30 +26,23 @@ class CartModel
 
         $query = "
             SELECT 
-                c.id AS id, 
-                c.quantity AS cart_quantity,
-                c.created_at AS created_at,
-                
-                u.id AS user_id,
-                u.email AS user_email,
-                u.full_name AS user_fullname,
-                
-                p.title AS product_title, 
-                p.price AS product_price,
-                p.image as product_image,
-                
-                pv.id AS variant_id, 
-                pv.sku_id,
-                pv.additional_price,
-                pv.discount_price,
-                pv.quantity AS variant_stock
-                
-            FROM cart c
-            JOIN product_variants pv ON c.variant_id = pv.id
-            JOIN products p ON pv.product_id = p.id
-            JOIN users u ON c.user_id = u.id
-            WHERE c.user_id = :user_id 
-            ORDER BY c.created_at DESC
+                c.id as cart_item_id, 
+                c.user_id, 
+                c.product_id, 
+                c.quantity, 
+                p.title, 
+                p.price, 
+                p.discount_price, 
+                p.image,
+                p.stock
+            FROM 
+                {$this->table} c
+            JOIN 
+                products p ON c.product_id = p.id
+            WHERE 
+                c.user_id = :user_id
+            ORDER BY 
+                c.created_at DESC
             LIMIT :limit OFFSET :offset
         ";
 
@@ -57,8 +50,8 @@ class CartModel
             $stmt = $this->connection->prepare($query);
 
             $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
             $stmt->execute();
 
@@ -68,4 +61,74 @@ class CartModel
             return [];
         }
     }
+
+    // --- Bắt đầu hàm mới: addToCart ---
+    
+    /**
+     * Thêm một sản phẩm vào giỏ hàng hoặc cập nhật số lượng nếu nó đã tồn tại.
+     *
+     * @param int $user_id ID của người dùng.
+     * @param int $product_id ID của sản phẩm.
+     * @param int $quantity Số lượng muốn thêm (Mặc định: 1).
+     * @return bool True nếu thành công, False nếu thất bại.
+     */
+    public function addToCart(int $user_id, int $product_id, int $quantity = 1): bool
+    {
+        $check_query = "
+            SELECT 
+                id, quantity 
+            FROM 
+                {$this->table}
+            WHERE 
+                user_id = :user_id AND product_id = :product_id
+            LIMIT 1
+        ";
+
+        try {
+            $check_stmt = $this->connection->prepare($check_query);
+            $check_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $check_stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+            $check_stmt->execute();
+            $cart_item = $check_stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($cart_item) {
+                $new_quantity = $cart_item['quantity'] + $quantity;
+                
+                $update_query = "
+                    UPDATE 
+                        {$this->table}
+                    SET 
+                        quantity = :quantity
+                    WHERE 
+                        id = :id
+                ";
+                
+                $update_stmt = $this->connection->prepare($update_query);
+                $update_stmt->bindParam(':quantity', $new_quantity, PDO::PARAM_INT);
+                $update_stmt->bindParam(':id', $cart_item['id'], PDO::PARAM_INT);
+                
+                return $update_stmt->execute();
+            } else {
+                $insert_query = "
+                    INSERT INTO 
+                        {$this->table} 
+                        (user_id, product_id, quantity, created_at)
+                    VALUES 
+                        (:user_id, :product_id, :quantity, NOW())
+                ";
+
+                $insert_stmt = $this->connection->prepare($insert_query);
+                $insert_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $insert_stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+                $insert_stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
+
+                return $insert_stmt->execute();
+            }
+        } catch (PDOException $e) {
+            error_log("Database Error in addToCart: " . $e->getMessage());
+            return false;
+        }
+    }
 }
+
+// --- Kết thúc hàm mới: addToCart ---

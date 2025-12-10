@@ -30,21 +30,21 @@
       <div class="col-lg-8">
         <div class="product-item sm-height full-height bg-gray">
           <a href="index.php?page=shop&category_id=<?= $cateIdNu['id'] ?>"
-            class="product-category"><?= $cateIdNu['name'] ?> <span></span></a>
+            class="product-category"> Nữ <span></span></a>
           <img src="Assets/Client/images/model_4.png" alt="Ảnh" class="img-fluid">
         </div>
       </div>
       <div class="col-lg-4">
         <div class="product-item sm-height bg-gray mb-4">
           <a href="index.php?page=shop&category_id=<?= $cateIdNam['id'] ?>"
-            class="product-category"><?= $cateIdNam['name'] ?>
+            class="product-category"> Nam
             <span></span></a>
           <img src="Assets/Client/images/model_5.png" alt="Ảnh" class="img-fluid">
         </div>
 
         <div class="product-item sm-height bg-gray">
           <a href="index.php?page=shop&category_id=<?= $cateIdGiay['id'] ?>"
-            class="product-category"><?= $cateIdGiay['name'] ?>
+            class="product-category"> Giày
             <span></span></a>
           <img src="Assets/Client/images/model_6.png" alt="Ảnh" class="img-fluid">
         </div>
@@ -64,7 +64,7 @@
     <div class="row">
       <?php foreach ($products as $pro): ?>
         <div class="col-lg-4 col-md-6 item-entry mb-4">
-          <a href="#" class="product-item md-height bg-gray d-block">
+          <a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>" class="product-item md-height bg-gray d-block">
             <img src="Uploads/<?= $pro['image'] ?>" alt="Ảnh" class="img-fluid">
           </a>
           <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"><?= $pro['title'] ?></a>
@@ -95,7 +95,7 @@
           <?php foreach ($featuredProducts as $pro): ?>
             <div class="item">
               <div class="item-entry">
-                <a href="#" class="product-item md-height bg-gray d-block">
+                <a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>" class="product-item md-height bg-gray d-block">
                   <img src="Assets/Client/images/<?= $pro['image'] ?>" alt="Image" class="img-fluid">
                 </a>
                 <h2 class="item-title"><a

@@ -10,14 +10,91 @@ class CartControlller
         $this->cartModel = new cartModel($connection);
     }
 
-    public function index(){
+    public function index()
+    {
         if (!isset($_SESSION['user'])) {
             header("location: index.php?page=login");
             return;
         }
-        
+
         $carts = $this->cartModel->getAllCart($_SESSION['user']['id']);
 
         include 'Views/Client/cart.php';
+    }
+
+    public function addToCart()
+    {
+        if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
+            $_SESSION['error'] = 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.';
+            header("location: index.php?page=login");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("location: index.php?page=home");
+            exit;
+        }
+
+        $user_id = $_SESSION['user']['id'];
+        $product_id = $_POST['product_id'] ?? 0;
+        $quantity = $_POST['quantity'] ?? 1;
+
+        $product_id = (int) $product_id;
+        $quantity = max(1, (int) $quantity); 
+
+        if ($product_id <= 0) {
+            $_SESSION['error'] = 'ID sản phẩm không hợp lệ.';
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
+        if ($this->cartModel->addToCart($user_id, $product_id, $quantity)) {
+            $_SESSION['success'] = 'Sản phẩm đã được thêm vào giỏ hàng.';
+        } else {
+            $_SESSION['error'] = 'Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.';
+        }
+
+        // Chuyển hướng người dùng đến trang giỏ hàng
+        header("location: index.php?page=cart");
+        exit;
+    }
+
+    /**
+     * Hàm nội bộ xử lý các POST request từ trang giỏ hàng (Cập nhật/Xóa).
+     * @param int $user_id ID người dùng hiện tại
+     */
+    private function handleCartActions(int $user_id)
+    {
+        // Xử lý XÓA MỤC (Nút X)
+        if (isset($_POST['remove_item_id'])) {
+            $cart_item_id = (int) $_POST['remove_item_id'];
+
+            if ($this->cartModel->removeFromCart($cart_item_id)) {
+                $_SESSION['success'] = 'Sản phẩm đã được xóa khỏi giỏ hàng.';
+            } else {
+                $_SESSION['error'] = 'Không thể xóa sản phẩm khỏi giỏ hàng.';
+            }
+        }
+
+        // Xử lý CẬP NHẬT SỐ LƯỢNG (Nút Cập nhật giỏ hàng)
+        elseif (isset($_POST['update_cart'])) {
+            $quantities = $_POST['quantity'] ?? [];
+            $success_count = 0;
+
+            foreach ($quantities as $cart_item_id => $new_quantity) {
+                $cart_item_id = (int) $cart_item_id;
+                $new_quantity = max(1, (int) $new_quantity);
+
+                if ($this->cartModel->updateQuantity($cart_item_id, $new_quantity)) {
+                    $success_count++;
+                }
+            }
+
+            if ($success_count > 0) {
+                $_SESSION['success'] = "Đã cập nhật $success_count mục trong giỏ hàng.";
+            } else {
+                $_SESSION['error'] = 'Không có mục nào được cập nhật.';
+            }
+        }
     }
 }

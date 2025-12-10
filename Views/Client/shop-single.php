@@ -1,102 +1,59 @@
-<div class="bg-light py-3">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 mb-0"><a href="index.html">Trang chủ</a> <span class="mx-2 mb-0">/</span> <a
-          href="shop.html">Cửa hàng</a> <span class="mx-2 mb-0">/</span> <strong class="text-black"><?= $product['title'] ?></strong></div>
-    </div>
-  </div>
-</div>
-
 <div class="site-section">
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <div class="item-entry">
-          <a href="#" class="product-item md-height bg-gray d-block">
-            <img src="Uploads/<?= $product['image'] ?>" alt="Image" class="img-fluid">
-          </a>
-
-        </div>
-
       </div>
       <div class="col-md-6">
-        <h2 class="text-black"><?= $product['title'] ?></h2>
-        <p><?= $product['description'] ?></p>
-        <p class="mb-4"><?= $product['short_description'] ?></p>
-        <?php if ($product['discount_price']): ?>
-          <p><strong class="text-primary h4"><del><?= number_format($product['discount_price']) ?> VNĐ</del>
-              <?= number_format($product['price']) ?> VNĐ</strong></p>
-        <?php else: ?>
-          <p><strong class="text-primary h4"><?= number_format($product['price']) ?> VNĐ</strong>
+        <form action="index.php?page=add-to-cart" method="POST">
+          <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+
+          <h2 class="text-black"><?= $product['title'] ?></h2>
+          <p><?= $product['description'] ?></p>
+          <p class="mb-4"><?= $product['short_description'] ?></p>
+          <?php if ($product['discount_price']): ?>
+            <?php $current_price = $product['discount_price']; ?>
+            <p><strong class="text-primary h4"><del><?= number_format($product['price']) ?> VNĐ</del>
+                <?= number_format($product['discount_price']) ?> VNĐ</strong></p>
+          <?php else: ?>
+            <?php $current_price = $product['price']; ?>
+            <p><strong class="text-primary h4"><?= number_format($product['price']) ?> VNĐ</strong></p>
           <?php endif; ?>
-        <h5 class="text-black">Kích cỡ</h5>
-        <div class="mb-1 d-flex">
-          <?php foreach ($sizes as $size): ?>
-            <label class="d-flex mr-3 mb-3">
-              <input type="radio" name="size" value="<?= $size ?>">
-              <span class="text-black ml-2"><?= $size ?></span>
-            </label>
-          <?php endforeach; ?>
-        </div>
-        <h5 class="text-black">Màu</h5>
-        <div class="mb-3 d-flex">
-          <?php foreach ($colors as $color): ?>
-            <label class="d-flex mr-3 mb-3">
-              <input type="radio" name="color" value="<?= $color ?>">
-              <span class="ml-2"><?= $color ?></span>
-            </label>
-          <?php endforeach; ?>
-        </div>
-        <div class="mb-5">
-          <div class="input-group mb-3" style="max-width: 120px;">
-            <div class="input-group-prepend">
-              <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
-            </div>
-            <input type="text" class="form-control text-center" value="1" placeholder=""
-              aria-label="Example text with button addon" aria-describedby="button-addon1">
-            <div class="input-group-append">
-              <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
+
+          <div class="mb-5">
+            <div class="input-group mb-3" style="max-width: 120px;">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
+              </div>
+              <input type="text" class="form-control text-center" name="quantity" value="1" min="1" placeholder=""
+                aria-label="Số lượng" aria-describedby="button-addon1">
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
+              </div>
             </div>
           </div>
-
-        </div>
-        <p><a href="?page=cart" class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Thêm vào giỏ hàng</a></p>
-
+          <p><button type="submit" name="add_to_cart" class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Thêm
+              vào giỏ hàng</button></p>
+        </form>
       </div>
     </div>
   </div>
 </div>
+<script>
+  jQuery(document).ready(function ($) {
+    $('.js-btn-plus').click(function () {
+      let inputField = $(this).closest('.input-group').find('input');
+      let inputQty = parseInt(inputField.val());
 
-<div class="site-section block-3 site-blocks-2">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-7 site-section-heading text-center pt-4">
-        <h2>Sản phẩm liên quan</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12 block-3">
-        <div class="nonloop-block-3 owl-carousel">
-          <?php foreach ($relatedProducts as $pro): ?>
-            <?php if ($pro['slug'] !== $product['slug']): ?>
-              <div class="item">
-                <div class="item-entry">
-                  <a href="#" class="product-item md-height bg-gray d-block">
-                    <img src="Assets/Client/images/<?= $pro['image'] ?>" alt="Image" class="img-fluid">
-                  </a>
-                  <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"><?= $pro['title'] ?></a></h2>
-                  <?php if ($pro['discount_price']): ?>
-                    <strong class="item-price"><del><?= number_format($pro['discount_price']) ?> VNĐ</del>
-                      <?= number_format($pro['price']) ?> VNĐ</strong>
-                  <?php else: ?>
-                    <strong class="item-price"> <?= number_format($pro['price']) ?> VNĐ</strong>
-                  <?php endif; ?>
-                </div>
-              </div>
-            <?php endif; ?>
-          <?php endforeach; ?>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+      inputField.val(inputQty);
+    });
+
+    $('.js-btn-minus').click(function () {
+      let inputField = $(this).closest('.input-group').find('input');
+      let inputQty = parseInt(inputField.val());
+
+      if (inputQty > 1) {
+        inputField.val(inputQty);
+      }
+    });
+  });
+</script>

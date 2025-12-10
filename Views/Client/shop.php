@@ -58,7 +58,7 @@
           <?php foreach ($products as $product): ?>
 
             <div class="col-lg-6 col-md-6 item-entry mb-4">
-              <a href="#" class="product-item md-height bg-gray d-block">
+              <a href="index.php?page=shop-single&slug=<?= $product['slug'] ?>" class="product-item md-height bg-gray d-block">
                 <img src="Uploads/<?= $product['image'] ?>" alt="Ảnh sản phẩm" class="img-fluid">
               </a>
               <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $product['slug'] ?>"><?= $product['title'] ?></a></h2>
@@ -145,20 +145,20 @@
       <div class="col-lg-8">
         <div class="product-item sm-height full-height bg-gray">
           <a href="index.php?page=shop&category_id=<?= $cateIdNu['id'] ?>"
-            class="product-category"><?= $cateIdNu['name'] ?> <span></span></a>
+            class="product-category"> Nữ <span></span></a>
           <img src="Assets/Client/images/model_4.png" alt="Ảnh" class="img-fluid">
         </div>
       </div>
       <div class="col-lg-4">
         <div class="product-item sm-height bg-gray mb-4">
           <a href="index.php?page=shop&category_id=<?= $cateIdNam['id'] ?>"
-            class="product-category"><?= $cateIdNam['name'] ?> <span></span></a>
+            class="product-category"> Nam <span></span></a>
           <img src="Assets/Client/images/model_5.png" alt="Ảnh" class="img-fluid">
         </div>
 
         <div class="product-item sm-height bg-gray">
           <a href="index.php?page=shop&category_id=<?= $cateIdGiay['id'] ?>"
-            class="product-category"><?= $cateIdGiay['name'] ?> <span></span></a>
+            class="product-category"> Giày <span></span></a>
           <img src="Assets/Client/images/model_6.png" alt="Ảnh" class="img-fluid">
         </div>
       </div>
