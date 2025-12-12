@@ -29,9 +29,12 @@ class ProductController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Validate
-            if (empty($_POST['title'])) $errors['title'] = "Tên sản phẩm không được để trống";
-            if (empty($_POST['description'])) $errors['description'] = "Mô tả không được để trống";
-            if (empty($_POST['short_description'])) $errors['short_description'] = "Mô tả ngắn không được để trống";
+            if (empty($_POST['title']))
+                $errors['title'] = "Tên sản phẩm không được để trống";
+            if (empty($_POST['description']))
+                $errors['description'] = "Mô tả không được để trống";
+            if (empty($_POST['short_description']))
+                $errors['short_description'] = "Mô tả ngắn không được để trống";
             if (!isset($_POST['category_id']) || $_POST['category_id'] == '') {
                 $errors['category_id'] = "Danh mục không được để trống";
             }
@@ -77,18 +80,18 @@ class ProductController
                 $this->productModel->create($data);
                 header("Location: admin.php?page=product");
                 exit;
-    
-            $image = null;
-            if (!empty($_FILES['image']['name'])) {
-                $image = time() . "_" . $_FILES['image']['name'];
-                move_uploaded_file($_FILES['image']['tmp_name'], "Uploads/Product/" . $image);
+
+                $image = null;
+                if (!empty($_FILES['image']['name'])) {
+                    $image = time() . "_" . $_FILES['image']['name'];
+                    move_uploaded_file($_FILES['image']['tmp_name'], "Uploads/Product/" . $image);
+                }
             }
+
+            $categories = $this->productModel->getAllCategories();
+            require "Views/Admin/Product/create.php";
         }
-
-        $categories = $this->productModel->getAllCategories();
-        require "Views/Admin/Product/create.php";
     }
-
     // =============================
     // EDIT
     // =============================
@@ -102,10 +105,14 @@ class ProductController
             $id_update = $_POST['id'] ?? null;
 
             // Validate
-            if (empty($_POST['title'])) $errors['title'] = "Tên sản phẩm không được để trống";
-            if (empty($_POST['description'])) $errors['description'] = "Mô tả không được để trống";
-            if (empty($_POST['short_description'])) $errors['short_description'] = "Mô tả ngắn không được để trống";
-            if (empty($_POST['category_id'])) $errors['category_id'] = "Danh mục không được để trống";
+            if (empty($_POST['title']))
+                $errors['title'] = "Tên sản phẩm không được để trống";
+            if (empty($_POST['description']))
+                $errors['description'] = "Mô tả không được để trống";
+            if (empty($_POST['short_description']))
+                $errors['short_description'] = "Mô tả ngắn không được để trống";
+            if (empty($_POST['category_id']))
+                $errors['category_id'] = "Danh mục không được để trống";
 
             if (!isset($_POST['price']) || $_POST['price'] === '') {
                 $errors['price'] = "Giá không được để trống";

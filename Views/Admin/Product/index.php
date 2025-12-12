@@ -47,7 +47,7 @@ use Vtiful\Kernel\Format;
 
                                         <td>
                                             <?php if (!empty($value["image"]) && $value["image"] !== "khong_co_hinh_anh"): ?>
-                                                <img src="Upload/Product/<?= $value["image"] ?>" width="60">
+                                                <img src="Uploads/Product/<?= $value["image"] ?>" width="60">
                                             <?php else: ?>
                                                 <span class="text-muted">Không có ảnh</span>
                                             <?php endif; ?>
