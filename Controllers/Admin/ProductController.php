@@ -61,7 +61,7 @@ class ProductController
 
                 if (!empty($_FILES['image']['name'])) {
                     $image = time() . "_" . $_FILES['image']['name'];
-                    move_uploaded_file($_FILES['image']['tmp_name'], "uploads/products/" . $image);
+                    move_uploaded_file($_FILES['image']['tmp_name'], "Uploads/Product/" . $image);
                 }
 
                 $data = [
@@ -77,6 +77,11 @@ class ProductController
                 $this->productModel->create($data);
                 header("Location: admin.php?page=product");
                 exit;
+    
+            $image = null;
+            if (!empty($_FILES['image']['name'])) {
+                $image = time() . "_" . $_FILES['image']['name'];
+                move_uploaded_file($_FILES['image']['tmp_name'], "Uploads/Product/" . $image);
             }
         }
 
