@@ -30,8 +30,8 @@ class CategoryModel
         }
 
         if ($limit) {
-            $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-            $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
+            $stmt->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
         }
 
         $stmt->execute();
@@ -97,25 +97,17 @@ class CategoryModel
         return $stmt->execute();
     }
 
-    public function loiTrung($name, $id = null)
+    public function getCategoryByName($name)
     {
-        $sql = "SELECT COUNT(*) FROM categories WHERE name = :name";
-
-        if ($id !== null) {
-            $sql .= " AND id != :id";
-        }
-
-        $stmt = $this->connection->prepare($sql);
+        $stmt = $this->connection->prepare("
+        SELECT *
+        FROM categories WHERE name = :name
+    ");
         $stmt->bindValue(':name', $name);
-
-        if ($id !== null) {
-            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        }
-
         $stmt->execute();
-
-        return $stmt->fetchColumn() > 0;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
 
     public function deleteWithChild($id)
     {

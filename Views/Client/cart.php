@@ -38,7 +38,7 @@
 
                 <tr class="align-middle bg-white">
                   <td>
-                    <img src="Uploads/<?= $cart['image'] ?>" width="80" class="img-thumbnail rounded">
+                    <img src="Uploads/Product/<?= $cart['image'] ?>" width="80" class="img-thumbnail rounded">
                   </td>
 
                   <td>
@@ -133,7 +133,7 @@
             <strong class="total text-primary"></strong>
           </div>
 
-          <button class="btn btn-success btn-lg btn-block" onclick="window.location='checkout.html'">
+          <button class="btn btn-success btn-lg btn-block" onclick="window.location='index.php?page=checkout'">
             Tiến hành thanh toán
           </button>
 

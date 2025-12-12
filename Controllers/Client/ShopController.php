@@ -15,7 +15,7 @@ class ProductController
     }
     public function shop()
     {
-        $categories = $this->categoryModel->getAllCategory();
+        $categories = $this->categoryModel->getAll();
         $pages = $_GET['pages'] ?? 1;
         $limit = $_GET['limit'] ?? 10;
         $keyword = $_GET['keyword'] ?? '';
@@ -58,11 +58,12 @@ class ProductController
         );
 
         $totalPageProduct = $this->productModel->getTotalProductCount($limit, $categoryId, $keyword, 1);
-        $categories = $this->categoryModel->getAllCategory();
+        $categories = $this->categoryModel->getAll();
 
-        $cateIdNu = $this->categoryModel->getCategoryDataByName('Nữ');
-        $cateIdNam = $this->categoryModel->getCategoryDataByName('Nam');
-        $cateIdGiay = $this->categoryModel->getCategoryDataByName('Giày');
+        $cateIdNu = $this->categoryModel->getCategoryByName('Nữ');
+        $cateIdNam = $this->categoryModel->getCategoryByName('Nam');
+        $cateIdGiay = $this->categoryModel->getCategoryByName('Giày');
+
         include "Views/Client/shop.php";
     }
 
@@ -84,7 +85,7 @@ class ProductController
 
         $relatedProducts = $this->productModel->getAllProducts(1, 10, '', 1, $product['category_id']);
 
-        $categories = $this->categoryModel->getAllCategory();
+        $categories = $this->categoryModel->getAll();
 
         include "Views/Client/shop-single.php";
     }

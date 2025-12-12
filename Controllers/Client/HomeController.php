@@ -17,9 +17,9 @@ class ProductController
     public function index(){
         $products = $this->productModel->getAllProducts(1,6,'',1);
         $featuredProducts = $this->productModel->getAllProducts(1,6,'',1,null,1);
-        $cateIdNu = $this->categoryModel->getCategoryDataByName('Nữ');
-        $cateIdNam = $this->categoryModel->getCategoryDataByName('Nam');
-        $cateIdGiay = $this->categoryModel->getCategoryDataByName('Giày');
+        $cateIdNu = $this->categoryModel->getCategoryByName('Nữ');
+        $cateIdNam = $this->categoryModel->getCategoryByName('Nam');
+        $cateIdGiay = $this->categoryModel->getCategoryByName('Giày');
         include "Views/Client/index.php";
     }
 }

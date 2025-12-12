@@ -65,7 +65,7 @@
       <?php foreach ($products as $pro): ?>
         <div class="col-lg-4 col-md-6 item-entry mb-4">
           <a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>" class="product-item md-height bg-gray d-block">
-            <img src="Uploads/<?= $pro['image'] ?>" alt="Ảnh" class="img-fluid">
+            <img src="Uploads/Product/<?= $pro['image'] ?>" alt="Ảnh" class="img-fluid">
           </a>
           <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"><?= $pro['title'] ?></a>
           </h2>
@@ -96,7 +96,7 @@
             <div class="item">
               <div class="item-entry">
                 <a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>" class="product-item md-height bg-gray d-block">
-                  <img src="Assets/Client/images/<?= $pro['image'] ?>" alt="Image" class="img-fluid">
+                  <img src="Uploads/Product/<?= $pro['image'] ?>" alt="Image" class="img-fluid">
                 </a>
                 <h2 class="item-title"><a
                     href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"><?= $pro['title'] ?></a></h2>

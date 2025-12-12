@@ -59,7 +59,7 @@
 
             <div class="col-lg-6 col-md-6 item-entry mb-4">
               <a href="index.php?page=shop-single&slug=<?= $product['slug'] ?>" class="product-item md-height bg-gray d-block">
-                <img src="Uploads/<?= $product['image'] ?>" alt="Ảnh sản phẩm" class="img-fluid">
+                <img src="Uploads/Product/<?= $product['image'] ?>" alt="Ảnh sản phẩm" class="img-fluid">
               </a>
               <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $product['slug'] ?>"><?= $product['title'] ?></a></h2>
               <?php if ($product['discount_price']): ?>
