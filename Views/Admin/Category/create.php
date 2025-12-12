@@ -41,17 +41,19 @@
                         <div class="mb-3">
                             <label class="form-label">Trạng thái</label>
                             <select class="form-select" name="status">
+                            <option value="">-- Chọn trạng thái --</option>
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
                             </select>
+                            <?php if (!empty($errors['status'])): ?>
+                                <p class="text-danger mt-1"><?= $errors['status'] ?></p>
+                            <?php endif; ?>
                         </div>
 
                         <!-- parent_id -->
                         <div class="mb-3">
                             <label class="form-label">Danh mục cha</label>
                             <select class="form-select" name="parent_id">
-
-                                <!-- Mặc định là root -->
                                 <option value="0">-- Không có cha --</option>
 
                                 <?php foreach ($allCategories as $parent): ?>
@@ -59,12 +61,10 @@
                                         <?= htmlspecialchars($parent['name']) ?>
                                     </option>
                                 <?php endforeach; ?>
-                                <?php if (!empty($errors['parent_id'])): ?>
-                                    <p class="text-danger mt-1"><?= $errors['parent_id'] ?></p>
-                                <?php endif; ?>
                             </select>
-                        </div>
 
+
+                        </div>
                         <button type="submit" class="btn btn-primary">Thêm</button>
                     </form>
                 </div>

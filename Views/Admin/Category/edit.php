@@ -14,10 +14,9 @@
                         <!-- NAME -->
                         <div class="mb-3">
                             <label class="form-label">Tên danh mục</label>
-                            <input type="text" class="form-control" name="name"
-                                   value="<?= $category['name'] ?>"
-                                   placeholder="Vui lòng nhập vào tên." />
-                            
+                            <input type="text" class="form-control" name="name" value="<?= $category['name'] ?>"
+                                placeholder="Vui lòng nhập vào tên." />
+
                             <?php if (!empty($errors['name'])): ?>
                                 <p class="text-danger mt-1"><?= $errors['name'] ?></p>
                             <?php endif; ?>
@@ -37,9 +36,8 @@
                         <!-- SLUG -->
                         <div class="mb-3">
                             <label class="form-label">Đường dẫn</label>
-                            <input type="text" class="form-control" name="slug"
-                                   value="<?= $category['slug'] ?>"
-                                   placeholder="Vui lòng nhập vào đường dẫn." />
+                            <input type="text" class="form-control" name="slug" value="<?= $category['slug'] ?>"
+                                placeholder="Vui lòng nhập vào đường dẫn." />
 
                             <?php if (!empty($errors['slug'])): ?>
                                 <p class="text-danger mt-1"><?= $errors['slug'] ?></p>
@@ -59,18 +57,23 @@
                         <div class="mb-3">
                             <label class="form-label">Danh mục cha</label>
                             <select class="form-select" name="parent_id">
+    <option value="0" <?= ($category['parent_id'] === null ? 'selected' : '') ?>>
+        -- Root (Không có cha) <?= ($category['parent_id'] === null ? '(Hiện tại)' : '') ?> --
+    </option>
 
-                                <option value="0">(Không có cha)</option>
+    <?php foreach ($allCategories as $parent): ?>
+        <?php
+            // Không cần skip chính nó nữa
+            $selected = ((int)$parent['id'] === (int)$category['parent_id']) ? 'selected' : '';
+            $label = htmlspecialchars($parent['name']);
+            if ((int)$parent['id'] === (int)$category['parent_id']) $label .= " (Hiện tại)";
+        ?>
+        <option value="<?= $parent['id'] ?>" <?= $selected ?>>
+            <?= $label ?>
+        </option>
+    <?php endforeach; ?>
+</select>
 
-                                <?php foreach ($allCategories as $parent): ?>
-                                    <?php if ($parent['id'] != $category['id']): ?>
-                                        <option value="<?= $parent['id'] ?>"
-                                            <?= ($category['parent_id'] == $parent['id']) ? 'selected' : '' ?>>
-                                            <?= htmlspecialchars($parent['name']) ?>
-                                        </option>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </select>
 
                             <?php if (!empty($errors['parent_id'])): ?>
                                 <p class="text-danger mt-1"><?= $errors['parent_id'] ?></p>
