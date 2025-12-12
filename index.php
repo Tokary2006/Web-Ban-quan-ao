@@ -41,7 +41,7 @@ switch ($page) {
     case "add-to-cart":
         require_once 'Controllers/Client/CartController.php';
         $cartcontroller = new CartControlller($connection);
-        $cartcontroller->addToCart(); // Gọi hàm xử lý thêm vào giỏ hàng
+        $cartcontroller->addToCart();
         break;
     case "checkout":
         include "Views/Client/checkout.php";

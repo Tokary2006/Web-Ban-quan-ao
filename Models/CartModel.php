@@ -3,7 +3,7 @@
 class CartModel
 {
     private $connection;
-    private $table = 'cart'; 
+    private $table = 'cart';
 
     public function __construct($connection)
     {
@@ -63,7 +63,7 @@ class CartModel
     }
 
     // --- Bắt đầu hàm mới: addToCart ---
-    
+
     /**
      * Thêm một sản phẩm vào giỏ hàng hoặc cập nhật số lượng nếu nó đã tồn tại.
      *
@@ -93,7 +93,7 @@ class CartModel
 
             if ($cart_item) {
                 $new_quantity = $cart_item['quantity'] + $quantity;
-                
+
                 $update_query = "
                     UPDATE 
                         {$this->table}
@@ -102,11 +102,11 @@ class CartModel
                     WHERE 
                         id = :id
                 ";
-                
+
                 $update_stmt = $this->connection->prepare($update_query);
                 $update_stmt->bindParam(':quantity', $new_quantity, PDO::PARAM_INT);
                 $update_stmt->bindParam(':id', $cart_item['id'], PDO::PARAM_INT);
-                
+
                 return $update_stmt->execute();
             } else {
                 $insert_query = "
@@ -129,6 +129,47 @@ class CartModel
             return false;
         }
     }
+
+    /**
+     * Xóa một mục khỏi giỏ hàng dựa trên cart_item_id.
+     *
+     * @param int $cart_item_id ID của mục trong giỏ hàng.
+     * @return bool True nếu xóa thành công, False nếu thất bại.
+     */
+    public function removeFromCart(int $cart_item_id): bool
+    {
+        $query = "DELETE FROM {$this->table} WHERE id = :id";
+        try {
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':id', $cart_item_id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Database Error in removeFromCart: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Cập nhật số lượng cho một mục trong giỏ hàng.
+     *
+     * @param int $cart_item_id ID của mục trong giỏ hàng.
+     * @param int $quantity Số lượng mới (>=1).
+     * @return bool True nếu cập nhật thành công, False nếu thất bại.
+     */
+    public function updateQuantity(int $cart_item_id, int $quantity): bool
+    {
+        $quantity = max(1, $quantity); 
+        $query = "UPDATE {$this->table} SET quantity = :quantity WHERE id = :id";
+        try {
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
+            $stmt->bindParam(':id', $cart_item_id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Database Error in updateQuantity: " . $e->getMessage());
+            return false;
+        }
+    }
+
 }
 
-// --- Kết thúc hàm mới: addToCart ---
