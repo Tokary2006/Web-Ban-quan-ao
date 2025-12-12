@@ -123,5 +123,29 @@ class UserModel
         return $stmt->execute();
     }
 
+    public function updateUserInfo($id, $fullname, $phone, $email, $avatar = null)
+    {
+        if ($avatar) {
+            $sql = "UPDATE users SET full_name=?, phone=?, email=?, avatar=? WHERE id=?";
+            $stmt = $this->connection->prepare($sql);
+            return $stmt->execute([$fullname, $phone, $email, $avatar, $id]);
+        } else {
+            $sql = "UPDATE users SET full_name=?, phone=?, email=? WHERE id=?";
+            $stmt = $this->connection->prepare($sql);
+            return $stmt->execute([$fullname, $phone, $email, $id]);
+        }
+    }
+
+
+    public function updatePassword($id, $password)
+    {
+        $sql = "UPDATE users SET password = :password, updated_at = NOW() WHERE id = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue(':password', $password);
+        $stmt->bindValue(':id', $id);
+        return $stmt->execute();
+    }
+
+
 
 }

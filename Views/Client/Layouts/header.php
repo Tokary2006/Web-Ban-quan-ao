@@ -71,7 +71,7 @@
                   <a class="dropdown-item" href="index.php?page=register">Đăng ký</a>
                 <?php endif; ?>
                 <?php if (isset($_SESSION["user"])): ?>
-                  <a class="dropdown-item" href="index.php?page=account">Thông tin cá nhân</a>
+                  <a class="dropdown-item" href="index.php?page=profile">Thông tin cá nhân</a>
                   <a class="dropdown-item" href="index.php?page=cart">Giỏ hàng</a>
                 <?php endif; ?>
                 <a class="dropdown-item" href="index.php?page=logout">Đăng xuất</a>

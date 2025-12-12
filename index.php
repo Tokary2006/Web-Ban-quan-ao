@@ -79,8 +79,22 @@ switch ($page) {
         $_SESSION["success"] = "Bạn đã đăng xuất thành công!";
         header('Location: index.php?page=home');
         break;
-    case "account":
-        include "Views/Client/account.php";
+    case "profile":
+        require_once 'Controllers/Client/ProfileController.php';
+        $controller = new ProfileController($connection);
+        $controller->index();
+        break;
+
+    case "update-profile":
+        require_once 'Controllers/Client/ProfileController.php';
+        $controller = new ProfileController($connection);
+        $controller->updateInfo();
+        break;
+
+    case "change-password":
+        require_once 'Controllers/Client/ProfileController.php';
+        $controller = new ProfileController($connection);
+        $controller->changePassword();
         break;
     case "error":
         include "Views/Client/error_404.php";
