@@ -11,8 +11,10 @@
                     <form method="POST" action="admin.php?page=category&action=create">
                         <div class="mb-3">
                             <label class="form-label">Tên danh mục</label>
-                            <input type="text" class="form-control" name="name" placeholder="Vui lòng nhập vào tên."
-                                required />
+                            <input type="text" class="form-control" name="name" placeholder="Vui lòng nhập vào tên." />
+                            <?php if (!empty($errors['name'])): ?>
+                                <p class="text-danger mt-1"><?= $errors['name'] ?></p>
+                            <?php endif; ?>
                         </div>
 
                         <!-- description -->
@@ -20,6 +22,9 @@
                             <label class="form-label">Mô tả</label>
                             <textarea class="form-control" name="description"
                                 placeholder="Vui lòng nhập vào mô tả."></textarea>
+                            <?php if (!empty($errors['description'])): ?>
+                                <p class="text-danger mt-1"><?= $errors['description'] ?></p>
+                            <?php endif; ?>
                         </div>
 
                         <!-- slug -->
@@ -27,6 +32,9 @@
                             <label class="form-label">Đường dẫn</label>
                             <input type="text" class="form-control" name="slug"
                                 placeholder="Vui lòng nhập vào đường dẫn." />
+                            <?php if (!empty($errors['slug'])): ?>
+                                <p class="text-danger mt-1"><?= $errors['slug'] ?></p>
+                            <?php endif; ?>
                         </div>
 
                         <!-- status -->
@@ -42,9 +50,18 @@
                         <div class="mb-3">
                             <label class="form-label">Danh mục cha</label>
                             <select class="form-select" name="parent_id">
-                                <option value="">Chọn danh mục cha</option>
-                                <option value="1">Áo thun</option>
-                                <option value="2">Quần</option>
+
+                                <!-- Mặc định là root -->
+                                <option value="0">-- Không có cha --</option>
+
+                                <?php foreach ($allCategories as $parent): ?>
+                                    <option value="<?= $parent['id'] ?>">
+                                        <?= htmlspecialchars($parent['name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                                <?php if (!empty($errors['parent_id'])): ?>
+                                    <p class="text-danger mt-1"><?= $errors['parent_id'] ?></p>
+                                <?php endif; ?>
                             </select>
                         </div>
 

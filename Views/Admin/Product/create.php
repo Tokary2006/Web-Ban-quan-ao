@@ -15,11 +15,11 @@
                     <form action="admin.php?page=product&action=create" method="POST" enctype="multipart/form-data">
 
                         <!-- Mã sản phẩm -->
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label class="form-label">Mã sản phẩm</label>
                             <input type="text" class="form-control" name="id" placeholder="Nhập mã sản phẩm">
                             <small class="text-danger"><?= $errors['id'] ?? '' ?></small>
-                        </div>
+                        </div> -->
 
                         <!-- Tên sản phẩm -->
                         <div class="mb-3">
@@ -38,8 +38,15 @@
                         <!-- Mô tả ngắn -->
                         <div class="mb-3">
                             <label class="form-label">Mô tả ngắn</label>
-                            <textarea class="form-control" name="short_description" placeholder="Nhập mô tả ngắn"></textarea>
+                            <textarea class="form-control" name="short_description"
+                                placeholder="Nhập mô tả ngắn"></textarea>
                             <small class="text-danger"><?= $errors['short_description'] ?? '' ?></small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Giá</label>
+                            <input type="number" class="form-control" name="price" min="0" step="0.01"
+                                placeholder="Nhập giá">
+                            <small class="text-danger"><?= $errors['price'] ?? '' ?></small>
                         </div>
 
                         <!-- Hình ảnh -->
@@ -60,15 +67,20 @@
                             <small class="text-danger"><?= $errors['status'] ?? '' ?></small>
                         </div>
 
-                        <!-- Mã danh mục -->
+                        <!-- Danh mục -->
                         <div class="mb-3">
                             <label class="form-label">Danh mục</label>
                             <select class="form-select" name="category_id">
-    <?php foreach ($categories as $cate): ?>
-        <option value="<?= $cate['id'] ?>"><?= $cate['name'] ?></option>
-    <?php endforeach; ?>
-</select>
-                            <small class="text-danger"><?= $errors['category_id'] ?? '' ?></small>
+                                <option value="" disabled selected>-- Chọn danh mục --</option>
+                                <?php foreach ($categories as $cate): ?>
+                                    <option value="<?= $cate['id'] ?>" <?= (($_POST['category_id'] ?? '') == $cate['id']) ? 'selected' : '' ?>>
+                                        <?= $cate['name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?php if (!empty($errors['category_id'])): ?>
+                                <p class="text-danger mt-1"><?= $errors['category_id'] ?></p>
+                            <?php endif; ?>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Thêm</button>

@@ -1,6 +1,6 @@
 <?php
 
-class productModel
+class ProductModel
 {
     private $connection;
 
@@ -197,5 +197,67 @@ class productModel
         $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $product;
+    }
+
+    // Kiểm tra trùng tên (trừ chính nó)
+    public function checkDuplicateTitle($title, $id = null)
+    {
+        if ($id) {
+            $sql = "SELECT id FROM products WHERE title = :title AND id != :id";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute([':title' => $title, ':id' => $id]);
+        } else {
+            $sql = "SELECT id FROM products WHERE title = :title";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute([':title' => $title]);
+        }
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Lấy tất cả danh mục
+    public function getAllCategories()
+    {
+        $sql = "SELECT * FROM categories ORDER BY name ASC";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Tạo sản phẩm
+    public function create($data)
+    {
+        $sql = "INSERT INTO products 
+                (category_id, title,  price, short_description, description, image, status)
+                VALUES 
+                (:category_id, :title, :price, :short_description, :description, :image, :status)";
+
+        $stmt = $this->connection->prepare($sql);
+        return $stmt->execute($data);
+    }
+
+    // Cập nhật sản phẩm
+    public function updateProduct($id, $data)
+    {
+        $sql = "UPDATE products SET 
+                    category_id = :category_id,
+                    title = :title,
+                    price = :price,
+                    short_description = :short_description,
+                    description = :description,
+                    image = :image,
+                    status = :status
+                WHERE id = :id";
+
+        $stmt = $this->connection->prepare($sql);
+        return $stmt->execute($data);
+    }
+
+    // Xoá sản phẩm
+    public function deleteProduct($id)
+    {
+        $sql = "DELETE FROM products WHERE id = :id";
+        $stmt = $this->connection->prepare($sql);
+        return $stmt->execute([':id' => $id]);
     }
 }

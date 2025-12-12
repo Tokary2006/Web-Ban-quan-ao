@@ -1,72 +1,152 @@
 <?php
-    require_once 'Models/CategoryModel.php';
+require_once 'Models/CategoryModel.php';
 
+class CategoryController
+{
+    private $categoryModel;
 
-    class CategoryController {
-        private $categoryModel;
-
-        public function __construct($connection) {
-            $this->categoryModel = new CategoryModel($connection);
-        }
-
-        public function index() {
-            $categories = $this->categoryModel->getAllCategory();
-
-            require "Views/Admin/Category/index.php";
-        }
-
-    // Xử lý cả hiển thị form TẠO MỚI (GET) và LƯU dữ liệu TẠO MỚI (POST)
-    public function create() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Đây là phần xử lý LƯU DỮ LIỆU TẠO MỚI
-            $data = [
-                'parent_id' => ($_POST['parent_id'] === '' ? null : $_POST['parent_id']),
-                'name' => $_POST['name'] ?? '',
-                'description' => $_POST['description'] ?? '',
-                'slug' => $_POST['slug'] ?? '',
-                'status' => $_POST['status'] ?? 1
-            ];
-            $this->categoryModel->create($data); // <--- CHỈ TẠO MỚI
-            header("Location: admin.php?page=category");
-            exit;
-        }
-        
-        // Đây là phần hiển thị form (GET)
-        require "Views/Admin/Category/create.php";
+    public function __construct($connection)
+    {
+        $this->categoryModel = new CategoryModel($connection);
     }
 
-    // Xử lý cả hiển thị form CHỈNH SỬA (GET) và LƯU dữ liệu CHỈNH SỬA (POST)
-    public function edit() {
-        $id = $_GET['id'] ?? null;
-        
+    public function index()
+    {
+        $keyword = $_GET['keyword'] ?? '';
+        $categories = $this->categoryModel->getAll($keyword);
+        require "Views/Admin/Category/index.php";
+    }
+
+    public function create()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Đây là phần xử lý LƯU DỮ LIỆU CẬP NHẬT
-            $id_update = $_POST['id'] ?? null; // Lấy ID từ form hidden
-            if ($id_update) {
-                $data = [
-                    'parent_id' => ($_POST['parent_id'] === '' ? null : $_POST['parent_id']),
-                    'name' => $_POST['name'] ?? '',
-                    'description' => $_POST['description'] ?? '',
-                    'slug' => $_POST['slug'] ?? '',
-                    'status' => $_POST['status'] ?? 1
-                ];
-                $this->categoryModel->store($id_update, $data); 
+            $errors = [];
+    
+            $name = trim($_POST['name'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $slug = trim($_POST['slug'] ?? '');
+            $status = $_POST['status'] ?? 1;
+            $parent_id = $_POST['parent_id'] ?? 0;
+    
+            // Tên
+            if ($name === '') {
+                $errors['name'] = "Tên danh mục không được để trống";
+            } elseif ($this->categoryModel->loiTrung($name)) {
+                $errors['name'] = "Tên danh mục đã tồn tại";
             }
+    
+            // Mô tả
+            if ($description === '') {
+                $errors['description'] = "Mô tả không được để trống";
+            }
+    
+            // Slug
+            if ($slug === '') {
+                $errors['slug'] = "Đường dẫn (slug) không được để trống";
+            }
+    
+            // Parent ID (không cần bắt lỗi vì root = 0 OK)
+    
+            if (empty($errors)) {
+                $data = [
+                    'parent_id'  => $parent_id,
+                    'name'       => $name,
+                    'description'=> $description,
+                    'slug'       => $slug,
+                    'status'     => $status
+                ];
+                $this->categoryModel->create($data);
+                header("Location: admin.php?page=category");
+                exit;
+            }
+    
+            $allCategories = $this->categoryModel->getAll();
+            require "Views/Admin/Category/create.php";
+            return;
+        }
+    
+        $allCategories = $this->categoryModel->getAll();
+        require "Views/Admin/Category/create.php";
+    }
+    
+    
+    
+    public function edit()
+    {
+        $id = $_GET['id'] ?? null;
+        if (!$id) {
             header("Location: admin.php?page=category");
             exit;
         }
-
-        // Đây là phần hiển thị form (GET)
-        if ($id) {
-            $category = $this->categoryModel->getOneCategory($id); 
-            if ($category) {
-                require "Views/Admin/Category/edit.php";
-                return;
+    
+        $category = $this->categoryModel->getOne($id);
+        $category['parent_id'] = $category['parent_id'] ?? 0;
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $errors = [];
+    
+            $name = trim($_POST['name'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $slug = trim($_POST['slug'] ?? '');
+            $status = $_POST['status'] ?? 1;
+            $parent_id = $_POST['parent_id'] ?? 0;
+    
+            // Name
+            if ($name === '') {
+                $errors['name'] = "Tên danh mục không được để trống";
+            } elseif ($this->categoryModel->loiTrung($name, $id)) {
+                $errors['name'] = "Tên danh mục đã tồn tại";
             }
+    
+            // Description
+            if ($description === '') {
+                $errors['description'] = "Mô tả không được để trống";
+            }
+    
+            // Slug
+            if ($slug === '') {
+                $errors['slug'] = "Đường dẫn (slug) không được để trống";
+            }
+    
+            // Parent ID không được chọn chính nó
+            if ($parent_id == $id) {
+                $errors['parent_id'] = "Danh mục cha không hợp lệ";
+            }
+    
+            if (empty($errors)) {
+                $data = [
+                    'parent_id'  => $parent_id,
+                    'name'       => $name,
+                    'description'=> $description,
+                    'slug'       => $slug,
+                    'status'     => $status
+                ];
+                $this->categoryModel->update($id, $data);
+                header("Location: admin.php?page=category");
+                exit;
+            }
+    
+            $allCategories = $this->categoryModel->getAll();
+            require "Views/Admin/Category/edit.php";
+            return;
         }
-        
-        // Nếu không có ID hoặc không tìm thấy khi là GET request
+    
+        $allCategories = $this->categoryModel->getAll();
+        require "Views/Admin/Category/edit.php";
+    }
+    
+    
+
+    public function delete()
+    {
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            $this->categoryModel->deleteWithChild($id);
+        }
         header("Location: admin.php?page=category");
         exit;
     }
-    }
+    
+    
+    
+}

@@ -35,6 +35,7 @@ switch ($page) {
             case "index":  $categoryControl->index();  break;
             case "create": $categoryControl->create(); break;
             case "edit":   $categoryControl->edit();  break;
+            case "delete":   $categoryControl->delete();  break;
             default:       $categoryControl->index();  break;
         }
         break;
