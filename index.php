@@ -96,6 +96,22 @@ switch ($page) {
         $controller = new ProfileController($connection);
         $controller->changePassword();
         break;
+
+    case "address-add":
+        require_once 'Controllers/Client/ProfileController.php';
+        $controller = new ProfileController($connection);
+        $controller->addAddress();
+        break;
+        case "update-address":
+        require_once 'Controllers/Client/ProfileController.php';
+        $controller = new ProfileController($connection);
+        $controller->updateAddress();
+        break;
+        case "delete-address":
+        require_once 'Controllers/Client/ProfileController.php';
+        $controller = new ProfileController($connection);
+        $controller->deleteAddress();
+        break;
     case "error":
         include "Views/Client/error_404.php";
         break;

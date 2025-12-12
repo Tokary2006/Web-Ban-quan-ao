@@ -1,15 +1,16 @@
 <?php
 require_once 'Models/UserModel.php';
 // require_once '../models/OrderModel.php';
-// require_once '../models/AddressModel.php';
+require_once 'Models/AddressModel.php';
 
 class ProfileController
 {
     private $userModel;
-
+    private $addressModel;
     public function __construct($connection)
     {
         $this->userModel = new UserModel($connection);
+        $this->addressModel = new AddressModel($connection);
 
         if (!isset($_SESSION['user'])) {
             header("Location: /login.php");
@@ -20,14 +21,17 @@ class ProfileController
     /** -----------------------------------------------------
      *  Lấy dữ liệu trang Profile
      * -----------------------------------------------------*/
-    public function index()
+    public function index($errors = [], $oldData = [], $activeTab = 'account', $showAddForm = false)
     {
         $userId = $_SESSION['user']['id'];
-
         $user = $this->userModel->getOneUser($userId, 1);
+        $addresses = $this->addressModel->getAddressesByUser($userId);
+        $activeTab = $_GET['tab'] ?? $activeTab;
 
         include 'Views/Client/profile.php';
     }
+
+
 
     /** -----------------------------------------------------
      *  Cập nhật thông tin tài khoản
@@ -180,6 +184,109 @@ class ProfileController
         }
 
         header("Location: index.php?page=profile");
+    }
+
+    public function addAddress()
+    {
+        $userId = $_SESSION['user']['id'];
+
+        $title = trim($_POST['title'] ?? '');
+        $full_address = trim($_POST['full_address'] ?? '');
+        $city = trim($_POST['city'] ?? '');
+        $recipient_phone = trim($_POST['recipient_phone'] ?? '');
+
+        $errors = [];
+        $oldData = [
+            'title' => $title,
+            'full_address' => $full_address,
+            'city' => $city,
+            'recipient_phone' => $recipient_phone
+        ];
+
+        if ($title === '')
+            $errors['title'] = "Tên địa chỉ không được để trống.";
+        if ($city === '')
+            $errors['city'] = "Thành phố không được để trống.";
+        if ($full_address === '')
+            $errors['full_address'] = "Địa chỉ chi tiết không được để trống.";
+        if ($recipient_phone === '')
+            $errors['recipient_phone'] = "Số điện thoại không được để trống.";
+
+        if (!empty($errors)) {
+            $showAddForm = true;
+            $this->index($errors, $oldData, 'address', $showAddForm);
+            return;
+        }
+
+
+        // Thêm địa chỉ vào DB
+        $this->addressModel->addAddress($userId, $title, $full_address, $city, $recipient_phone);
+
+        // Thành công → thông báo và vẫn ở tab address
+        $_SESSION['success'] = "Thêm địa chỉ mới thành công!";
+        header("Location: index.php?page=profile&tab=address");
+        exit;
+    }
+
+    /** -----------------------------------------------------
+     *  Cập nhật địa chỉ
+     * -----------------------------------------------------*/
+    public function updateAddress()
+    {
+        $userId = $_SESSION['user']['id'];
+        $id = $_POST['id'] ?? null; // ID địa chỉ cần update
+        $address_name = trim($_POST['address_name'] ?? '');
+        $full_address = trim($_POST['full_address'] ?? '');
+        $city = trim($_POST['city'] ?? '');
+        $recipient_phone = trim($_POST['recipient_phone'] ?? '');
+
+        $errors = [];
+        $oldData = [
+            'address_name' => $address_name,
+            'full_address' => $full_address,
+            'city' => $city,
+            'recipient_phone' => $recipient_phone
+        ];
+
+        if (!$address_name)
+            $errors['address_name'] = "Tên địa chỉ không được để trống.";
+        if (!$city)
+            $errors['city'] = "Thành phố không được để trống.";
+        if (!$full_address)
+            $errors['full_address'] = "Địa chỉ chi tiết không được để trống.";
+        if (!$recipient_phone)
+            $errors['recipient_phone'] = "Số điện thoại không được để trống.";
+
+        if (!empty($errors)) {
+            // Load lại profile tab address kèm lỗi
+            $this->index($errors, $oldData, 'address');
+            return;
+        }
+
+        // Cập nhật địa chỉ
+        $this->addressModel->updateAddress($id, $address_name, $full_address, $city, $recipient_phone);
+
+        $_SESSION['success'] = "Cập nhật địa chỉ thành công!";
+        header("Location: index.php?page=profile&tab=address");
+        exit;
+    }
+
+    /** -----------------------------------------------------
+     *  Xóa địa chỉ
+     * -----------------------------------------------------*/
+    public function deleteAddress()
+    {
+        $id = $_GET['id'] ?? null;
+
+        if ($id) {
+            $this->addressModel->deleteAddress($id);
+            $_SESSION['success'] = "Xóa địa chỉ thành công!";
+        } else {
+            $_SESSION['error'] = "Địa chỉ không tồn tại!";
+        }
+
+        header("Location: index.php?page=profile&tab=address");
+        exit;
     }
 
 }

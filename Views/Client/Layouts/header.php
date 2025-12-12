@@ -20,6 +20,7 @@
 
   <link rel="stylesheet" href="Assets/Client/css/style.css">
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="Assets/Client/js/jquery-3.3.1.min.js"></script>
   <script src="Assets/Client/js/jquery-ui.js"></script>
 </head>

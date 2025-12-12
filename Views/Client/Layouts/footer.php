@@ -79,8 +79,6 @@
   <script src="Assets/Client/js/owl.carousel.min.js"></script>
   <script src="Assets/Client/js/jquery.magnific-popup.min.js"></script>
   <script src="Assets/Client/js/aos.js"></script>
-
   <script src="Assets/Client/js/main.js"></script>
-    
   </body>
 </html>
