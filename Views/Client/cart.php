@@ -89,7 +89,7 @@
           </div>
 
           <div class="col-md-6">
-            <a href="store.html" class="btn btn-outline-primary btn-block btn-lg">
+            <a href="index.php?page=shop" class="btn btn-outline-primary btn-block btn-lg">
               Tiếp tục mua sắm
             </a>
           </div>
@@ -133,7 +133,7 @@
             <strong class="total text-primary"></strong>
           </div>
 
-          <button class="btn btn-success btn-lg btn-block" onclick="window.location='index.php?page=checkout'">
+          <button id="checkoutBtn" class="btn btn-success btn-lg btn-block">
             Tiến hành thanh toán
           </button>
 
@@ -191,5 +191,20 @@
 
     // Cần gọi hàm này để tính tổng ban đầu khi tải trang
     updateTotal();
+  });
+
+</script>
+
+<script>
+  jQuery(document).ready(function ($) {
+    $('#checkoutBtn').click(function (e) {
+      e.preventDefault(); // tránh reload
+      // tạo input ẩn checkout để controller nhận biết
+      let form = $('form.col-md-12'); // chọn form giỏ hàng
+      if (form.find('input[name="checkout"]').length === 0) {
+        form.append('<input type="hidden" name="checkout" value="1">');
+      }
+      form.submit(); // submit form
+    });
   });
 </script>

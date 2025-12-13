@@ -43,9 +43,6 @@ switch ($page) {
         $cartcontroller = new CartControlller($connection);
         $cartcontroller->addToCart();
         break;
-    case "checkout":
-        include "Views/Client/checkout.php";
-        break;
     case "blog":
         include "Views/Client/blog.php";
         break;
@@ -102,15 +99,36 @@ switch ($page) {
         $controller = new ProfileController($connection);
         $controller->addAddress();
         break;
-        case "update-address":
+    case "update-address":
         require_once 'Controllers/Client/ProfileController.php';
         $controller = new ProfileController($connection);
         $controller->updateAddress();
         break;
-        case "delete-address":
+    case "delete-address":
         require_once 'Controllers/Client/ProfileController.php';
         $controller = new ProfileController($connection);
         $controller->deleteAddress();
+        break;
+    case "confirm-received":
+        require_once 'Controllers/Client/ProfileController.php';
+        $controller = new ProfileController($connection);
+        $controller->confirmReceived();
+        break;
+
+    case "checkout":
+        require_once 'Controllers/Client/CheckoutController.php';
+        $controller = new CheckoutController($connection);
+        $controller->index();
+        break;
+    case "place-order":
+        require_once 'Controllers/Client/CheckoutController.php';
+        $controller = new CheckoutController($connection);
+        $controller->placeOrder();
+        break;
+    case "thankyou":
+        require_once 'Controllers/Client/CheckoutController.php';
+        $controller = new CheckoutController($connection);
+        $controller->thankyou();
         break;
     case "error":
         include "Views/Client/error_404.php";

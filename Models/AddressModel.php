@@ -58,10 +58,13 @@ class AddressModel
     }
 
     // Xóa địa chỉ
-    public function deleteAddress($id)
+    public function deleteAddress($id, $userId)
     {
-        $stmt = $this->connection->prepare("DELETE FROM addresses WHERE id = :id");
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        return $stmt->execute();
+        $sql = "DELETE FROM addresses WHERE id = :id AND user_id = :user_id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([
+            ':id' => $id,
+            ':user_id' => $userId
+        ]);
     }
 }

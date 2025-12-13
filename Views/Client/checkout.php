@@ -1,282 +1,136 @@
-<div class="bg-light py-3">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 mb-0">
-        <a href="index.html">Trang chủ</a> 
-        <span class="mx-2 mb-0">/</span> 
-        <a href="cart.html">Giỏ hàng</a> 
-        <span class="mx-2 mb-0">/</span> 
-        <strong class="text-black">Thanh toán</strong>
-      </div>
+<?php
+// dữ liệu được controller truyền qua
+// $addresses
+// $cartItems
+// $total
+?>
+
+<form action="index.php?page=place-order" method="POST">
+
+  <div class="bg-light py-3">
+    <div class="container">
+      <a href="index.php">Trang chủ</a> /
+      <a href="index.php?page=cart">Giỏ hàng</a> /
+      <strong>Thanh toán</strong>
     </div>
   </div>
-</div>
 
-<div class="site-section">
-  <div class="container">
+  <div class="site-section">
+    <div class="container">
+      <div class="row">
 
-    <div class="row">
-      <!-- THÔNG TIN THANH TOÁN -->
-      <div class="col-md-6 mb-5 mb-md-0">
-        <h2 class="h3 mb-3 text-black">Thông Tin Thanh Toán</h2>
-        <div class="p-3 p-lg-5 border">
+        <!-- CỘT TRÁI -->
+        <div class="col-md-6">
+          <h4>Thông tin giao hàng</h4>
 
-          <div class="form-group">
-            <label for="c_country" class="text-black">Quốc gia <span class="text-danger">*</span></label>
-            <select id="c_country" class="form-control">
-              <option value="1">Chọn quốc gia</option>
-              <option value="2">Bangladesh</option>
-              <option value="3">Algeria</option>
-              <option value="4">Afghanistan</option>
-              <option value="5">Ghana</option>
-              <option value="6">Albania</option>
-              <option value="7">Bahrain</option>
-              <option value="8">Colombia</option>
-              <option value="9">Dominican Republic</option>
-            </select>
-          </div>
-
-          <div class="form-group row">
-            <div class="col-md-6">
-              <label for="c_fname" class="text-black">Họ <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="c_fname">
-            </div>
-            <div class="col-md-6">
-              <label for="c_lname" class="text-black">Tên <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="c_lname">
+          <!-- CHỌN KIỂU -->
+          <div class="card mb-3">
+            <div class="card-body">
+              <label class="d-block">
+                <input type="radio" name="address_type" value="saved" <?= (empty($_POST['address_type']) || $_POST['address_type'] === 'saved') && empty($errors['new_phone']) ? 'checked' : '' ?>>
+                Dùng địa chỉ đã lưu
+              </label>
+              <label class="d-block">
+                <input type="radio" name="address_type" value="new" <?= !empty($_POST['address_type']) && $_POST['address_type'] === 'new' ? 'checked' : '' ?>>
+                Nhập địa chỉ mới
+              </label>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="c_companyname" class="text-black">Tên công ty</label>
-            <input type="text" class="form-control" id="c_companyname">
-          </div>
-
-          <div class="form-group">
-            <label for="c_address" class="text-black">Địa chỉ <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="c_address" placeholder="Số nhà, tên đường">
-          </div>
-
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Căn hộ, tòa nhà (tuỳ chọn)">
-          </div>
-
-          <div class="form-group row">
-            <div class="col-md-6">
-              <label for="c_state_country" class="text-black">Tỉnh / Thành phố <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="c_state_country">
-            </div>
-            <div class="col-md-6">
-              <label for="c_postal_zip" class="text-black">Mã bưu điện <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="c_postal_zip">
-            </div>
-          </div>
-
-          <div class="form-group row mb-5">
-            <div class="col-md-6">
-              <label for="c_email_address" class="text-black">Email <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="c_email_address">
-            </div>
-            <div class="col-md-6">
-              <label for="c_phone" class="text-black">Số điện thoại <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="c_phone" placeholder="Phone Number">
-            </div>
-          </div>
-
-          <!-- TẠO TÀI KHOẢN -->
-          <div class="form-group">
-            <label class="text-black" data-toggle="collapse" href="#create_an_account" role="button">
-              <input type="checkbox" id="c_create_account"> Tạo tài khoản?
-            </label>
-            <div class="collapse" id="create_an_account">
-              <div class="py-2">
-                <p class="mb-3">Tạo mật khẩu để đăng ký tài khoản mới.</p>
-                <div class="form-group">
-                  <label for="c_account_password" class="text-black">Mật khẩu</label>
-                  <input type="password" class="form-control" id="c_account_password">
+          <!-- ĐỊA CHỈ ĐÃ CÓ -->
+          <div id="saved-address">
+            <?php foreach ($addresses as $i => $a): ?>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <label>
+                    <input type="radio" name="saved_address_id" value="<?= $a['id'] ?>" <?= $i === 0 ? 'checked' : '' ?>>
+                    <strong><?= $a['address_name'] ?></strong> – <?= $a['recipient_phone'] ?><br>
+                    <?= $a['full_address'] ?>, <?= $a['city'] ?>
+                  </label>
                 </div>
               </div>
-            </div>
+            <?php endforeach; ?>
           </div>
 
-          <!-- ĐỊA CHỈ GIAO HÀNG KHÁC -->
-          <div class="form-group">
-            <label class="text-black" data-toggle="collapse" href="#ship_different_address" role="button">
-              <input type="checkbox" id="c_ship_different_address"> Giao hàng đến địa chỉ khác?
-            </label>
-            <div class="collapse" id="ship_different_address">
+          <!-- FORM ĐỊA CHỈ MỚI -->
+          <div id="new-address"
+            style="display: <?= (!empty($_POST['address_type']) && $_POST['address_type'] === 'new') ||
+              (!empty($errors['new_phone']) || !empty($errors['new_address']) || !empty($errors['new_city'])) ? 'block' : 'none' ?>;">
+            <div class="card">
+              <div class="card-body">
+                <input class="form-control mb-2" name="new_phone" placeholder="SĐT"
+                  value="<?= htmlspecialchars($_POST['new_phone'] ?? '') ?>">
+                <?php if (!empty($errors['new_phone'])): ?>
+                  <small class="text-danger"><?= $errors['new_phone'] ?></small>
+                <?php endif; ?>
 
-              <div class="py-2">
+                <input class="form-control mb-2" name="new_address" placeholder="Địa chỉ"
+                  value="<?= htmlspecialchars($_POST['new_address'] ?? '') ?>">
+                <?php if (!empty($errors['new_address'])): ?>
+                  <small class="text-danger"><?= $errors['new_address'] ?></small>
+                <?php endif; ?>
 
-                <div class="form-group">
-                  <label for="c_diff_country" class="text-black">Quốc gia <span class="text-danger">*</span></label>
-                  <select id="c_diff_country" class="form-control">
-                    <option value="1">Chọn quốc gia</option>
-                    <option value="2">Bangladesh</option>
-                    <option value="3">Algeria</option>
-                    <option value="4">Afghanistan</option>
-                    <option value="5">Ghana</option>
-                    <option value="6">Albania</option>
-                    <option value="7">Bahrain</option>
-                    <option value="8">Colombia</option>
-                    <option value="9">Dominican Republic</option>
-                  </select>
-                </div>
+                <input class="form-control mb-2" name="new_city" placeholder="Thành phố"
+                  value="<?= htmlspecialchars($_POST['new_city'] ?? '') ?>">
+                <?php if (!empty($errors['new_city'])): ?>
+                  <small class="text-danger"><?= $errors['new_city'] ?></small>
+                <?php endif; ?>
 
-                <div class="form-group row">
-                  <div class="col-md-6">
-                    <label for="c_diff_fname" class="text-black">Họ <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="c_diff_fname">
-                  </div>
-                  <div class="col-md-6">
-                    <label for="c_diff_lname" class="text-black">Tên <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="c_diff_lname">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="c_diff_companyname" class="text-black">Tên công ty</label>
-                  <input type="text" class="form-control" id="c_diff_companyname">
-                </div>
-
-                <div class="form-group">
-                  <label for="c_diff_address" class="text-black">Địa chỉ <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" id="c_diff_address" placeholder="Số nhà, tên đường">
-                </div>
-
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Căn hộ, tòa nhà (tuỳ chọn)">
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-md-6">
-                    <label for="c_diff_state_country" class="text-black">Tỉnh / Thành phố <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="c_diff_state_country">
-                  </div>
-                  <div class="col-md-6">
-                    <label for="c_diff_postal_zip" class="text-black">Mã bưu điện <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="c_diff_postal_zip">
-                  </div>
-                </div>
-
-                <div class="form-group row mb-5">
-                  <div class="col-md-6">
-                    <label for="c_diff_email_address" class="text-black">Email <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="c_diff_email_address">
-                  </div>
-                  <div class="col-md-6">
-                    <label for="c_diff_phone" class="text-black">Số điện thoại <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="c_diff_phone" placeholder="Phone Number">
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="c_order_notes" class="text-black">Ghi chú đơn hàng</label>
-            <textarea class="form-control" id="c_order_notes" rows="5" placeholder="Nhập ghi chú..."></textarea>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ĐƠN HÀNG -->
-      <div class="col-md-6">
-
-        <div class="row mb-5">
-          <div class="col-md-12">
-            <h2 class="h3 mb-3 text-black">Mã giảm giá</h2>
-            <div class="p-3 p-lg-5 border">
-              <label for="c_code" class="text-black mb-3">Nhập mã giảm giá nếu bạn có</label>
-              <div class="input-group w-75">
-                <input type="text" class="form-control" id="c_code" placeholder="Mã giảm giá">
-                <div class="input-group-append">
-                  <button class="btn btn-primary btn-sm px-4" type="button">Áp dụng</button>
-                </div>
+                <textarea class="form-control" name="note" placeholder="Ghi chú"></textarea>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- ORDER SUMMARY -->
-        <div class="row mb-5">
-          <div class="col-md-12">
-            <h2 class="h3 mb-3 text-black">Đơn hàng của bạn</h2>
-            <div class="p-3 p-lg-5 border">
-              <table class="table site-block-order-table mb-5">
-                <thead>
-                  <th>Sản phẩm</th>
-                  <th>Tổng</th>
-                </thead>
-                <tbody>
+        <!-- CỘT PHẢI -->
+        <div class="col-md-6">
+          <h4>Đơn hàng</h4>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <table class="table">
+                <?php foreach ($cartItems as $item): ?>
                   <tr>
-                    <td>Áo thun Top Up <strong class="mx-2">x</strong> 1</td>
-                    <td>250.000đ</td>
+                    <td><?= $item['title'] ?> x<?= $item['quantity'] ?></td>
+                    <?php
+                    $price = $item['discount_price'] ?? $item['price'];
+                    ?>
+                    <td class="text-end"><?= number_format($price * $item['quantity']) ?>đ</td>
                   </tr>
-                  <tr>
-                    <td>Áo Polo <strong class="mx-2">x</strong> 1</td>
-                    <td>100.000đ</td>
-                  </tr>
-                  <tr>
-                    <td class="text-black font-weight-bold"><strong>Tạm tính</strong></td>
-                    <td class="text-black">350.000đ</td>
-                  </tr>
-                  <tr>
-                    <td class="text-black font-weight-bold"><strong>Tổng đơn</strong></td>
-                    <td class="text-black font-weight-bold"><strong>350.000đ</strong></td>
-                  </tr>
-                </tbody>
+                <?php endforeach; ?>
+                <tr>
+                  <td><strong>Tổng</strong></td>
+                  <td class="text-end"><strong><?= number_format($total) ?>đ</strong></td>
+                </tr>
               </table>
-
-              <!-- Phương thức thanh toán -->
-              <div class="border p-3 mb-3">
-                <h3 class="h6 mb-0">
-                  <a data-toggle="collapse" href="#collapsebank">Chuyển khoản ngân hàng</a>
-                </h3>
-                <div class="collapse" id="collapsebank">
-                  <div class="py-2">
-                    <p>Vui lòng chuyển khoản kèm mã đơn hàng. Hàng sẽ được giao sau khi xác nhận thanh toán.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border p-3 mb-3">
-                <h3 class="h6 mb-0">
-                  <a data-toggle="collapse" href="#collapsecheque">Thanh toán bằng séc</a>
-                </h3>
-                <div class="collapse" id="collapsecheque">
-                  <div class="py-2">
-                    <p>Vui lòng thanh toán theo hướng dẫn bằng séc. Đơn hàng sẽ xử lý khi thanh toán hoàn tất.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="border p-3 mb-5">
-                <h3 class="h6 mb-0">
-                  <a data-toggle="collapse" href="#collapsepaypal">Paypal</a>
-                </h3>
-                <div class="collapse" id="collapsepaypal">
-                  <div class="py-2">
-                    <p>Thanh toán nhanh chóng thông qua Paypal.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <button class="btn btn-primary btn-lg btn-block" onclick="window.location='thankyou.html'">
-                  Đặt hàng
-                </button>
-              </div>
-
             </div>
           </div>
+
+          <!-- PAYMENT -->
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5>Thanh toán</h5>
+              <label><input type="radio" name="payment_method" value="cod" checked> COD</label><br>
+              <label><input type="radio" name="payment_method" value="bank"> Chuyển khoản</label><br>
+              <label><input type="radio" name="payment_method" value="momo"> MoMo</label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary w-100 btn-lg">Đặt hàng</button>
         </div>
 
       </div>
     </div>
-
   </div>
-</div>
+</form>
+
+<script>
+  document.querySelectorAll('input[name="address_type"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('saved-address').style.display =
+        r.value === 'saved' ? 'block' : 'none';
+      document.getElementById('new-address').style.display =
+        r.value === 'new' ? 'block' : 'none';
+    });
+  });
+</script>

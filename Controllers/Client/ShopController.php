@@ -83,7 +83,7 @@ class ProductController
             exit;
         }
 
-        $relatedProducts = $this->productModel->getAllProducts(1, 10, '', 1, $product['category_id']);
+        $relatedProducts = $this->productModel->getAllProducts(1, 6, '', 1, $product['category_id']);
 
         $categories = $this->categoryModel->getAll();
 

@@ -10,6 +10,28 @@
 $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x150";
 ?>
 
+<div id="globalConfirmBox" class="border rounded shadow-sm p-3 mt-3 d-none bg-white">
+  <div class="d-flex align-items-center justify-content-between">
+    <!-- Nội dung -->
+    <div class="text-secondary fw-semibold" id="confirmMessage">
+      <!-- nội dung động -->
+    </div>
+    <!-- Nút -->
+    <form id="confirmForm" method="POST" class="d-flex gap-2 ms-3" style="gap: 0.5rem;">
+      <input type="hidden" name="id" id="confirmId">
+      <button class="btn btn-sm btn-primary px-3">
+        Xác nhận
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary px-3" onclick="hideConfirm()">
+        Hủy
+      </button>
+    </form>
+
+  </div>
+</div>
+
+
+
 <div class="container py-5">
   <div class="row g-4">
 
@@ -152,28 +174,53 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
             <h5 class="mb-3">Lịch sử mua hàng</h5>
 
             <?php if (!empty($orders)): ?>
-              <table class="table table-hover mt-3">
+              <table class="table table-hover mt-3 align-middle">
                 <thead class="table-light">
                   <tr>
                     <th>Mã đơn</th>
                     <th>Ngày mua</th>
-                    <th>Sản phẩm</th>
                     <th>Tổng tiền</th>
                     <th>Trạng thái</th>
+                    <th class="text-end">Hành động</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php foreach ($orders as $o): ?>
                     <tr>
-                      <td><?= $o['order_code'] ?></td>
-                      <td><?= $o['created_at'] ?></td>
-                      <td><?= $o['product_name'] ?></td>
-                      <td><?= number_format($o['total'], 0, ',', '.') ?>₫</td>
-                      <td>
-                        <span
-                          class="badge <?= $o['status'] == 'delivered' ? 'bg-success' : ($o['status'] == 'shipping' ? 'bg-warning text-dark' : 'bg-danger') ?>">
-                          <?= ucfirst($o['status']) ?>
-                        </span>
+                      <td class="align-middle">#<?= htmlspecialchars($o['order_code']) ?></td>
+                      <td class="align-middle"><?= date('d/m/Y H:i', strtotime($o['created_at'])) ?></td>
+                      <td class="align-middle"><?= number_format($o['total_price'], 0, ',', '.') ?>₫</td>
+                      <td class="align-middle">
+                        <?php if ($o['order_status'] == 0): ?>
+                          <span class="badge">Chờ xử lý</span>
+                        <?php elseif ($o['order_status'] == 1): ?>
+                          <span class="badge">Đang giao</span>
+                        <?php elseif ($o['order_status'] == 2): ?>
+                          <span class="badge">Đã nhận</span>
+                        <?php endif; ?>
+
+                      </td>
+                      <td class="text-end">
+
+                        <!-- NÚT XÁC NHẬN ĐÃ NHẬN -->
+                        <?php if ($o['order_status'] == 1): ?>
+                          <form action="index.php?page=confirm-received" method="POST" class="d-inline">
+                            <input type="hidden" name="order_id" value="<?= $o['id'] ?>">
+                            <button type="button" class="btn btn-sm btn-success" onclick="showConfirm({
+                                message: 'Xác nhận bạn đã nhận được đơn hàng này?',
+                                action: 'index.php?page=confirm-received',
+                                id: <?= $o['id'] ?>,
+                                method: 'POST',
+                                field: 'order_id'
+                                })">
+                              Đã nhận hàng
+                            </button>
+
+                          </form>
+                        <?php else: ?>
+                          <span class="text-muted">—</span>
+                        <?php endif; ?>
+
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -184,6 +231,7 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
             <?php endif; ?>
           </div>
         </div>
+
 
         <!-- ADDRESS TAB -->
         <div id="address" class="tab-pane fade <?= $activeTab === 'address' ? 'show active' : '' ?>">
@@ -202,11 +250,16 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
                     <div class="d-flex align-items-center gap-2" style="gap: 0.5rem;">
                       <button type="button" class="btn btn-sm btn-outline-secondary"
                         onclick="showEditAddress(<?= $a['id'] ?>)">Sửa</button>
-                      <a href="index.php?page=delete-address&id=<?= $a['id'] ?>"
-                        class="btn btn-sm btn-danger d-flex align-items-center justify-content-center" style="height: 40px;"
-                        onclick="return confirm('Bạn có chắc muốn xóa địa chỉ này?');">
+                      <button type="button" class="btn btn-sm btn-danger"
+                        onclick="showConfirm({
+                          message: 'Bạn có chắc muốn xóa địa chỉ này?',
+                          action: 'index.php?page=delete-address',
+                          id: <?= $a['id'] ?>,
+                          method: 'POST',
+                          field: 'id'
+                        })">
                         Xóa
-                      </a>
+                      </button>
                     </div>
                   </div>
 
@@ -327,4 +380,24 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
   function hideEditAddress(id) {
     document.getElementById('editAddressForm-' + id).style.display = 'none';
   }
+
+  function showConfirm({ message, action, id, method = 'POST', field = 'id' }) {
+    const box = document.getElementById('globalConfirmBox');
+    const form = document.getElementById('confirmForm');
+    const msg = document.getElementById('confirmMessage');
+    const input = document.getElementById('confirmId');
+
+    msg.innerText = message;
+    form.action = action;  
+    form.method = method;
+    input.name = field;
+    input.value = id;
+
+    box.classList.remove('d-none');
+  }
+
+  function hideConfirm() {
+    document.getElementById('globalConfirmBox').classList.add('d-none');
+  }
+
 </script>
