@@ -97,16 +97,29 @@ class CategoryModel
         return $stmt->execute();
     }
 
-    public function getCategoryByName($name)
+    public function getCategoryByName($name, $id = null)
     {
-        $stmt = $this->connection->prepare("
-        SELECT *
-        FROM categories WHERE name = :name
-    ");
-        $stmt->bindValue(':name', $name);
+        if ($id) {
+            $sql = "SELECT * FROM categories WHERE name = :name AND id != :id";
+            $stmt = $this->connection->prepare($sql);
+
+            $nameParam = $name;
+            $idParam = $id;
+
+            $stmt->bindParam(':name', $nameParam, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $idParam, PDO::PARAM_INT);
+        } else {
+            $sql = "SELECT * FROM categories WHERE name = :name";
+            $stmt = $this->connection->prepare($sql);
+
+            $nameParam = $name;
+            $stmt->bindParam(':name', $nameParam, PDO::PARAM_STR);
+        }
+
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
 
 
     public function deleteWithChild($id)

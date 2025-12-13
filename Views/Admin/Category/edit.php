@@ -48,8 +48,8 @@
                         <div class="mb-3">
                             <label class="form-label">Trạng thái</label>
                             <select class="form-select" name="status">
-                                <option value="1" <?= $category['status'] == 1 ? 'selected' : '' ?>>Active</option>
-                                <option value="0" <?= $category['status'] == 0 ? 'selected' : '' ?>>Inactive</option>
+                                <option value="1" <?= $category['status'] == 1 ? 'selected' : '' ?>>Hiện</option>
+                                <option value="0" <?= $category['status'] == 0 ? 'selected' : '' ?>>Ẩn</option>
                             </select>
                         </div>
 
@@ -57,22 +57,24 @@
                         <div class="mb-3">
                             <label class="form-label">Danh mục cha</label>
                             <select class="form-select" name="parent_id">
-    <option value="0" <?= ($category['parent_id'] === null ? 'selected' : '') ?>>
-        -- Root (Không có cha) <?= ($category['parent_id'] === null ? '(Hiện tại)' : '') ?> --
-    </option>
+                                <option value="0" <?= ($category['parent_id'] === null ? 'selected' : '') ?>>
+                                    -- Root (Không có cha) <?= ($category['parent_id'] === null ? '(Hiện tại)' : '') ?>
+                                    --
+                                </option>
 
-    <?php foreach ($allCategories as $parent): ?>
-        <?php
-            // Không cần skip chính nó nữa
-            $selected = ((int)$parent['id'] === (int)$category['parent_id']) ? 'selected' : '';
-            $label = htmlspecialchars($parent['name']);
-            if ((int)$parent['id'] === (int)$category['parent_id']) $label .= " (Hiện tại)";
-        ?>
-        <option value="<?= $parent['id'] ?>" <?= $selected ?>>
-            <?= $label ?>
-        </option>
-    <?php endforeach; ?>
-</select>
+                                <?php foreach ($allCategories as $parent): ?>
+                                    <?php
+                                    if ((int)$parent['id'] === (int)$category['id']) continue;
+                                    $selected = ((int) $parent['id'] === (int) $category['parent_id']) ? 'selected' : '';
+                                    $label = htmlspecialchars($parent['name']);
+                                    if ((int) $parent['id'] === (int) $category['parent_id'])
+                                        $label .= " (Hiện tại)";
+                                    ?>
+                                    <option value="<?= $parent['id'] ?>" <?= $selected ?>>
+                                        <?= $label ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
 
 
                             <?php if (!empty($errors['parent_id'])): ?>

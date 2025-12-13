@@ -39,17 +39,13 @@ class ProductController
                 $errors['category_id'] = "Danh mục không được để trống";
             }
 
-            // Giá
             if (!isset($_POST['price']) || $_POST['price'] === '') {
                 $errors['price'] = "Giá không được để trống";
             } elseif (!is_numeric($_POST['price']) || $_POST['price'] < 0) {
                 $errors['price'] = "Giá phải >= 0";
             }
 
-            // Trạng thái
-            if (!isset($_POST['status'])) {
-                $errors['status'] = "Trạng thái không được để trống";
-            }
+            if (!isset($_POST['status'])) $errors['status'] = "Trạng thái không được để trống";
 
             // Trùng tên
             if (!empty($_POST['title']) && $this->productModel->checkDuplicateTitle($_POST['title'])) {
@@ -58,13 +54,13 @@ class ProductController
 
             // Không lỗi → lưu
             if (empty($errors)) {
-
-                // Upload ảnh
-                $image = "khong_co_hinh_anh"; // default nếu không upload
+                $image = "no_image.png"; // default
 
                 if (!empty($_FILES['image']['name'])) {
                     $image = time() . "_" . $_FILES['image']['name'];
-                    move_uploaded_file($_FILES['image']['tmp_name'], "Uploads/Product/" . $image);
+                    $uploadDir = "uploads/products/";
+                    if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+                    move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $image);
                 }
 
                 $data = [
@@ -120,9 +116,7 @@ class ProductController
                 $errors['price'] = "Giá phải >= 0";
             }
 
-            if (!isset($_POST['status'])) {
-                $errors['status'] = "Trạng thái không được để trống";
-            }
+            if (!isset($_POST['status'])) $errors['status'] = "Trạng thái không được để trống";
 
             // Trùng tên
             if (!empty($_POST['title']) && $this->productModel->checkDuplicateTitle($_POST['title'], $id_update)) {
@@ -131,12 +125,12 @@ class ProductController
 
             // Không lỗi → update
             if (empty($errors)) {
-
-                // Xử lý ảnh
-                $image = $_POST['old_image'] ?? null;
+                $image = $_POST['old_image'] ?? "no_image.png";
                 if (!empty($_FILES['image']['name'])) {
                     $image = time() . "_" . $_FILES['image']['name'];
-                    move_uploaded_file($_FILES['image']['tmp_name'], "uploads/products/" . $image);
+                    $uploadDir = "uploads/products/";
+                    if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+                    move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $image);
                 }
 
                 $data = [
@@ -150,10 +144,13 @@ class ProductController
                     ':id' => $id_update
                 ];
 
-                $this->productModel->updateProduct($id_update, $data);
-
-                header("Location: admin.php?page=product");
-                exit;
+                try {
+                    $this->productModel->updateProduct($id_update, $data);
+                    header("Location: admin.php?page=product");
+                    exit;
+                } catch (PDOException $e) {
+                    $errors['db'] = "Lỗi cập nhật sản phẩm: " . $e->getMessage();
+                }
             }
         }
 
@@ -180,7 +177,11 @@ class ProductController
         $id = $_GET['id'] ?? null;
 
         if ($id) {
-            $this->productModel->deleteProduct($id);
+            try {
+                $this->productModel->deleteProduct($id);
+            } catch (PDOException $e) {
+                error_log("Lỗi xóa sản phẩm: " . $e->getMessage());
+            }
         }
 
         header("Location: admin.php?page=product");

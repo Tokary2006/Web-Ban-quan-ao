@@ -41,7 +41,7 @@ class CategoryController
             // Validate name
             if ($name === '') {
                 $errors['name'] = "Tên danh mục không được để trống";
-            } elseif ($this->categoryModel->loiTrung($name)) {
+            } elseif ($this->categoryModel->getCategoryByName($name)) {
                 $errors['name'] = "Tên danh mục đã tồn tại";
             }
 
@@ -60,17 +60,32 @@ class CategoryController
                 $errors['status'] = "Vui lòng chọn trạng thái hợp lệ";
             }
 
-            // Nếu không có lỗi
+            if (!empty($errors)) {
+                $old = [
+                    'name' => $name,
+                    'description' => $description,
+                    'slug' => $slug,
+                    'status' => $status,
+                    'parent_id' => $parent_id
+                ];
+                $allCategories = $this->categoryModel->getAll();
+                require "Views/Admin/Category/create.php";
+                return;
+            }
+
             if (empty($errors)) {
                 $data = [
-                    'parent_id'  => $parent_id,
-                    'name'       => $name,
-                    'description'=> $description,
-                    'slug'       => $slug,
-                    'status'     => $status
+                    'parent_id' => $parent_id,
+                    'name' => $name,
+                    'description' => $description,
+                    'slug' => $slug,
+                    'status' => $status
                 ];
 
                 $this->categoryModel->create($data);
+
+                $_SESSION['success'] = "Thêm danh mục thành công";
+
                 header("Location: admin.php?page=category");
                 exit;
             }
@@ -104,12 +119,12 @@ class CategoryController
             $status = $_POST['status'] ?? 1;
             $parent_id = $_POST['parent_id'] ?? '';
 
-
-
             if ($name === '') {
                 $errors['name'] = "Tên danh mục không được để trống";
-            } elseif ($this->categoryModel->loiTrung($name, $id)) {
-                $errors['name'] = "Tên danh mục đã tồn tại";
+            } elseif (!empty($id)) {
+                if ($this->categoryModel->getCategoryByName($name, $id)) {
+                    $errors['name'] = "Tên danh mục đã tồn tại";
+                }
             }
 
             if ($description === '') {
@@ -127,14 +142,17 @@ class CategoryController
 
             if (empty($errors)) {
                 $data = [
-                    'parent_id'  => $parent_id,
-                    'name'       => $name,
-                    'description'=> $description,
-                    'slug'       => $slug,
-                    'status'     => $status
+                    'parent_id' => $parent_id,
+                    'name' => $name,
+                    'description' => $description,
+                    'slug' => $slug,
+                    'status' => $status
                 ];
 
                 $this->categoryModel->update($id, $data);
+
+                $_SESSION['success'] = "Cập nhật danh mục thành công";
+
                 header("Location: admin.php?page=category");
                 exit;
             }
@@ -154,6 +172,7 @@ class CategoryController
         if ($id) {
             $this->categoryModel->deleteWithChild($id);
         }
+         $_SESSION['success'] = "Xóa danh mục thành công";
         header("Location: admin.php?page=category");
         exit;
     }
