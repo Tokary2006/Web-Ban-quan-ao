@@ -170,12 +170,6 @@
                   <div data-i18n="Basic Inputs">Danh sách</div>
                 </a>
               </li>
-
-              <li class="menu-item <?= ($page == 'user' && $action == 'create') ? 'active' : '' ?>">
-                <a href="admin.php?page=user&action=create" class="menu-link">
-                  <div data-i18n="Input groups">Thêm</div>
-                </a>
-              </li>
             </ul>
           </li>
 

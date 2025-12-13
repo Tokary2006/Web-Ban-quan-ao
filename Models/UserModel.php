@@ -147,5 +147,19 @@ class UserModel
     }
 
 
+    public function getOne($id)
+    {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateStatus($id, $active)
+    {
+        $sql = "UPDATE users SET active = ? WHERE id = ?";
+        $stmt = $this->connection->prepare($sql);
+        return $stmt->execute([$active, $id]);
+    }
 
 }

@@ -43,11 +43,9 @@ switch ($page) {
 
     case "user":
         require "Controllers/Admin/UserController.php";
-        $userControl = new UserController();
+        $userControl = new UserController($connection);
         switch ($action) {
             case "index":   $userControl->index();   break;
-            case "create":  $userControl->create();  break;
-            case "edit":    $userControl->store();   break;
             case "profile": $userControl->profile(); break;
             default:        $userControl->index();   break;
         }
