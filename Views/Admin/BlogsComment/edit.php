@@ -33,8 +33,9 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Tác Giả (User ID)</label>
                             <p class="form-control-static">
-                                <?= htmlspecialchars($user['fullname']) ?> (ID: <?= $user['id'] ?>) -
-                                <small><?= htmlspecialchars($user['email']) ?></small>
+                               <?= htmlspecialchars($user['full_name'] ?? 'Khách') ?> (ID: <?= $user['id'] ?? 'null' ?>) -
+<small><?= htmlspecialchars($user['email'] ?? 'Không có email') ?></small>
+
                             </p>
                         </div>
                     </div>
@@ -42,9 +43,10 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                     <div class="mb-4">
                         <label class="form-label fw-bold">Nội Dung Bình Luận (*)</label>
 
-                        <textarea class="form-control" rows="6" name="content_text" ><?= 
-                            htmlspecialchars($old['content_text'] ?? $comment['content_text'])
-                        ?></textarea>
+                     <textarea class="form-control" rows="6" name="content_text"><?= 
+    htmlspecialchars($old['content_text'] ?? $comment['content'])
+?></textarea>
+
 
                         <?php if (!empty($errors['content_text'])): ?>
                             <p class="text-danger mt-1"><?= $errors['content_text'] ?></p>
@@ -57,13 +59,13 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Cập Nhật Trạng Thái</label>
 
-                            <select class="form-select" name="status_enum" >
-                                <option value="1" <?= ($old['status_enum'] ?? $comment['status_enum']) == 1 ? "selected" : "" ?>>Ẩn</option>
-                                <option value="0" <?= ($old['status_enum'] ?? $comment['status_enum']) == 0 ? "selected" : "" ?>>Hiển thị</option>
+                            <select class="form-select" name="status" >
+                                <option value="1" <?= ($old['status'] ?? $comment['status']) == 1 ? "selected" : "" ?>>Ẩn</option>
+                                <option value="0" <?= ($old['status'] ?? $comment['status']) == 0 ? "selected" : "" ?>>Hiển thị</option>
                             </select>
 
-                            <?php if (!empty($errors['status_enum'])): ?>
-                                <p class="text-danger mt-1"><?= $errors['status_enum'] ?></p>
+                            <?php if (!empty($errors['status'])): ?>
+                                <p class="text-danger mt-1"><?= $errors['status'] ?></p>
                             <?php endif; ?>
                         </div>
 

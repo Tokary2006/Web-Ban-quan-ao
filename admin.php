@@ -64,16 +64,26 @@ switch ($page) {
         }
         break;
 
-    case "order":
-        require "Controllers/Admin/OrderController.php";
-        $orderControl = new OrderController();
-        switch ($action) {
-            case "index":  $orderControl->index();  break;
-            case "create": $orderControl->create(); break;
-            case "edit":   $orderControl->store();  break;
-            default:       $orderControl->index();  break;
-        }
-        break;
+   case "order":
+    require "Controllers/Admin/OrderController.php";
+    $orderControl = new OrderController($connection);
+
+    switch ($action) {
+        case "index":
+            $orderControl->index();
+            break;
+           case "edit":
+            $orderControl->edit();
+            break;
+              case "update_status": 
+            $orderControl->update_status();
+            break;
+        default:
+            $orderControl->index();
+            break;
+    }
+    break;
+
     case "blog":
         require "Controllers/Admin/BlogController.php";
         $blogControl = new BlogController($connection);

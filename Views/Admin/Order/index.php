@@ -1,96 +1,123 @@
+<style>
+/* Fix bảng order không bị cắt nút */
+.content-wrapper,
+.card,
+.table-responsive {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+</style>
+
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản lý/</span> Đơn hàng</h4>
+
+        <h4 class="fw-bold py-3 mb-4">
+            <span class="text-muted fw-light">Quản lý /</span> Đơn hàng
+        </h4>
+
         <div class="card p-3">
             <h3 class="card-header">Danh sách đơn hàng</h3>
-            <div class="table-responsive">
-                <table class="table table-striped" id="orderTable">
-                    <thead>
+
+            <div class="table-responsive mt-3">
+                <table class="table table-striped text-center" id="orderTable">
+                    <thead class="table-light">
                         <tr>
                             <th>ID</th>
-                            <th>Mã Đơn Hàng</th>
-                            <th>Mã Khách Hàng</th>
-                            <th>Tổng Tiền</th>
-                            <th>PT Thanh Toán</th>
-                            <th>Trạng Thái</th>
-                            <th>Địa Chỉ Giao Hàng</th>
+                            <th>Mã đơn hàng</th>
+                            <th>Mã KH</th>
+                            <th>Tổng tiền</th>
+                            <th>Thanh toán</th>
+                            <th>Trạng thái</th>
+                            <th>Địa chỉ giao hàng</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
-                    <tbody class="table-border-bottom-0 text-center">
 
-                        <tr>
-                            <td>1001</td>
-                            <td><span class="fw-bold">DH20251122-0001</span></td>
-                            <td>25</td>
-                            <td><span class="text-success fw-bold">150.000đ</span></td>
-                            <td>COD</td>
-                            <td><span class="badge bg-label-success me-1">Đã hoàn thành</span></td>
-                            <td>Số 123, Q. Ninh Kiều, Cần Thơ</td>
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="admin.php?page=order&action=edit"><i
-                                                class="bx bx-show me-1"></i> Chi tiết</a>
-                                                <a class="dropdown-item" href="javascript:void(0);"><i
-                                                class="bx bx-trash me-1 btn-danger"></i> Xóa</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                    <tbody>
+                    <?php if (!empty($orders)): ?>
+                        <?php foreach ($orders as $order): ?>
+                            <tr>
+                                <td><?= $order['id'] ?></td>
 
-                        <tr>
-                            <td>1002</td>
-                            <td><span class="fw-bold">DH20251122-0002</span></td>
-                            <td>48</td>
-                            <td><span class="text-success fw-bold">450.500đ</span></td>
-                            <td>bank</td>
-                            <td><span class="badge bg-label-primary me-1">Đang xử lý</span></td>
-                            <td>24/7, Q. 1, TP. Hồ Chí Minh</td>
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="admin.php?page=order&action=view&id=1002"><i
-                                                class="bx bx-show me-1"></i> Chi tiết</a>
-                                                <a class="dropdown-item" href="javascript:void(0);"><i
-                                                class="bx bx-trash me-1 btn-danger"></i> Xóa</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                                <td class="fw-bold">
+                                    <?= $order['order_code'] ?>
+                                </td>
 
-                        <tr>
-                            <td>1003</td>
-                            <td><span class="fw-bold">DH20251123-0003</span></td>
-                            <td>12</td>
-                            <td><span class="text-success fw-bold">99.000đ</span> </td>
-                            <td>bank</td>
-                            <td><span class="badge bg-label-danger me-1">Đã hủy</span></td>
-                            <td>200 Láng, Đống Đa, Hà Nội</td>
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="admin.php?page=orders&action=view&id=1003"><i
-                                                class="bx bx-show me-1"></i> Chi tiết</a>
-                                                <a class="dropdown-item" href="javascript:void(0);"><i
-                                                class="bx bx-trash me-1 btn-danger"></i> Xóa</a>
+                                <td><?= $order['user_id'] ?></td>
+
+                                <td class="fw-bold text-success">
+                                    <?= number_format((float)$order['total_price']) ?>đ
+                                </td>
+
+                                <td><?= $order['payment_method'] ?></td>
+
+                                <!-- STATUS -->
+                                <td>
+                                    <?php
+                                        $statusMap = [
+                                            'new' => [
+                                                'text' => 'Chờ xác nhận',
+                                                'class' => 'bg-label-warning'
+                                            ],
+                                            'processing' => [
+                                                'text' => 'Đang xử lý',
+                                                'class' => 'bg-label-info'
+                                            ],
+                                            'delivering' => [
+                                                'text' => 'Đang giao hàng',
+                                                'class' => 'bg-label-primary'
+                                            ],
+                                            'completed' => [
+                                                'text' => 'Đã hoàn thành',
+                                                'class' => 'bg-label-success'
+                                            ],
+                                            'cancelled' => [
+                                                'text' => 'Đã hủy',
+                                                'class' => 'bg-label-danger'
+                                            ],
+                                        ];
+
+                                        $status = $order['order_status'];
+                                        $text  = $statusMap[$status]['text']  ?? $status;
+                                        $class = $statusMap[$status]['class'] ?? 'bg-label-secondary';
+                                    ?>
+                                    <span class="badge <?= $class ?>">
+                                        <?= $text ?>
+                                    </span>
+                                </td>
+
+                                <td><?= $order['ship_address'] ?></td>
+
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item"
+                                               href="admin.php?page=order&action=edit&id=<?= $order['id'] ?>">
+                                                <i class="bx bx-show me-1"></i> Chi tiết
+                                            </a>
+
+                                            <a class="dropdown-item"
+                                               onclick="return confirm('Xác nhận xóa đơn hàng?')"
+                                               href="admin.php?page=order&action=delete&id=<?= $order['id'] ?>">
+                                                <i class="bx bx-trash me-1"></i> Xóa
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="8">Không có đơn hàng nào</td>
                         </tr>
+                    <?php endif; ?>
                     </tbody>
+
                 </table>
             </div>
         </div>

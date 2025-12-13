@@ -3,18 +3,25 @@ require_once "Models/BlogsCommentModel.php";
 
 class BlogsCommentController {
 
+    // LIST
     public function index() {
         $db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
         $conn = $db->connect();
 
-        $commentModel = new BlogsCommentModel($conn);
-        $comments = $commentModel->getAll();
+        $model = new BlogsCommentModel($conn);
+        $comments = $model->getAll();
 
         require "Views/Admin/BlogsComment/index.php";
     }
 
+    // EDIT
     public function edit() {
         session_start();
+
+        if (!isset($_GET['id'])) {
+            header("Location: admin.php?page=blogscomment");
+            exit;
+        }
 
         $id = $_GET['id'];
 
@@ -23,11 +30,8 @@ class BlogsCommentController {
         $model = new BlogsCommentModel($conn);
 
         $comment = $model->getById($id);
-
-        // Trường hợp không tìm thấy ID
         if (!$comment) {
-            $_SESSION['errors'] = ["not_found" => "Không tìm thấy bình luận!"];
-            header("Location: admin.php?page=blogscomment&action=index");
+            header("Location: admin.php?page=blogscomment");
             exit;
         }
 
@@ -37,61 +41,44 @@ class BlogsCommentController {
         require "Views/Admin/BlogsComment/edit.php";
     }
 
+    // UPDATE
     public function update() {
         session_start();
 
-        $id = $_POST['id'] ?? null;
+        $id      = $_POST['id'] ?? null;
         $content = trim($_POST['content_text'] ?? '');
-        $status = $_POST['status_enum'] ?? null;
 
-        $errors = [];
-        $old = $_POST;
+        $status  = $_POST['status'] ?? null;
 
-        // Validate ID
-        if (!$id) {
-            $errors['id'] = "ID không hợp lệ!";
-        }
-
-        // Validate content
-        if (empty($content)) {
-            $errors['content_text'] = "Vui lòng nhập nội dung bình luận!";
-        }
-
-        // Validate status
-        if ($status !== "0" && $status !== "1") {
-            $errors['status_enum'] = "Trạng thái không hợp lệ!";
-        }
-
-        // Nếu lỗi → quay lại form
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            $_SESSION['old_data'] = $old;
-
-            header("Location: admin.php?page=blogscomment&action=edit&id=" . $id);
+        if (!$id || $content === '' || !in_array($status, ['0','1'])) {
+            header("Location: admin.php?page=blogscomment&action=edit&id=".$id);
             exit;
         }
 
-        // UPDATE DB
         $db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
         $conn = $db->connect();
         $model = new BlogsCommentModel($conn);
 
         $model->update($id, $content, $status);
 
-        header("Location: admin.php?page=blogscomment&action=index");
+        header("Location: admin.php?page=blogscomment");
         exit;
     }
 
+    // DELETE
     public function delete() {
-        $id = $_GET['id'];
+        if (!isset($_GET['id'])) {
+            header("Location: admin.php?page=blogscomment");
+            exit;
+        }
 
         $db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
         $conn = $db->connect();
         $model = new BlogsCommentModel($conn);
 
-        $model->delete($id);
+        $model->delete($_GET['id']);
 
-        header("Location: admin.php?page=blogscomment&action=index");
-        exit();
+        header("Location: admin.php?page=blogscomment");
+        exit;
     }
 }

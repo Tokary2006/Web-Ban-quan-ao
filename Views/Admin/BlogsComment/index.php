@@ -1,3 +1,13 @@
+<style>
+/* Fix bảng order không bị cắt nút */
+.content-wrapper,
+.card,
+.table-responsive {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+</style>
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Quản lý /</span> Bình luận Bài viết</h4>
@@ -36,16 +46,16 @@
                 <span class="fw-bold text-muted">Khách vãng lai</span><br>
                 <small>(ID: null)</small>
             <?php else: ?>
-                <span class="fw-bold"><?= htmlspecialchars($c['username']) ?></span><br>
+                <span class="fw-bold"><?= htmlspecialchars($c['full_name']) ?></span><br>
                 <small>(User ID: <?= $c['user_id'] ?>)</small>
             <?php endif; ?>
         </td>
 
         <!-- STATUS -->
         <td>
-            <?php if ($c['status_enum'] == '0'): ?>
+            <?php if ($c['status'] == '0'): ?>
                 <span class="badge bg-label-success me-1">Hiển thị</span>
-            <?php elseif ($c['status_enum'] == '1'): ?>
+            <?php elseif ($c['status'] == '1'): ?>
                 <span class="badge bg-label-danger me-1">Đã Ẩn</span>
             <?php else: ?>
                 <span class="badge bg-label-secondary me-1">Không rõ</span>

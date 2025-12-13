@@ -191,11 +191,6 @@
                 </a>
               </li>
 
-              <li class="menu-item <?= ($page == 'order' && $action == 'create') ? 'active' : '' ?>">
-                <a href="admin.php?page=order&action=create" class="menu-link">
-                  <div data-i18n="Input groups">Thêm</div>
-                </a>
-              </li>
             </ul>
           </li>
 
