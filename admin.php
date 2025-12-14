@@ -107,7 +107,7 @@ switch ($page) {
         break;
     case "blogscomment":
         require "Controllers/Admin/BlogsCommentController.php";
-        $blogscmControl = new BlogsCommentController();
+        $blogscmControl = new BlogsCommentController($connection);
         switch ($action) {
             case "index":  $blogscmControl->index();  break; 
             case "edit":   $blogscmControl->edit();  break;
