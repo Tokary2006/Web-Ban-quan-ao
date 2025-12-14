@@ -19,12 +19,7 @@
                 <h4 class="mb-4">Bình luận</h4>
                 <form>
                   <div class="form-group">
-                    <label for="name">Họ và tên</label>
-                    <input type="text" class="form-control" id="name" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="message">Nội dung</label>
-                    <textarea id="message" class="form-control" rows="4" required></textarea>
+                    <textarea id="message" class="form-control" rows="4" required placeholder="Thêm vào bình luận."></textarea>
                   </div>
                   <button type="submit" class="btn btn-primary">Gửi bình luận</button>
                 </form>

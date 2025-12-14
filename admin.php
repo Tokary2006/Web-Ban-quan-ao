@@ -10,6 +10,15 @@ ob_start();
 require_once 'config.php';
 require_once 'Models/Database.php';
 
+if (
+    !isset($_SESSION["user"]) ||
+    $_SESSION["user"]["role"] !== 1
+) {
+    header("location: index.php");
+    exit;
+}
+
+
 $db = new Database(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 $connection = $db->connect();
 
