@@ -1,7 +1,7 @@
 <?php
 require_once 'Models/ProductModel.php';
 require_once 'Models/CategoryModel.php';
-require_once 'Models/CommentProductModel.php';
+require_once 'Models/ProductCommentModel.php';
 
 class ProductController
 {
@@ -12,7 +12,7 @@ class ProductController
     {
         $this->productModel = new productModel($connection);
         $this->categoryModel = new categoryModel($connection);
-        $this->commentModel = new CommentProductModel($connection);
+        $this->commentModel = new ProductCommentModel($connection);
 
     }
     public function shop()

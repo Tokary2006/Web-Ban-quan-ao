@@ -1,12 +1,12 @@
 <?php
-require_once 'Models/CommentProductModel.php';
+require_once 'Models/ProductCommentModel.php';
 
 class CommentProductController
 {
     private $commentModel;
     public function __construct($connection)
     {
-        $this->commentModel = new CommentProductModel($connection);
+        $this->commentModel = new ProductCommentModel($connection);
     }
 
     public function addComment()

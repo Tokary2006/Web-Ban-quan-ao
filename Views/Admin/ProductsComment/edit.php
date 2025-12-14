@@ -23,7 +23,8 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Tác Giả (User ID)</label>
                             <p class="form-control-static">
-                                <?= $comment['user_name'] ?? 'Khách vãng lai' ?> (ID: <?= $comment['user_id'] ?? 'null' ?>)
+                                <?= $comment['user_name'] ?? 'Khách vãng lai' ?> (ID:
+                                <?= $comment['user_id'] ?? 'null' ?>)
                             </p>
                         </div>
                     </div>
@@ -31,9 +32,26 @@
                     <!-- Nội dung bình luận -->
                     <div class="mb-4">
                         <label for="comment_content" class="form-label fw-bold">Nội Dung Bình Luận (*)</label>
-                        <textarea class="form-control" id="comment_content" name="content" rows="6" required><?= htmlspecialchars($comment['content']) ?></textarea>
-                        <small class="form-text text-muted">Có thể chỉnh sửa nội dung nếu cần thiết.</small>
+                        <textarea class="form-control" id="comment_content" name="content" rows="6" disabled
+                            required><?= htmlspecialchars($comment['content']) ?></textarea>
                     </div>
+
+                    <!-- Trạng thái bình luận -->
+                    <div class="mb-4">
+                        <label for="status" class="form-label fw-bold">Trạng Thái Bình Luận</label>
+                        <select name="status" id="status" class="form-select" required>
+                            <option value="0" <?= $comment['status'] == 0 ? 'selected' : '' ?>>
+                                Chờ duyệt
+                            </option>
+                            <option value="1" <?= $comment['status'] == 1 ? 'selected' : '' ?>>
+                                Đã duyệt
+                            </option>
+                            <option value="2" <?= $comment['status'] == 2 ? 'selected' : '' ?>>
+                                Ẩn
+                            </option>
+                        </select>
+                    </div>
+
 
                     <hr>
 
@@ -49,9 +67,12 @@
                     <div class="mt-4 d-flex justify-content-between">
                         <div>
                             <button type="submit" class="btn btn-primary me-2">Lưu Thay Đổi</button>
-                            <a href="admin.php?page=productscomment&action=index" class="btn btn-secondary">Hủy / Quay lại</a>
+                            <a href="admin.php?page=productscomment&action=index" class="btn btn-secondary">Hủy / Quay
+                                lại</a>
                         </div>
-                        <a href="admin.php?page=productscomment&action=delete&id=<?= $comment['id'] ?>" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa bình luận này?')">Xóa Bình Luận</a>
+                        <a href="admin.php?page=productscomment&action=delete&id=<?= $comment['id'] ?>"
+                            class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa bình luận này?')">Xóa
+                            Bình Luận</a>
                     </div>
 
                 </form>

@@ -48,9 +48,9 @@ class ProfileController
             $errors['email'] = "Email không được để trống.";
 
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
-            $oldImage = $this->userModel->getOneUser($userId, 1)['image']; 
+            $oldImage = $this->userModel->getOneUser($userId, 1)['image'];
             if (!empty($oldImage) && file_exists("Uploads/Avatars/" . $oldImage)) {
-                unlink("Uploads/Avatars/" . $oldImage); 
+                unlink("Uploads/Avatars/" . $oldImage);
             }
 
             $extension = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
@@ -252,4 +252,22 @@ class ProfileController
         header("Location: index.php?page=profile&tab=orders");
         exit;
     }
+
+    public function orderDetail()
+    {
+        $userId = $_SESSION['user']['id'];
+        $order_id = $_GET['id'] ?? null;
+
+        if (!$order_id) {
+            $_SESSION['error'] = "Đơn hàng không tồn tại!";
+            header("Location: index.php?page=profile&tab=orders");
+            exit;
+        }
+
+        $order = $this->orderModel->getOrder($order_id, $userId);
+        $orderItems = $this->orderModel->getItems($order_id);
+
+        require "Views/Client/order-detail.php";
+    }
+
 }

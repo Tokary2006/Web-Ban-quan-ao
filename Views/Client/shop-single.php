@@ -49,7 +49,7 @@
           <?php else: ?>
             <p class="text-muted">Hết hàng</p>
           <?php endif; ?>
-          <button type="submit" name="add_to_cart" class="buy-now btn btn-sm px-4 py-3 btn-primary">Thêm vào giỏ
+          <button type="submit" name="add_to_cart" class="buy-now btn btn-sm px-4 py-3 btn-primary d-inline-flex align-items-center justify-content-center">Thêm vào giỏ
             hàng</button>
         </form>
       </div>
@@ -113,11 +113,11 @@
                 <div class="border-bottom mb-3 pb-2 d-flex gap-3">
 
                   <!-- Avatar -->
-                  <img src="Uploads/User/<?= htmlspecialchars($c['image'] ?? 'default.png') ?>" width="45" height="45"
+                  <img src="Uploads/Avatars/<?= htmlspecialchars($c['image'] ?? 'default.png') ?>" width="45" height="45"
                     class="rounded-circle" onerror="this.src='https://placehold.co/45x45';">
 
-                  <div>
-                    <strong><?= htmlspecialchars($c['username']) ?></strong>
+                  <div class="gap-3">
+                    <strong><?= htmlspecialchars($c['full_name']) ?></strong>
                     <small class="text-muted">
                       • <?= date('d/m/Y H:i', strtotime($c['created_at'])) ?>
                     </small>

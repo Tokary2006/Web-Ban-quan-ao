@@ -90,7 +90,7 @@ class OrderModel
                 FROM orders
                 WHERE order_code = :identifier AND user_id = :user_id
                 LIMIT 1";
-        } else { // mặc định theo id
+        } else {
             $sql = "SELECT *
                 FROM orders
                 WHERE id = :identifier AND user_id = :user_id
@@ -105,5 +105,16 @@ class OrderModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getItems($orderId)
+    {
+        $sql = "SELECT od.*, p.title, p.image
+            FROM order_details od
+            JOIN products p ON od.product_id = p.id
+            WHERE od.order_id = :oid";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(params: [':oid' => $orderId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }

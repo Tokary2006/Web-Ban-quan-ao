@@ -118,7 +118,11 @@ switch ($page) {
         $controller = new ProfileController($connection);
         $controller->confirmReceived();
         break;
-
+    case "order-detail":
+        require_once 'Controllers/Client/ProfileController.php';
+        $controller = new ProfileController($connection);
+        $controller->orderDetail();
+        break;
     case "checkout":
         require_once 'Controllers/Client/CheckoutController.php';
         $controller = new CheckoutController($connection);

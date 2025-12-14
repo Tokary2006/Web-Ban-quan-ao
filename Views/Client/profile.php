@@ -39,8 +39,9 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
 
         <!-- User info -->
         <div class="text-center mb-3">
-          <img src="<?= !empty($user['image']) ? 'Uploads/Avatars/' . $user['image'] : 'https://placehold.co/150x150' ?>" 
-               class="rounded-circle border mb-2" style="width:70px; height:70px; object-fit:cover;">
+          <img
+            src="<?= !empty($user['image']) ? 'Uploads/Avatars/' . $user['image'] : 'https://placehold.co/150x150' ?>"
+            class="rounded-circle border mb-2" style="width:70px; height:70px; object-fit:cover;">
           <h6 class="mb-0"><?= $user['full_name'] ?></h6>
           <small class="text-muted"><?= $user['email'] ?></small>
         </div>
@@ -49,13 +50,16 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
 
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <a class="nav-link <?= $activeTab === 'account' ? 'active' : '' ?>" href="index.php?page=profile&tab=account">Thông tin tài khoản</a>
+            <a class="nav-link <?= $activeTab === 'account' ? 'active' : '' ?>"
+              href="index.php?page=profile&tab=account">Thông tin tài khoản</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?= $activeTab === 'orders' ? 'active' : '' ?>" href="index.php?page=profile&tab=orders">Lịch sử mua hàng</a>
+            <a class="nav-link <?= $activeTab === 'orders' ? 'active' : '' ?>"
+              href="index.php?page=profile&tab=orders">Lịch sử mua hàng</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?= $activeTab === 'address' ? 'active' : '' ?>" href="index.php?page=profile&tab=address">Địa chỉ giao hàng</a>
+            <a class="nav-link <?= $activeTab === 'address' ? 'active' : '' ?>"
+              href="index.php?page=profile&tab=address">Địa chỉ giao hàng</a>
           </li>
           <li class="nav-item">
             <a href="/logout.php" class="nav-link text-danger">Đăng xuất</a>
@@ -83,13 +87,15 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
                 <?php if (!empty($errors['avatar'])): ?>
                   <small class="text-danger"><?= $errors['avatar'] ?></small>
                 <?php endif; ?>
-                <img src="<?= !empty($user['image']) ? 'Uploads/Avatars/' . $user['image'] : 'https://placehold.co/150x150' ?>" 
-                     class="rounded-circle mt-3 border" style="width:85px; height:85px; object-fit:cover;">
+                <img
+                  src="<?= !empty($user['image']) ? 'Uploads/Avatars/' . $user['image'] : 'https://placehold.co/150x150' ?>"
+                  class="rounded-circle mt-3 border" style="width:85px; height:85px; object-fit:cover;">
               </div>
 
               <div class="col-md-6">
                 <label class="form-label">Họ tên</label>
-                <input class="form-control" name="fullname" value="<?= htmlspecialchars($_POST['fullname'] ?? $user['full_name']) ?>">
+                <input class="form-control" name="fullname"
+                  value="<?= htmlspecialchars($_POST['fullname'] ?? $user['full_name']) ?>">
                 <?php if (!empty($errors['fullname'])): ?>
                   <small class="text-danger"><?= $errors['fullname'] ?></small>
                 <?php endif; ?>
@@ -97,7 +103,8 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
 
               <div class="col-md-6">
                 <label class="form-label">Số điện thoại</label>
-                <input class="form-control" name="phone" value="<?= htmlspecialchars($_POST['phone'] ?? $user['phone'] ?? '') ?>">
+                <input class="form-control" name="phone"
+                  value="<?= htmlspecialchars($_POST['phone'] ?? $user['phone'] ?? '') ?>">
                 <?php if (!empty($errors['phone'])): ?>
                   <small class="text-danger"><?= $errors['phone'] ?></small>
                 <?php endif; ?>
@@ -105,7 +112,8 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
 
               <div class="col-12">
                 <label class="form-label">Email</label>
-                <input class="form-control" name="email" value="<?= htmlspecialchars($_POST['email'] ?? $user['email']) ?>">
+                <input class="form-control" name="email"
+                  value="<?= htmlspecialchars($_POST['email'] ?? $user['email']) ?>">
                 <?php if (!empty($errors['email'])): ?>
                   <small class="text-danger"><?= $errors['email'] ?></small>
                 <?php endif; ?>
@@ -185,6 +193,12 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
                         <?php endif; ?>
                       </td>
                       <td class="text-end">
+                        <a href="index.php?page=order-detail&id=<?= $o['id'] ?>"
+                          class="btn btn-sm btn-outline-primary me-1 d-inline-flex align-items-center justify-content-center">
+                          Xem chi tiết
+                        </a>
+
+
                         <?php if ($o['order_status'] == 1): ?>
                           <button type="button" class="btn btn-sm btn-success" onclick="showConfirm({
                             message: 'Xác nhận bạn đã nhận được đơn hàng này?',
@@ -222,7 +236,8 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
                       <div class="small text-muted">SĐT: <?= htmlspecialchars($a['recipient_phone']) ?></div>
                     </div>
                     <div class="d-flex align-items-center gap-2" style="gap: 0.5rem;">
-                      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="showEditAddress(<?= $a['id'] ?>)">Sửa</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary"
+                        onclick="showEditAddress(<?= $a['id'] ?>)">Sửa</button>
                       <button type="button" class="btn btn-sm btn-danger" onclick="showConfirm({
                         message: 'Bạn có chắc muốn xóa địa chỉ này?',
                         action: 'index.php?page=delete-address',
@@ -239,7 +254,8 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
                       <input type="hidden" name="id" value="<?= $a['id'] ?>">
                       <div class="mb-2">
                         <label class="form-label">Tên địa chỉ</label>
-                        <input type="text" name="address_name" class="form-control" value="<?= htmlspecialchars($a['address_name']) ?>">
+                        <input type="text" name="address_name" class="form-control"
+                          value="<?= htmlspecialchars($a['address_name']) ?>">
                       </div>
                       <div class="mb-2">
                         <label class="form-label">Thành phố</label>
@@ -247,15 +263,18 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
                       </div>
                       <div class="mb-2">
                         <label class="form-label">Địa chỉ chi tiết</label>
-                        <textarea name="full_address" class="form-control"><?= htmlspecialchars($a['full_address']) ?></textarea>
+                        <textarea name="full_address"
+                          class="form-control"><?= htmlspecialchars($a['full_address']) ?></textarea>
                       </div>
                       <div class="mb-2">
                         <label class="form-label">Số điện thoại người nhận</label>
-                        <input type="text" name="recipient_phone" class="form-control" value="<?= htmlspecialchars($a['recipient_phone']) ?>">
+                        <input type="text" name="recipient_phone" class="form-control"
+                          value="<?= htmlspecialchars($a['recipient_phone']) ?>">
                       </div>
                       <div class="text-end">
                         <button class="btn btn-success btn-sm">Lưu</button>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="hideEditAddress(<?= $a['id'] ?>)">Hủy</button>
+                        <button type="button" class="btn btn-secondary btn-sm"
+                          onclick="hideEditAddress(<?= $a['id'] ?>)">Hủy</button>
                       </div>
                     </form>
                   </div>
@@ -266,37 +285,43 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
             <?php endif; ?>
 
             <!-- Nút thêm địa chỉ -->
-            <button type="button" class="btn btn-primary btn-sm mt-2" id="showAddAddressForm" style="display: <?= $showAddForm ? 'none' : 'inline-block' ?>;">Thêm địa chỉ</button>
+            <button type="button" class="btn btn-primary btn-sm mt-2" id="showAddAddressForm"
+              style="display: <?= $showAddForm ? 'none' : 'inline-block' ?>;">Thêm địa chỉ</button>
           </div>
 
           <!-- FORM THÊM ĐỊA CHỈ (ẨN) -->
-          <div id="addAddressForm" class="border rounded p-4 shadow-sm bg-white mt-3" style="display: <?= $showAddForm ? 'block' : 'none' ?>;">
+          <div id="addAddressForm" class="border rounded p-4 shadow-sm bg-white mt-3"
+            style="display: <?= $showAddForm ? 'block' : 'none' ?>;">
             <h5 class="mb-3">Thêm địa chỉ mới</h5>
             <form action="index.php?page=address-add" method="POST">
               <div class="mb-3">
                 <label class="form-label">Tên địa chỉ</label>
-                <input type="text" name="title" class="form-control" value="<?= htmlspecialchars($oldData['title'] ?? '') ?>">
+                <input type="text" name="title" class="form-control"
+                  value="<?= htmlspecialchars($oldData['title'] ?? '') ?>">
                 <?php if (!empty($errors['title'])): ?>
                   <small class="text-danger"><?= $errors['title'] ?></small>
                 <?php endif; ?>
               </div>
               <div class="mb-3">
                 <label class="form-label">Thành phố</label>
-                <input type="text" name="city" class="form-control" value="<?= htmlspecialchars($oldData['city'] ?? '') ?>">
+                <input type="text" name="city" class="form-control"
+                  value="<?= htmlspecialchars($oldData['city'] ?? '') ?>">
                 <?php if (!empty($errors['city'])): ?>
                   <small class="text-danger"><?= $errors['city'] ?></small>
                 <?php endif; ?>
               </div>
               <div class="mb-3">
                 <label class="form-label">Địa chỉ chi tiết</label>
-                <textarea name="full_address" class="form-control"><?= htmlspecialchars($oldData['full_address'] ?? '') ?></textarea>
+                <textarea name="full_address"
+                  class="form-control"><?= htmlspecialchars($oldData['full_address'] ?? '') ?></textarea>
                 <?php if (!empty($errors['full_address'])): ?>
                   <small class="text-danger"><?= $errors['full_address'] ?></small>
                 <?php endif; ?>
               </div>
               <div class="mb-3">
                 <label class="form-label">Số điện thoại người nhận</label>
-                <input type="text" name="recipient_phone" class="form-control" value="<?= htmlspecialchars($oldData['recipient_phone'] ?? '') ?>">
+                <input type="text" name="recipient_phone" class="form-control"
+                  value="<?= htmlspecialchars($oldData['recipient_phone'] ?? '') ?>">
                 <?php if (!empty($errors['recipient_phone'])): ?>
                   <small class="text-danger"><?= $errors['recipient_phone'] ?></small>
                 <?php endif; ?>
@@ -348,7 +373,7 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
     const input = document.getElementById('confirmId');
 
     msg.innerText = message;
-    form.action = action;  
+    form.action = action;
     form.method = method;
     input.name = field;
     input.value = id;
