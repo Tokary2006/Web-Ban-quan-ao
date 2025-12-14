@@ -1,3 +1,4 @@
+<?php unset($_SESSION['error']); ?>
 <form action="index.php?page=place-order" method="POST">
 
   <div class="bg-light py-3">

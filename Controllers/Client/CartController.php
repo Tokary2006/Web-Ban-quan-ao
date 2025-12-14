@@ -1,13 +1,14 @@
 <?php
 require_once 'Models/CartModel.php';
-
+require_once 'Models/ProductModel.php';
 class CartControlller
 {
     private $cartModel;
-
+    private $productModel;
     public function __construct($connection)
     {
         $this->cartModel = new cartModel($connection);
+        $this->productModel = new ProductModel($connection);
     }
 
     public function index()
@@ -24,7 +25,13 @@ class CartControlller
             } elseif (isset($_POST['update_cart'])) {
                 $this->handleUpdateAction();
             } elseif (isset($_POST['checkout'])) {
-                $this->handleUpdateAction();
+                $checkStock = $this->handleUpdateAction();
+
+                if (!$checkStock) {
+                    header("Location: index.php?page=cart");
+                    exit;
+                }
+
                 header("Location: index.php?page=checkout");
                 exit;
             }
@@ -58,6 +65,15 @@ class CartControlller
         $product_id = (int) $product_id;
         $quantity = max(1, (int) $quantity);
 
+        // Lấy stock sản phẩm
+        $stock = $this->productModel->getProductStock($product_id);
+
+        if ($quantity > $stock) {
+            $_SESSION['error'] = "Chỉ còn $stock sản phẩm trong kho.";
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
         if ($product_id <= 0) {
             $_SESSION['error'] = 'ID sản phẩm không hợp lệ.';
             header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -79,7 +95,7 @@ class CartControlller
      */
     private function handleRemoveAction()
     {
-    
+
         $cart_item_id = (int) $_POST['remove_item_id'];
 
         if ($this->cartModel->removeFromCart($cart_item_id)) {
@@ -101,13 +117,28 @@ class CartControlller
             $cart_item_id = (int) $cart_item_id;
             $new_quantity = max(1, (int) $new_quantity);
 
-            if ($this->cartModel->updateQuantity($cart_item_id, $new_quantity)) {
-                $success_count++;
+            // Lấy product_id từ giỏ hàng
+            $cart_item = $this->cartModel->getCartItemById($cart_item_id);
+            if (!$cart_item)
+                continue;
+
+            $stock = $this->productModel->getProductStock($cart_item['product_id']);
+
+            if ($new_quantity > $stock) {
+                $_SESSION['error'] =
+                    "Sản phẩm '{$cart_item['title']}' chỉ còn $stock trong kho.";
+                $new_quantity = $stock;
+                return false;
             }
+
+            $this->cartModel->updateQuantity($cart_item_id, $new_quantity);
+            $success_count++;
         }
+
 
         if ($success_count > 0) {
             $_SESSION['success'] = "Đã cập nhật $success_count mục trong giỏ hàng.";
+            return true;
         } else {
             $_SESSION['error'] = 'Không có mục nào được cập nhật.';
         }

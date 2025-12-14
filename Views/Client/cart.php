@@ -10,6 +10,15 @@
   </div>
 </div>
 
+<?php if (!empty($_SESSION['error'])): ?>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <?= $_SESSION['error'] ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
+
+
 <div class="site-section">
   <div class="container">
 

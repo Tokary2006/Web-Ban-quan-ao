@@ -221,7 +221,7 @@ $avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x15
                       <div class="small text-muted"><?= htmlspecialchars($a['full_address'] . ", " . $a['city']) ?></div>
                       <div class="small text-muted">SĐT: <?= htmlspecialchars($a['recipient_phone']) ?></div>
                     </div>
-                    <div class="d-flex align-items-center gap-2">
+                    <div class="d-flex align-items-center gap-2" style="gap: 0.5rem;">
                       <button type="button" class="btn btn-sm btn-outline-secondary" onclick="showEditAddress(<?= $a['id'] ?>)">Sửa</button>
                       <button type="button" class="btn btn-sm btn-danger" onclick="showConfirm({
                         message: 'Bạn có chắc muốn xóa địa chỉ này?',

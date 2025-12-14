@@ -158,7 +158,7 @@ class CartModel
      */
     public function updateQuantity(int $cart_item_id, int $quantity): bool
     {
-        $quantity = max(1, $quantity); 
+        $quantity = max(1, $quantity);
         $query = "UPDATE {$this->table} SET quantity = :quantity WHERE id = :id";
         try {
             $stmt = $this->connection->prepare($query);
@@ -170,6 +170,16 @@ class CartModel
             return false;
         }
     }
+
+    public function getCartItemById($cart_item_id)
+    {
+        $sql = "SELECT c.*, p.title FROM cart c JOIN products p ON c.product_id = p.id WHERE c.id = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(':id', $cart_item_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 
 }
 

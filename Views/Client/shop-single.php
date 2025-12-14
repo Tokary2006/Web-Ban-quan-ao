@@ -1,3 +1,11 @@
+<?php if (!empty($_SESSION['error'])): ?>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <?= $_SESSION['error'] ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
+
 <div class="site-section">
   <div class="container">
     <div class="row">
@@ -36,6 +44,11 @@
               </div>
             </div>
           </div>
+          <?php if ($product['stock'] > 0): ?>
+            <p class="text-muted">Tồn kho: <?= $product['stock'] ?> sản phẩm</p>
+          <?php else: ?>
+            <p class="text-muted">Hết hàng</p>
+          <?php endif; ?>
           <button type="submit" name="add_to_cart" class="buy-now btn btn-sm px-4 py-3 btn-primary">Thêm vào giỏ
             hàng</button>
         </form>

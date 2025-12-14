@@ -42,16 +42,16 @@ class AddressModel
     }
 
     // Cập nhật địa chỉ
-    public function updateAddress($id, $title, $full_address, $address, $recipient_phone)
+    public function updateAddress($id, $address_name, $full_address, $city, $recipient_phone)
     {
         $stmt = $this->connection->prepare(
             "UPDATE addresses 
-             SET title = :title, full_address = :full_address, address = :address, recipient_phone = :recipient_phone 
+             SET address_name = :address_name, full_address = :full_address, city = :city, recipient_phone = :recipient_phone 
              WHERE id = :id"
         );
-        $stmt->bindValue(':title', $title);
+        $stmt->bindValue(':address_name', $address_name);
         $stmt->bindValue(':full_address', $full_address);
-        $stmt->bindValue(':address', $address);
+        $stmt->bindValue(':city', $city);
         $stmt->bindValue(':recipient_phone', $recipient_phone);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();

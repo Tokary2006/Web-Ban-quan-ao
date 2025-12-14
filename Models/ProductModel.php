@@ -280,7 +280,7 @@ class ProductModel
         $stmt->bindParam(':image', $data['image'], PDO::PARAM_STR);
         $stmt->bindParam(':status', $data['status'], PDO::PARAM_INT);
         $stmt->bindParam(':featured_id', $data['featured_id'], PDO::PARAM_INT);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -291,7 +291,7 @@ class ProductModel
         $sql = "DELETE FROM products WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
 
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -311,5 +311,57 @@ class ProductModel
 
         return $stmt->fetch(PDO::FETCH_ASSOC) ? true : false;
     }
+
+
+    // Lấy tồn kho (hiển thị, kiểm tra giỏ hàng)
+    public function getProductStock($product_id)
+    {
+        $stmt = $this->connection->prepare(
+            "SELECT stock FROM products WHERE id = :id"
+        );
+        $stmt->bindParam(':id', $product_id, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    // Trừ tồn kho (chỉ dùng khi checkout)
+    public function decreaseStock($product_id, $quantity)
+    {
+        // Trừ tồn kho nếu đủ
+        $sql = "
+        UPDATE products
+        SET stock = stock - :qty
+        WHERE id = :id AND stock >= :qty
+    ";
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(':qty', $quantity, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $product_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        if ($stmt->rowCount() !== 1) {
+            return false;
+        }
+
+        $this->updateStatus($product_id);
+
+        return true;
+    }
+
+    private function updateStatus($product_id)
+    {
+        $sql = "
+        UPDATE products
+        SET status = 0, updated_at = NOW()
+        WHERE id = :id AND stock = 0
+    ";
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(':id', $product_id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
 
 }
