@@ -22,26 +22,33 @@
                             <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
 
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Trạng Thái Đơn Hàng</label>
-                               <select name="order_status" class="form-select">
-    <option value="new" <?= $order['order_status']=='new'?'selected':'' ?>>
-        Chờ xác nhận
-    </option>
-    <option value="processing" <?= $order['order_status']=='processing'?'selected':'' ?>>
-        Đang xử lý
-    </option>
-    <option value="delivering" <?= $order['order_status']=='delivering'?'selected':'' ?>>
-        Đang giao hàng
-    </option>
-    <option value="completed" <?= $order['order_status']=='completed'?'selected':'' ?>>
-        Đã hoàn thành
-    </option>
-    <option value="cancelled" <?= $order['order_status']=='cancelled'?'selected':'' ?>>
-        Đã hủy
-    </option>
-</select>
+    <label class="form-label fw-bold">Trạng Thái Đơn Hàng</label>
+    <select name="order_status" class="form-select">
 
-                            </div>
+        <option value="0"
+            <?= $order['order_status'] == 0 ? 'selected' : '' ?>
+            <?= $order['order_status'] == 1 ? 'disabled' : '' ?>
+            <?= $order['order_status'] == 2 ? 'disabled' : '' ?>
+            >
+            Đang xử lý
+        </option>
+
+        <option value="1"
+            <?= $order['order_status'] == 1 ? 'selected' : '' ?>
+            <?= $order['order_status'] == 2 ? 'disabled' : '' ?>
+            >
+            Đang giao hàng
+        </option>
+
+        <option value="2"
+            <?= $order['order_status'] == 2 ? 'selected' : '' ?>
+            <?= $order['order_status'] == 1 ? 'disabled' : '' ?>>
+            Đã hoàn thành
+        </option>
+
+    </select>
+</div>
+
 
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">
@@ -85,22 +92,18 @@
                     <tbody>
                         <?php $subtotal = 0; ?>
                         <?php foreach ($orderDetails as $item): ?>
-                            <?php $subtotal += $item['subtotal']; ?>
+                            <?php $subtotal = $item['quantity'] * $item['price']; ?>
                             <tr>
                                 <td><strong><?= $item['product_name'] ?></strong></td>
                                 <td><?= $item['product_id'] ?></td>
                                 <td><?= number_format($item['price']) ?> đ</td>
                                 <td><?= $item['quantity'] ?></td>
-                                <td><?= number_format($item['subtotal']) ?> đ</td>
+                                <td><?= number_format($subtotal) ?> đ</td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
 
                     <tfoot>
-                        <tr>
-                            <td colspan="4" class="text-end fw-bold">Tổng phụ:</td>
-                            <td class="fw-bold"><?= number_format($subtotal) ?> đ</td>
-                        </tr>
                         <tr class="bg-light">
                             <td colspan="4" class="text-end fw-bold fs-5">TỔNG CỘNG:</td>
                             <td class="fw-bold fs-5 text-success">

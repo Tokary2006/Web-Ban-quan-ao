@@ -56,25 +56,17 @@
                                 <td>
                                     <?php
                                         $statusMap = [
-                                            'new' => [
-                                                'text' => 'Chờ xác nhận',
-                                                'class' => 'bg-label-warning'
-                                            ],
-                                            'processing' => [
+                                            '0' => [
                                                 'text' => 'Đang xử lý',
                                                 'class' => 'bg-label-info'
                                             ],
-                                            'delivering' => [
+                                            '1' => [
                                                 'text' => 'Đang giao hàng',
                                                 'class' => 'bg-label-primary'
                                             ],
-                                            'completed' => [
+                                            '2' => [
                                                 'text' => 'Đã hoàn thành',
                                                 'class' => 'bg-label-success'
-                                            ],
-                                            'cancelled' => [
-                                                'text' => 'Đã hủy',
-                                                'class' => 'bg-label-danger'
                                             ],
                                         ];
 

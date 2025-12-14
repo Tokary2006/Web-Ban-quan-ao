@@ -62,7 +62,6 @@
           <h4>Thông tin sản phẩm</h4>
           <hr>
           <p><?= $product['description'] ?></p>
-          <!-- Nếu muốn, có thể thêm các thông số kỹ thuật -->
           <?php if (!empty($product['specs'])): ?>
             <ul>
               <?php foreach ($product['specs'] as $key => $value): ?>
@@ -88,6 +87,8 @@
         <div class="nonloop-block-3 owl-carousel">
 
           <?php foreach ($relatedProducts as $pro): ?>
+            <?php if ($pro['id'] == $product['id'])
+              continue; ?>
             <div class="item">
               <div class="item-entry">
                 <a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"

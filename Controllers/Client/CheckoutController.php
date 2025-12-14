@@ -97,7 +97,7 @@ class CheckoutController
         }
 
         foreach ($cartItems as $item) {
-            $stock = $stock = $this->productModel->getProductStock($item['product_id']);
+            $stock = $this->productModel->getProductStock($item['product_id']);
             
             if ($item['quantity'] > $stock) {
                 $errors['stock'] =
