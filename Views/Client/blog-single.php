@@ -86,9 +86,9 @@
         <div class="p-4 mb-3 bg-white rounded shadow-sm">
           <h3 class="h5 text-black mb-3">Bài viết nổi bật</h3>
           <ul class="list-unstyled">
-            <li><a href="blog-single.html">Cách phối đồ thông minh</a></li>
-            <li><a href="blog-single.html">Công nghệ trong ngành thời trang</a></li>
-            <li><a href="blog-single.html">Thời trang bền vững</a></li>
+             <?php foreach($blogs as $item): ?>
+            <li><a href="?page=blog-single&slug=<?= $item['slug'] ?>"><?= $item['title'] ?></a></li>
+            <?php endforeach; ?>
           </ul>
         </div>
       </div>

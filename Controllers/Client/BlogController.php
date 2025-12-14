@@ -26,6 +26,7 @@ class BlogController
 
         $slug = $_GET["slug"];
         $blog = $this->BlogModel->getBySlug($slug);
+        $blogs = $this->BlogModel->getAll();
         $comments = $this->BlogModel->getByBlogSlug($slug);
 
         if (!$blog) {
