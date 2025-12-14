@@ -1,16 +1,18 @@
 <?php
 require_once 'Models/ProductModel.php';
 require_once 'Models/CategoryModel.php';
-
+require_once 'Models/CommentProductModel.php';
 
 class ProductController
 {
     private $productModel;
     private $categoryModel;
+    private $commentModel;
     public function __construct($connection)
     {
         $this->productModel = new productModel($connection);
         $this->categoryModel = new categoryModel($connection);
+        $this->commentModel = new CommentProductModel($connection);
 
     }
     public function shop()
@@ -86,6 +88,16 @@ class ProductController
         $relatedProducts = $this->productModel->getAllProducts(1, 6, '', 1, $product['category_id']);
 
         $categories = $this->categoryModel->getAll();
+
+        $comments = $this->commentModel->getByProduct($product['id']);
+
+        $hasPurchased = false;
+        if (isset($_SESSION['user'])) {
+            $hasPurchased = $this->commentModel->hasPurchased(
+                $product['id'],
+                $_SESSION['user']['id']
+            );
+        }
 
         include "Views/Client/shop-single.php";
     }

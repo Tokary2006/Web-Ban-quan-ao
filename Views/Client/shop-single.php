@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <!-- Thông tin chi tiết sản phẩm dưới -->
+    <!-- Thông tin chi tiết -->
     <div class="row mt-5">
       <div class="col-12">
         <div class="border rounded p-4 shadow-sm bg-white">
@@ -72,8 +72,75 @@
         </div>
       </div>
     </div>
+
+    <!-- COMMENT SẢN PHẨM -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="border rounded p-4 shadow-sm bg-white">
+          <h4>Bình luận</h4>
+          <hr>
+
+          <!-- Form gửi comment -->
+          <?php if (isset($_SESSION['user']) && $hasPurchased): ?>
+            <form action="index.php?page=add-comment" method="POST">
+              <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+
+              <div class="mb-3">
+                <textarea name="content" class="form-control" rows="3" placeholder="Nhập bình luận của bạn..."
+                  required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-sm">
+                Gửi bình luận
+              </button>
+            </form>
+
+          <?php elseif (isset($_SESSION['user'])): ?>
+            <p class="text-muted">
+              Bạn cần mua sản phẩm này để có thể bình luận.
+            </p>
+
+          <?php else: ?>
+            <p class="text-muted">
+              Vui lòng <a href="index.php?page=login">đăng nhập</a> để bình luận.
+            </p>
+          <?php endif; ?>
+
+          <!-- Danh sách comment -->
+          <div class="mt-4">
+            <?php if (!empty($comments)): ?>
+              <?php foreach ($comments as $c): ?>
+                <div class="border-bottom mb-3 pb-2 d-flex gap-3">
+
+                  <!-- Avatar -->
+                  <img src="Uploads/User/<?= htmlspecialchars($c['image'] ?? 'default.png') ?>" width="45" height="45"
+                    class="rounded-circle" onerror="this.src='https://placehold.co/45x45';">
+
+                  <div>
+                    <strong><?= htmlspecialchars($c['username']) ?></strong>
+                    <small class="text-muted">
+                      • <?= date('d/m/Y H:i', strtotime($c['created_at'])) ?>
+                    </small>
+                    <p class="mb-1">
+                      <?= nl2br(htmlspecialchars($c['content'])) ?>
+                    </p>
+                  </div>
+
+                </div>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <p class="text-muted">Chưa có bình luận nào.</p>
+            <?php endif; ?>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
+
+
 
 <div class="site-section">
   <div class="container">

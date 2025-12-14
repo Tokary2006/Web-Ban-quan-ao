@@ -50,7 +50,7 @@ switch ($page) {
         break;
     case "blog-single":
         require_once 'Controllers/Client/BlogController.php';
-        $blogControl=new BlogController($connection);
+        $blogControl = new BlogController($connection);
         $blogControl->blog_detail();
         break;
     case "register":
@@ -133,6 +133,11 @@ switch ($page) {
         require_once 'Controllers/Client/CheckoutController.php';
         $controller = new CheckoutController($connection);
         $controller->thankyou();
+        break;
+    case "add-comment":
+        require_once 'Controllers/Client/CommentProductController.php';
+        $controller = new CommentProductController($connection);
+        $controller->addComment();
         break;
     case "error":
         include "Views/Client/error_404.php";
