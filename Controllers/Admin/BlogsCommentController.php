@@ -16,7 +16,6 @@ class BlogsCommentController {
 
     // EDIT
     public function edit() {
-        session_start();
 
         if (!isset($_GET['id'])) {
             header("Location: admin.php?page=blogscomment");
@@ -43,8 +42,7 @@ class BlogsCommentController {
 
     // UPDATE
     public function update() {
-        session_start();
-
+        
         $id      = $_POST['id'] ?? null;
         $content = trim($_POST['content_text'] ?? '');
 

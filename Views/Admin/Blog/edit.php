@@ -1,5 +1,4 @@
 <?php
-session_start();
 $old = $_SESSION['old_data'] ?? [];
 $errors = $_SESSION['errors'] ?? [];
 unset($_SESSION['old_data'], $_SESSION['errors']);

@@ -20,7 +20,6 @@ class BlogController
     // Form thêm
     public function create()
     {
-        session_start();
         $users = $this->model->getUsers();
         require "Views/Admin/Blog/create.php";
     }
@@ -28,7 +27,6 @@ class BlogController
     // Lưu blog
    public function store()
 {
-    session_start();
 
     $imageName = null;
 
@@ -85,7 +83,6 @@ class BlogController
     // Update blog
    public function update()
 {
-    session_start();
 
     $id = $_POST["id"];
     $oldBlog = $this->model->getById($id);

@@ -202,7 +202,7 @@
             </ul>
           </li>
 
-            <li class="menu-item <?= ($page == 'productscomment') ? 'active open' : '' ?>">
+          <li class="menu-item <?= ($page == 'productscomment') ? 'active open' : '' ?>">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-detail"></i>
               <div data-i18n="Form Elements">Quản lí bình luận sản phẩm</div>
@@ -236,25 +236,6 @@
             </ul>
           </li>
 
-          <li class="menu-item <?= ($page == 'variant') ? 'active open' : '' ?>">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Elements">Quản lí biến thể</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item <?= ($page == 'variant' && $action == 'index') ? 'active' : '' ?>">
-                <a href="admin.php?page=variant&action=index" class="menu-link">
-                  <div data-i18n="Basic Inputs">Danh sách</div>
-                </a>
-              </li>
-
-              <li class="menu-item <?= ($page == 'variant' && $action == 'create') ? 'active' : '' ?>">
-                <a href="admin.php?page=variant&action=create" class="menu-link">
-                  <div data-i18n="Input groups">Thêm</div>
-                </a>
-              </li>
-            </ul>
-          </li>
         </ul>
         </li>
 
