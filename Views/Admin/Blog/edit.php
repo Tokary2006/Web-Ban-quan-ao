@@ -40,9 +40,9 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                         <!-- CONTENT -->
                         <div class="mb-3">
                             <label class="form-label">Nội dung</label>
-                            <textarea class="form-control" name="content_text"><?= htmlspecialchars($old['content_text'] ?? $blog['content_text']) ?></textarea>
-                            <?php if (!empty($errors['content_text'])): ?>
-                                <small class="text-danger"><?= $errors['content_text'] ?></small>
+                            <textarea class="form-control" name="content" id="content"><?= htmlspecialchars($old['content'] ?? $blog['content']) ?></textarea>
+                            <?php if (!empty($errors['content'])): ?>
+                                <small class="text-danger"><?= $errors['content'] ?></small>
                             <?php endif; ?>
                         </div>
 
@@ -62,8 +62,10 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                         <!-- IMAGES -->
                         <div class="mb-3">
                             <label class="form-label">Hình ảnh</label>
-                            <input type="text" class="form-control" name="images"
-                                value="<?= htmlspecialchars($old['images'] ?? $blog['images']) ?>">
+                            <input type="file" class="form-control" name="image"
+                                value="<?= htmlspecialchars($old['image'] ?? $blog['image']) ?>">
+
+                            <img src="Uploads/Blog/<?= $old['image'] ?? $blog['image']  ?>" alt="" width="100px">
                         </div>
 
                         <!-- AUTHOR -->
@@ -74,7 +76,7 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                                 <?php foreach($users as $user): ?>
                                     <option value="<?= $user['id'] ?>"
                                         <?= (($old['user_id'] ?? $blog['user_id']) == $user['id']) ? "selected" : "" ?>>
-                                        <?= htmlspecialchars($user['username']) ?>
+                                        <?= htmlspecialchars($user['full_name']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -87,9 +89,9 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                         <!-- STATUS -->
                         <div class="mb-3">
                             <label class="form-label">Trạng thái</label>
-                            <select class="form-select" name="status_enum">
-                                <option value="1" <?= (($old['status_enum'] ?? $blog['status_enum']) == 1) ? "selected" : "" ?>>Đã xuất bản</option>
-                                <option value="0" <?= (($old['status_enum'] ?? $blog['status_enum']) == 0) ? "selected" : "" ?>>Chưa duyệt</option>
+                            <select class="form-select" name="status">
+                                <option value="1" <?= (($old['status'] ?? $blog['status']) == 1) ? "selected" : "" ?>>Đã xuất bản</option>
+                                <option value="0" <?= (($old['status'] ?? $blog['status']) == 0) ? "selected" : "" ?>>Chưa duyệt</option>
                             </select>
                         </div>
 

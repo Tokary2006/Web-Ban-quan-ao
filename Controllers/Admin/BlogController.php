@@ -1,80 +1,81 @@
 <?php
 require_once "Models/BlogModel.php";
 
-class BlogController {
+class BlogController
+{
     private $model;
 
-    public function __construct($connection) {
+    public function __construct($connection)
+    {
         $this->model = new BlogModel($connection);
     }
 
     // Trang admin blog list
-    public function index() {
+    public function index()
+    {
         $blogs = $this->model->getAll();
         require "Views/Admin/Blog/index.php";
     }
 
     // Form thêm
-    public function create() {
+    public function create()
+    {
         session_start();
         $users = $this->model->getUsers();
         require "Views/Admin/Blog/create.php";
     }
 
     // Lưu blog
-    public function store() {
-        session_start();
+   public function store()
+{
+    session_start();
 
-        $data = [
-            "user_id" => $_POST["user_id"] ?? '',
-            "slug" => $_POST["slug"] ?? '',
-            "title" => $_POST["title"] ?? '',
-            "content_text" => $_POST["content_text"] ?? '',
-            "images" => $_POST["images"] ?? '',
-            "meta_keywords" => $_POST["meta_keywords"] ?? '',
-            "meta_description" => $_POST["meta_description"] ?? '',
-            "status_enum" => $_POST["status_enum"] ?? '',
-        ];
+    $imageName = null;
 
-        $errors = [];
+    // Upload image
+    if (!empty($_FILES['image']['name'])) {
+        $imageName = time() . "_" . $_FILES['image']['name'];
+        move_uploaded_file(
+            $_FILES['image']['tmp_name'],
+            "Uploads/Blog/" . $imageName
+        );
+    }
 
-        // Validate
-        if (empty($data["title"])) {
-            $errors["title"] = "Tiêu đề không được để trống!";
-        }
+    $data = [
+        "user_id" => $_POST["user_id"] ?? '',
+        "slug" => $_POST["slug"] ?? '',
+        "title" => $_POST["title"] ?? '',
+        "content" => $_POST["content"] ?? '',
+        "image" => $imageName,
+        "meta_keywords" => $_POST["meta_keywords"] ?? '',
+        "meta_description" => $_POST["meta_description"] ?? '',
+        "status" => $_POST["status"] ?? '',
+    ];
 
-        if (empty($data["slug"])) {
-            $errors["slug"] = "Slug không được để trống!";
-        }
+    $errors = [];
 
-        if (empty($data["content_text"])) {
-            $errors["content_text"] = "Nội dung bắt buộc!";
-        }
+    if (empty($data["title"])) $errors["title"] = "Tiêu đề không được để trống!";
+    if (empty($data["slug"])) $errors["slug"] = "Slug không được để trống!";
+    if (empty($data["content"])) $errors["content"] = "Nội dung bắt buộc!";
+    if (empty($data["user_id"])) $errors["user_id"] = "Vui lòng chọn tác giả!";
+    if ($data["status"] === "") $errors["status"] = "Vui lòng chọn trạng thái!";
 
-        if (empty($data["user_id"])) {
-            $errors["user_id"] = "Vui lòng chọn tác giả!";
-        }
-
-        if ($data["status_enum"] === "") {
-            $errors["status_enum"] = "Vui lòng chọn trạng thái!";
-        }
-
-        // Nếu có lỗi → quay lại form
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            $_SESSION['old_data'] = $data;
-            header("Location: admin.php?page=blog&action=create");
-            exit;
-        }
-
-        // Lưu blog
-        $this->model->create($data);
-        header("Location: admin.php?page=blog&action=index");
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        $_SESSION['old_data'] = $_POST;
+        header("Location: admin.php?page=blog&action=create");
         exit;
     }
 
+    $this->model->create($data);
+    header("Location: admin.php?page=blog&action=index");
+    exit;
+}
+
+
     // Form sửa
-    public function edit() {
+    public function edit()
+    {
         $id = $_GET["id"];
         $blog = $this->model->getById($id);
         $users = $this->model->getUsers();
@@ -82,46 +83,59 @@ class BlogController {
     }
 
     // Update blog
-public function update() {
+   public function update()
+{
     session_start();
 
     $id = $_POST["id"];
+    $oldBlog = $this->model->getById($id);
+
+    $imageName = $oldBlog['image'];
+
+    if (!empty($_FILES['image']['name'])) {
+        $imageName = time() . "_" . $_FILES['image']['name'];
+        move_uploaded_file(
+            $_FILES['image']['tmp_name'],
+            "Uploads/Blog/" . $imageName
+        );
+    }
 
     $data = [
         "user_id" => $_POST["user_id"] ?? '',
         "slug" => $_POST["slug"] ?? '',
         "title" => $_POST["title"] ?? '',
-        "content_text" => $_POST["content_text"] ?? '',
-        "images" => $_POST["images"] ?? '',
+        "content" => $_POST["content"] ?? '',
+        "image" => $imageName,
         "meta_keywords" => $_POST["meta_keywords"] ?? '',
         "meta_description" => $_POST["meta_description"] ?? '',
-        "status_enum" => $_POST["status_enum"] ?? '',
+        "status" => $_POST["status"] ?? '',
     ];
 
     $errors = [];
 
     if (empty($data["title"])) $errors["title"] = "Tiêu đề không được để trống!";
     if (empty($data["slug"])) $errors["slug"] = "Slug không được để trống!";
-    if (empty($data["content_text"])) $errors["content_text"] = "Nội dung bắt buộc!";
+    if (empty($data["content"])) $errors["content"] = "Nội dung bắt buộc!";
     if (empty($data["user_id"])) $errors["user_id"] = "Vui lòng chọn tác giả!";
-    if ($data["status_enum"] === "") $errors["status_enum"] = "Vui lòng chọn trạng thái!";
+    if ($data["status"] === "") $errors["status"] = "Vui lòng chọn trạng thái!";
 
     if (!empty($errors)) {
         $_SESSION['errors'] = $errors;
-        $_SESSION['old_data'] = $data;
+        $_SESSION['old_data'] = $_POST;
         header("Location: admin.php?page=blog&action=edit&id=" . $id);
         exit;
     }
 
     $this->model->update($id, $data);
-
     header("Location: admin.php?page=blog&action=index");
     exit;
 }
 
 
+
     // Xóa blog
-    public function delete() {
+    public function delete()
+    {
         $id = $_GET['id'] ?? null;
         if ($id) {
             $this->model->delete($id);

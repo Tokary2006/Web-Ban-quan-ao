@@ -44,10 +44,14 @@ switch ($page) {
         $cartcontroller->addToCart();
         break;
     case "blog":
-        include "Views/Client/blog.php";
+        require_once 'Controllers/Client/BlogController.php';
+        $blogControl = new BlogController($connection);
+        $blogControl->blog();
         break;
     case "blog-single":
-        include "Views/Client/blog-single.php";
+        require_once 'Controllers/Client/BlogController.php';
+        $blogControl=new BlogController($connection);
+        $blogControl->blog_detail();
         break;
     case "register":
         require_once 'Controllers/Client/AuthController.php';

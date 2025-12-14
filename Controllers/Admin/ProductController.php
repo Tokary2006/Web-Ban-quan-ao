@@ -78,6 +78,7 @@ class ProductController
                 exit;
 
                 $image = null;
+
                 if (!empty($_FILES['image']['name'])) {
                     $image = time() . "_" . $_FILES['image']['name'];
                     move_uploaded_file($_FILES['image']['tmp_name'], "Uploads/Product/" . $image);

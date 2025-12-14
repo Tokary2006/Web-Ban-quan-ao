@@ -27,8 +27,7 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                     <!-- Slug -->
                     <div class="mb-3">
                         <label class="form-label">Đường dẫn (slug)</label>
-                        <input type="text" class="form-control" name="slug"
-                            placeholder="Vui lòng nhập slug bài viết..."
+                        <input type="text" class="form-control" name="slug" placeholder="Vui lòng nhập slug bài viết..."
                             value="<?= htmlspecialchars($old['slug'] ?? '') ?>">
                         <?php if (!empty($errors['slug'])): ?>
                             <p class="text-danger"><?= $errors['slug'] ?></p>
@@ -38,10 +37,10 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                     <!-- Nội dung -->
                     <div class="mb-3">
                         <label class="form-label">Nội dung</label>
-                        <textarea class="form-control" name="content_text"
-                            placeholder="Vui lòng nhập nội dung bài viết..."><?= htmlspecialchars($old['content_text'] ?? '') ?></textarea>
-                        <?php if (!empty($errors['content_text'])): ?>
-                            <p class="text-danger"><?= $errors['content_text'] ?></p>
+                        <textarea class="form-control" name="content"
+                            placeholder="Vui lòng nhập nội dung bài viết..." id="content"><?= htmlspecialchars($old['content'] ?? '') ?></textarea>
+                        <?php if (!empty($errors['content'])): ?>
+                            <p class="text-danger"><?= $errors['content'] ?></p>
                         <?php endif; ?>
                     </div>
 
@@ -63,9 +62,9 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                     <!-- Hình ảnh -->
                     <div class="mb-3">
                         <label class="form-label">Hình ảnh</label>
-                        <input type="file" class="form-control" name="images">
-                        <?php if (!empty($errors['images'])): ?>
-                            <p class="text-danger"><?= $errors['images'] ?></p>
+                        <input type="file" class="form-control" name="image">
+                        <?php if (!empty($errors['image'])): ?>
+                            <p class="text-danger"><?= $errors['image'] ?></p>
                         <?php endif; ?>
                     </div>
 
@@ -75,9 +74,8 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                         <select class="form-select" name="user_id">
                             <option value="">Chọn tác giả...</option>
                             <?php foreach ($users as $user): ?>
-                                <option value="<?= $user['id'] ?>"
-                                    <?= isset($old['user_id']) && $old['user_id'] == $user['id'] ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($user['username']) ?>
+                                <option value="<?= $user['id'] ?>" <?= isset($old['user_id']) && $old['user_id'] == $user['id'] ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($user['full_name']) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -89,17 +87,17 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
                     <!-- Trạng thái -->
                     <div class="mb-3">
                         <label class="form-label">Trạng thái</label>
-                        <select class="form-select" name="status_enum">
+                        <select class="form-select" name="status">
                             <option value="">Chọn trạng thái...</option>
-                            <option value="1" <?= isset($old['status_enum']) && $old['status_enum'] == "1" ? 'selected' : '' ?>>
+                            <option value="1" <?= isset($old['status']) && $old['status'] == "1" ? 'selected' : '' ?>>
                                 Đã xuất bản
                             </option>
-                            <option value="0" <?= isset($old['status_enum']) && $old['status_enum'] == "0" ? 'selected' : '' ?>>
+                            <option value="0" <?= isset($old['status']) && $old['status'] == "0" ? 'selected' : '' ?>>
                                 Chưa duyệt
                             </option>
                         </select>
-                        <?php if (!empty($errors['status_enum'])): ?>
-                            <p class="text-danger"><?= $errors['status_enum'] ?></p>
+                        <?php if (!empty($errors['status'])): ?>
+                            <p class="text-danger"><?= $errors['status'] ?></p>
                         <?php endif; ?>
                     </div>
 
@@ -109,3 +107,18 @@ unset($_SESSION['old_data'], $_SESSION['errors']);
         </div>
     </div>
 </div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
+
+<script>
+    let contentEditor;
+
+    ClassicEditor
+        .create(document.querySelector('#contentn'))
+        .then(editor => {
+            contentEditor = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>

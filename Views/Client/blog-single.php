@@ -6,14 +6,13 @@
           <div class="row">
             <div class="col-lg-8 mb-5">
               <div class="bg-white p-4 rounded shadow-sm">
-                <img src="images/blog_1.jpg" alt="Blog" class="img-fluid mb-4 rounded">
-                <h2 class="mb-3">Xu hướng thời trang 2025</h2>
-                <p class="text-muted mb-4">Đăng ngày 12/11/2025 — Bởi Admin</p>
-                <p>Thời trang 2025 chứng kiến sự phát triển của phong cách tối giản, thân thiện môi trường và công nghệ cao...</p>
+                <h2 class="mb-3"><?= $blog['title'] ?></h2>
+                <p class="text-muted mb-4">Đăng ngày <?= $blog['created_at'] ?> — Bởi Admin</p>
+                <p><?=$blog['meta_description'] ?></p>
                 <blockquote class="blockquote border-left pl-3">
-                  <p class="mb-0">“Thời trang là cách chúng ta thể hiện bản thân mỗi ngày.”</p>
                 </blockquote>
-                <p>AI và vật liệu tái chế đang tạo nên làn sóng đổi mới trong ngành công nghiệp này...</p>
+                <p><?= $blog['content'] ?></p>
+                <img src="Uploads/Blog/<?= $blog['image'] ?>" alt="Blog" class="img-fluid mb-4 rounded">  
               </div>
 
               <div class="bg-white p-4 mt-5 rounded shadow-sm">
