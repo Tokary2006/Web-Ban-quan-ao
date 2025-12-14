@@ -13,7 +13,7 @@
       <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up">
         <div class="block-4 h-100 d-flex flex-column text-center border">
           <figure class="block-4-image">
-            <a href="index.php?page=blog-single&slug=<?= $item['slug'] ?>"><img src="Uploads/Blog/<?= $item['image'] ?>" alt="Xu hướng 2025" class="img-fluid"></a>
+            <a href="index.php?page=blog-single&slug=<?= $item['slug'] ?>"><img src="Uploads/Blog/<?= $item['image'] ?>" alt="Xu hướng 2025" height="230px" width="340px" style="padding:10px" ></a>
           </figure>
           <div class="block-4-text p-4">
             <h3><a href="index.php?page=blog-single&slug=<?= $item['slug'] ?>"><?= $item['title'] ?></a></h3>
