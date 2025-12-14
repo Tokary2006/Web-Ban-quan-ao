@@ -56,7 +56,6 @@
                 <li><a href="index.php?page=home">Trang chủ</a></li>
                 <li><a href="index.php?page=shop">Cửa hàng</a></li>
                 <li><a href="index.php?page=blog">Bài viết</a></li>
-                <li><a href="index.php?page=contact">Liên hệ</a></li>
               </ul>
             </nav>
           </div>

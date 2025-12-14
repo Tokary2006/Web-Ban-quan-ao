@@ -16,25 +16,17 @@
               </div>
               <div class="col-md-6 col-lg-4">
                 <ul class="list-unstyled">
-                  <li><a href="#">Bán hàng trực tuyến</a></li>
-                  <li><a href="#">Tính năng</a></li>
+                  <li><a href="#">Thông tin tài khoản</a></li>
+                  <li><a href="#">Cửa hàng</a></li>
                   <li><a href="#">Giỏ hàng</a></li>
-                  <li><a href="#">Trình xây dựng cửa hàng</a></li>
+                  <li><a href="#">Bài viết</a></li>
                 </ul>
               </div>
               <div class="col-md-6 col-lg-4">
-                <ul class="list-unstyled">
-                  <li><a href="#">Thương mại di động</a></li>
-                  <li><a href="#">Dropshipping (Bán hàng bỏ qua khâu vận chuyển)</a></li>
-                  <li><a href="#">Phát triển trang web</a></li>
-                </ul>
+               
               </div>
               <div class="col-md-6 col-lg-4">
-                <ul class="list-unstyled">
-                  <li><a href="#">Điểm bán hàng (Point of sale)</a></li>
-                  <li><a href="#">Phần cứng</a></li>
-                  <li><a href="#">Phần mềm</a></li>
-                </ul>
+                
               </div>
             </div>
           </div>
@@ -43,9 +35,9 @@
             <div class="block-5 mb-5">
               <h3 class="footer-heading mb-4">Thông tin Liên hệ</h3>
               <ul class="list-unstyled">
-                <li class="address">203 Fake St. Mountain View, San Francisco, California, USA</li>
-                <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
-                <li class="email">emailaddress@domain.com</li>
+                <li class="address">22 Thường Thạnh, Cái Răng, Cần Thơ</li>
+                <li class="phone"><a href="tel://23923929210">+2 0989748250</a></li>
+                <li class="email">tranminhduoc2006@gmail.com</li>
               </ul>
             </div>
 
@@ -61,11 +53,7 @@
           </div>
         </div>
         <div class="row pt-5 mt-5 text-center">
-          <div class="col-md-12">
-            <p>
-            Bản quyền &copy;<script>document.write(new Date().getFullYear());</script> Mọi quyền được bảo lưu | Mẫu này được làm bằng <i class="icon-heart" aria-hidden="true"></i> bởi <a href="https://colorlib.com" target="_blank" class="text-primary">Colorlib</a>
-            </p>
-          </div>
+          
           
         </div>
       </div>
