@@ -70,8 +70,14 @@
                   <small class="text-danger"><?= $errors['new_city'] ?></small>
                 <?php endif; ?>
 
-                <textarea class="form-control" name="note" placeholder="Ghi chú"></textarea>
               </div>
+            </div>
+          </div>
+          <div class="card mt-3">
+            <div class="card-body">
+              <label class="form-label fw-bold">Ghi chú cho đơn hàng</label>
+              <textarea class="form-control" name="note" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao..."
+                rows="3"><?= htmlspecialchars($_POST['note'] ?? '') ?></textarea>
             </div>
           </div>
         </div>
@@ -102,8 +108,6 @@
             <div class="card-body">
               <h5>Thanh toán</h5>
               <label><input type="radio" name="payment_method" value="cod" checked> COD</label><br>
-              <label><input type="radio" name="payment_method" value="bank"> Chuyển khoản</label><br>
-              <label><input type="radio" name="payment_method" value="momo"> MoMo</label>
             </div>
           </div>
 

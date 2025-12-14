@@ -42,7 +42,9 @@
 
         <option value="2"
             <?= $order['order_status'] == 2 ? 'selected' : '' ?>
-            <?= $order['order_status'] == 1 ? 'disabled' : '' ?>>
+            <?= $order['order_status'] == 1 ? 'disabled' : '' ?>
+            <?= $order['order_status'] == 0 ? 'disabled' : '' ?>
+            >
             Đã hoàn thành
         </option>
 

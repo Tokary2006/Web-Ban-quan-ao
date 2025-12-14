@@ -102,6 +102,7 @@
               Tiếp tục mua sắm
             </a>
           </div>
+          
         </div>
 
       </form>
@@ -109,16 +110,6 @@
 
     <div class="row">
       <div class="col-md-6">
-
-        <div class="card p-4 shadow-sm">
-          <h4 class="mb-3">Mã giảm giá</h4>
-
-          <div class="input-group mb-3">
-            <input type="text" class="form-control py-3" placeholder="Nhập mã giảm giá">
-            <button class="btn btn-primary">Áp dụng</button>
-          </div>
-
-        </div>
 
       </div>
 
