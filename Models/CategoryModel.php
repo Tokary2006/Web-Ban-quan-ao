@@ -10,8 +10,10 @@ class CategoryModel
 
     public function getAll($keyword = '', $limit = null, $offset = 0, $sortDate = 'desc')
     {
-        $sql = "SELECT id, parent_id, name, description, slug, status, created_at 
-                FROM categories WHERE 1";
+        $sql = "SELECT c1.*, c2.name AS parent_name
+            FROM categories c1
+            LEFT JOIN categories c2 ON c1.parent_id = c2.id
+            WHERE 1";
 
         if (!empty($keyword)) {
             $sql .= " AND (name LIKE :keyword OR description LIKE :keyword)";
@@ -41,7 +43,7 @@ class CategoryModel
     public function getOne($id)
     {
         $stmt = $this->connection->prepare(
-            "SELECT id, parent_id, name, description, slug, status 
+            "SELECT id, parent_id, name, description, status 
              FROM categories WHERE id=?"
         );
         $stmt->execute([$id]);
@@ -51,13 +53,12 @@ class CategoryModel
     public function create($data)
     {
         $stmt = $this->connection->prepare("
-            INSERT INTO categories (name, description, slug, status, parent_id) 
-            VALUES (:name, :description, :slug, :status, :parent_id)
+            INSERT INTO categories (name, description, status, parent_id) 
+            VALUES (:name, :description, :status, :parent_id)
         ");
 
         $stmt->bindValue(':name', $data['name']);
         $stmt->bindValue(':description', $data['description']);
-        $stmt->bindValue(':slug', $data['slug']);
         $stmt->bindValue(':status', $data['status'], PDO::PARAM_INT);
 
         if ($data['parent_id'] === null) {
@@ -76,14 +77,12 @@ class CategoryModel
             SET parent_id = :parent_id, 
                 name = :name, 
                 description = :description, 
-                slug = :slug, 
                 status = :status
             WHERE id = :id
         ");
 
         $stmt->bindValue(':name', $data['name']);
         $stmt->bindValue(':description', $data['description']);
-        $stmt->bindValue(':slug', $data['slug']);
         $stmt->bindValue(':status', $data['status'], PDO::PARAM_INT);
 
         if ($data['parent_id'] === null) {
@@ -124,7 +123,15 @@ class CategoryModel
 
     public function deleteWithChild($id)
     {
-        // Xóa danh mục con (đệ quy)
+        // Kiểm tra danh mục có sản phẩm không
+        $stmt = $this->connection->prepare("SELECT COUNT(*) FROM products WHERE category_id = ?");
+        $stmt->execute([$id]);
+        $count = $stmt->fetchColumn();
+
+        if ($count > 0) {
+            return false;
+        }
+
         $stmt = $this->connection->prepare("SELECT id FROM categories WHERE parent_id = ?");
         $stmt->execute([$id]);
         $children = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -133,8 +140,8 @@ class CategoryModel
             $this->deleteWithChild($child['id']);
         }
 
-        // Xóa danh mục hiện tại
         $stmt = $this->connection->prepare("DELETE FROM categories WHERE id = ?");
         return $stmt->execute([$id]);
     }
+
 }

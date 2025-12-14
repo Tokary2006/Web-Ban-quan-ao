@@ -227,30 +227,62 @@ class ProductModel
     // Tạo sản phẩm
     public function create($data)
     {
-        $sql = "INSERT INTO products 
-                (category_id, title,  price, short_description, description, image, status)
-                VALUES 
-                (:category_id, :title, :price, :short_description, :description, :image, :status)";
+        $sql = "INSERT INTO products
+            (category_id, title, slug, stock, price, discount_price, short_description, description, image, status, featured_id, created_at, updated_at)
+            VALUES (:category_id, :title, :slug, :stock, :price, :discount_price, :short_description, :description, :image, :status, :featured_id, NOW(), NULL)";
 
         $stmt = $this->connection->prepare($sql);
-        return $stmt->execute($data);
+
+        $stmt->bindParam(':category_id', $data['category_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':title', $data['title'], PDO::PARAM_STR);
+        $stmt->bindParam(':slug', $data['slug'], PDO::PARAM_STR);
+        $stmt->bindParam(':stock', $data['stock'], PDO::PARAM_INT);
+        $stmt->bindParam(':price', $data['price']);
+        $stmt->bindParam(':discount_price', $data['discount_price']);
+        $stmt->bindParam(':short_description', $data['short_description'], PDO::PARAM_STR);
+        $stmt->bindParam(':description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindParam(':image', $data['image'], PDO::PARAM_STR);
+        $stmt->bindParam(':status', $data['status'], PDO::PARAM_INT);
+        $stmt->bindParam(':featured_id', $data['featured_id'], PDO::PARAM_INT);
+
+        return $stmt->execute();
     }
+
 
     // Cập nhật sản phẩm
     public function updateProduct($id, $data)
     {
         $sql = "UPDATE products SET 
-                    category_id = :category_id,
-                    title = :title,
-                    price = :price,
-                    short_description = :short_description,
-                    description = :description,
-                    image = :image,
-                    status = :status
-                WHERE id = :id";
+            category_id = :category_id,
+            title = :title,
+            slug = :slug,
+            stock = :stock,
+            price = :price,
+            discount_price = :discount_price,
+            short_description = :short_description,
+            description = :description,
+            image = :image,
+            status = :status,
+            featured_id = :featured_id,
+            updated_at = NOW()
+        WHERE id = :id";
 
         $stmt = $this->connection->prepare($sql);
-        return $stmt->execute($data);
+
+        $stmt->bindParam(':category_id', $data['category_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':title', $data['title'], PDO::PARAM_STR);
+        $stmt->bindParam(':slug', $data['slug'], PDO::PARAM_STR);
+        $stmt->bindParam(':stock', $data['stock'], PDO::PARAM_INT);
+        $stmt->bindParam(':price', $data['price']);
+        $stmt->bindParam(':discount_price', $data['discount_price']);
+        $stmt->bindParam(':short_description', $data['short_description'], PDO::PARAM_STR);
+        $stmt->bindParam(':description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindParam(':image', $data['image'], PDO::PARAM_STR);
+        $stmt->bindParam(':status', $data['status'], PDO::PARAM_INT);
+        $stmt->bindParam(':featured_id', $data['featured_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
+
+        return $stmt->execute();
     }
 
     // Xoá sản phẩm
@@ -258,6 +290,26 @@ class ProductModel
     {
         $sql = "DELETE FROM products WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
-        return $stmt->execute([':id' => $id]);
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
+        
+        return $stmt->execute();
     }
+
+    // Kiểm tra slug đã tồn tại hay chưa (trừ chính sản phẩm hiện tại nếu $id khác null)
+    public function checkDuplicateSlug($slug, $id = null)
+    {
+        if ($id) {
+            $sql = "SELECT id FROM products WHERE slug = :slug AND id != :id";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute([':slug' => $slug, ':id' => $id]);
+        } else {
+            $sql = "SELECT id FROM products WHERE slug = :slug";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute([':slug' => $slug]);
+        }
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ? true : false;
+    }
+
 }

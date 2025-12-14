@@ -17,7 +17,7 @@
           <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
 
           <!-- Giá sản phẩm -->
-          <?php if ($product['discount_price']): ?>
+          <?php if (!empty($product['discount_price']) && $product['discount_price'] > 0): ?>
             <p><strong class="text-primary h4"><del><?= number_format($product['price']) ?> VNĐ</del>
                 <?= number_format($product['discount_price']) ?> VNĐ</strong></p>
           <?php else: ?>
@@ -83,7 +83,7 @@
                 </a>
                 <h2 class="item-title"><a
                     href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"><?= $pro['title'] ?></a></h2>
-                <?php if ($pro['discount_price']): ?>
+                <?php if (!empty($product['discount_price']) && $product['discount_price'] > 0): ?>
                   <strong class="item-price"><del><?= number_format($pro['discount_price']) ?> VNĐ</del>
                     <?= number_format($pro['price']) ?> VNĐ</strong>
                 <?php else: ?>

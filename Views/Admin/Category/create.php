@@ -29,17 +29,6 @@
                             <?php endif; ?>
                         </div>
 
-                        <!-- Slug -->
-                        <div class="mb-3">
-                            <label class="form-label">Đường dẫn</label>
-                            <input type="text" class="form-control" name="slug"
-                                placeholder="Vui lòng nhập vào đường dẫn."
-                                value="<?= htmlspecialchars($old['slug'] ?? '') ?>" />
-                            <?php if (!empty($errors['slug'])): ?>
-                                <p class="text-danger mt-1"><?= $errors['slug'] ?></p>
-                            <?php endif; ?>
-                        </div>
-
                         <!-- Trạng thái -->
                         <div class="mb-3">
                             <label class="form-label">Trạng thái</label>

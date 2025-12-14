@@ -24,38 +24,27 @@ class CategoryController
 
             $name = trim($_POST['name'] ?? '');
             $description = trim($_POST['description'] ?? '');
-            $slug = trim($_POST['slug'] ?? '');
             $status = $_POST['status'] ?? '';
             $parent_id = $_POST['parent_id'] ?? '';
 
-            // Validate parent_id
             if ($parent_id === '') {
                 $errors['parent_id'] = "Vui lòng chọn danh mục cha";
             }
 
-            // Chuyển "" thành NULL để không lỗi SQL
             if ($parent_id === '' || $parent_id == 0) {
                 $parent_id = null;
             }
 
-            // Validate name
             if ($name === '') {
                 $errors['name'] = "Tên danh mục không được để trống";
             } elseif ($this->categoryModel->getCategoryByName($name)) {
                 $errors['name'] = "Tên danh mục đã tồn tại";
             }
 
-            // Description
             if ($description === '') {
                 $errors['description'] = "Mô tả không được để trống";
             }
 
-            // Slug
-            if ($slug === '') {
-                $errors['slug'] = "Đường dẫn (slug) không được để trống";
-            }
-
-            // Status
             if ($status !== "1" && $status !== "0") {
                 $errors['status'] = "Vui lòng chọn trạng thái hợp lệ";
             }
@@ -64,7 +53,6 @@ class CategoryController
                 $old = [
                     'name' => $name,
                     'description' => $description,
-                    'slug' => $slug,
                     'status' => $status,
                     'parent_id' => $parent_id
                 ];
@@ -78,7 +66,6 @@ class CategoryController
                     'parent_id' => $parent_id,
                     'name' => $name,
                     'description' => $description,
-                    'slug' => $slug,
                     'status' => $status
                 ];
 
@@ -115,9 +102,12 @@ class CategoryController
 
             $name = trim($_POST['name'] ?? '');
             $description = trim($_POST['description'] ?? '');
-            $slug = trim($_POST['slug'] ?? '');
             $status = $_POST['status'] ?? 1;
-            $parent_id = $_POST['parent_id'] ?? '';
+            $parent_id = $_POST['parent_id'] ?? null;
+
+            if ($parent_id === '') {
+                $parent_id = null;
+            }
 
             if ($name === '') {
                 $errors['name'] = "Tên danh mục không được để trống";
@@ -131,11 +121,6 @@ class CategoryController
                 $errors['description'] = "Mô tả không được để trống";
             }
 
-            if ($slug === '') {
-                $errors['slug'] = "Đường dẫn (slug) không được để trống";
-            }
-
-            // Không cho chọn chính nó làm cha
             if ($parent_id == $id) {
                 $errors['parent_id'] = "Danh mục cha không hợp lệ";
             }
@@ -145,7 +130,6 @@ class CategoryController
                     'parent_id' => $parent_id,
                     'name' => $name,
                     'description' => $description,
-                    'slug' => $slug,
                     'status' => $status
                 ];
 
@@ -170,10 +154,19 @@ class CategoryController
     {
         $id = $_GET['id'] ?? null;
         if ($id) {
-            $this->categoryModel->deleteWithChild($id);
+            $result = $this->categoryModel->deleteWithChild($id);
+
+            if ($result) {
+                $_SESSION['success'] = "Xóa danh mục thành công";
+            } else {
+                $_SESSION['error'] = "Không thể xóa danh mục vì đang có sản phẩm liên kết";
+            }
+        } else {
+            $_SESSION['error'] = "Danh mục không tồn tại";
         }
-         $_SESSION['success'] = "Xóa danh mục thành công";
+
         header("Location: admin.php?page=category");
         exit;
     }
+
 }

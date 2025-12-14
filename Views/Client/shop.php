@@ -58,16 +58,21 @@
           <?php foreach ($products as $product): ?>
 
             <div class="col-lg-6 col-md-6 item-entry mb-4">
-              <a href="index.php?page=shop-single&slug=<?= $product['slug'] ?>" class="product-item md-height bg-gray d-block">
+              <a href="index.php?page=shop-single&slug=<?= $product['slug'] ?>"
+                class="product-item md-height bg-gray d-block">
                 <img src="Uploads/Product/<?= $product['image'] ?>" alt="Ảnh sản phẩm" class="img-fluid">
               </a>
-              <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $product['slug'] ?>"><?= $product['title'] ?></a></h2>
-              <?php if ($product['discount_price']): ?>
-                <strong class="item-price"><del><?= number_format($product['price']) ?> VNĐ</del>
-                  <?= number_format($product['discount_price']) ?> VNĐ</strong>
+              <h2 class="item-title"><a
+                  href="index.php?page=shop-single&slug=<?= $product['slug'] ?>"><?= $product['title'] ?></a></h2>
+              <?php if (!empty($product['discount_price']) && $product['discount_price'] > 0): ?>
+                <strong class="item-price">
+                  <del><?= number_format($product['price']) ?> VNĐ</del>
+                  <?= number_format($product['discount_price']) ?> VNĐ
+                </strong>
               <?php else: ?>
                 <strong class="item-price"><?= number_format($product['price']) ?> VNĐ</strong>
               <?php endif; ?>
+
             </div>
           <?php endforeach; ?>
 
@@ -76,22 +81,22 @@
           <div class="col-md-12 text-center">
             <div class="site-block-27">
               <?php if ($totalPageProduct > 1): ?>
-              <ul>
-                <?php if ($current_page > 1): ?>
-                  <li><a href="<?= $urlPage ?>&pages=<?= $current_page - 1 ?>">&lt;</a></li>
-                <?php endif; ?>
-                
-                <?php for ($i = 1; $i <= $totalPageProduct; $i++): ?>
-                  <?php
-                  $active_class = ($i == $current_page) ? 'active' : '';
-                  ?>
-                  <li class="<?= $active_class ?>"><a href="<?= $urlPage ?>&pages=<?= $i ?>"><?= $i ?></a></li>
-                <?php endfor; ?>
+                <ul>
+                  <?php if ($current_page > 1): ?>
+                    <li><a href="<?= $urlPage ?>&pages=<?= $current_page - 1 ?>">&lt;</a></li>
+                  <?php endif; ?>
 
-                <?php if ($current_page < $totalPageProduct): ?>
-                  <li><a href="<?= $urlPage ?>&pages=<?= $current_page + 1 ?>">&gt;</a></li>
-                <?php endif; ?>
-              </ul>
+                  <?php for ($i = 1; $i <= $totalPageProduct; $i++): ?>
+                    <?php
+                    $active_class = ($i == $current_page) ? 'active' : '';
+                    ?>
+                    <li class="<?= $active_class ?>"><a href="<?= $urlPage ?>&pages=<?= $i ?>"><?= $i ?></a></li>
+                  <?php endfor; ?>
+
+                  <?php if ($current_page < $totalPageProduct): ?>
+                    <li><a href="<?= $urlPage ?>&pages=<?= $current_page + 1 ?>">&gt;</a></li>
+                  <?php endif; ?>
+                </ul>
               <?php endif; ?>
             </div>
           </div>
@@ -123,11 +128,11 @@
         </div>
 
         <div class="mb-4">
-          
+
         </div>
 
         <div class="mb-4">
-          
+
         </div>
 
       </div>
@@ -144,21 +149,21 @@
 
       <div class="col-lg-8">
         <div class="product-item sm-height full-height bg-gray">
-          <a href="index.php?page=shop&category_id=<?= $cateIdNu['id'] ?>"
-            class="product-category"> Nữ <span></span></a>
+          <a href="index.php?page=shop&category_id=<?= $cateIdNu['id'] ?>" class="product-category"> Nữ
+            <span></span></a>
           <img src="Assets/Client/images/model_4.png" alt="Ảnh" class="img-fluid">
         </div>
       </div>
       <div class="col-lg-4">
         <div class="product-item sm-height bg-gray mb-4">
-          <a href="index.php?page=shop&category_id=<?= $cateIdNam['id'] ?>"
-            class="product-category"> Nam <span></span></a>
+          <a href="index.php?page=shop&category_id=<?= $cateIdNam['id'] ?>" class="product-category"> Nam
+            <span></span></a>
           <img src="Assets/Client/images/model_5.png" alt="Ảnh" class="img-fluid">
         </div>
 
         <div class="product-item sm-height bg-gray">
-          <a href="index.php?page=shop&category_id=<?= $cateIdGiay['id'] ?>"
-            class="product-category"> Giày <span></span></a>
+          <a href="index.php?page=shop&category_id=<?= $cateIdGiay['id'] ?>" class="product-category"> Giày
+            <span></span></a>
           <img src="Assets/Client/images/model_6.png" alt="Ảnh" class="img-fluid">
         </div>
       </div>

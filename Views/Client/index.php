@@ -69,7 +69,7 @@
           </a>
           <h2 class="item-title"><a href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"><?= $pro['title'] ?></a>
           </h2>
-          <?php if ($pro['discount_price']): ?>
+          <?php if (!empty($product['discount_price']) && $product['discount_price'] > 0): ?>
             <strong class="item-price"><del><?= number_format($pro['discount_price']) ?> VNĐ</del>
               <?= number_format($pro['price']) ?> VNĐ</strong>
           <?php else: ?>
@@ -100,7 +100,7 @@
                 </a>
                 <h2 class="item-title"><a
                     href="index.php?page=shop-single&slug=<?= $pro['slug'] ?>"><?= $pro['title'] ?></a></h2>
-                <?php if ($pro['discount_price']): ?>
+                <?php if (!empty($product['discount_price']) && $product['discount_price'] > 0): ?>
                   <strong class="item-price"><del><?= number_format($pro['discount_price']) ?> VNĐ</del>
                     <?= number_format($pro['price']) ?> VNĐ</strong>
                 <?php else: ?>

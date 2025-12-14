@@ -33,17 +33,6 @@
                             <?php endif; ?>
                         </div>
 
-                        <!-- SLUG -->
-                        <div class="mb-3">
-                            <label class="form-label">Đường dẫn</label>
-                            <input type="text" class="form-control" name="slug" value="<?= $category['slug'] ?>"
-                                placeholder="Vui lòng nhập vào đường dẫn." />
-
-                            <?php if (!empty($errors['slug'])): ?>
-                                <p class="text-danger mt-1"><?= $errors['slug'] ?></p>
-                            <?php endif; ?>
-                        </div>
-
                         <!-- STATUS -->
                         <div class="mb-3">
                             <label class="form-label">Trạng thái</label>
@@ -57,7 +46,7 @@
                         <div class="mb-3">
                             <label class="form-label">Danh mục cha</label>
                             <select class="form-select" name="parent_id">
-                                <option value="0" <?= ($category['parent_id'] === null ? 'selected' : '') ?>>
+                                <option value="" <?= ($category['parent_id'] === null ? 'selected' : '') ?>>
                                     -- Root (Không có cha) <?= ($category['parent_id'] === null ? '(Hiện tại)' : '') ?>
                                     --
                                 </option>

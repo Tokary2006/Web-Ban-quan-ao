@@ -47,8 +47,16 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
 <script src="./assets/Admin/js/editor.js"></script>
 
-<script>let table = new DataTable('#myTable');
+<script>
+    let table = new DataTable('#myTable', {
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json'
+        }
+    });
 </script>
+
+
+
 
 <!-- Place this tag in your head or just before your close body tag. -->
 </body>
