@@ -69,4 +69,28 @@ public function getUser($user_id) {
         $stmt = $this->conn->prepare("DELETE FROM {$this->table} WHERE id=?");
         return $stmt->execute([$id]);
     }
+
+        public function getByBlogId($blog_id)
+    {
+        $sql = "SELECT cb.*, u.full_name, u.avatar
+                FROM {$this->table} cb
+                JOIN users u ON cb.user_id = u.id
+                WHERE cb.blog_id = ?
+                ORDER BY cb.created_at DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$blog_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function insert($data)
+    {
+        $sql = "INSERT INTO {$this->table} (blog_id, user_id, content, status, created_at)
+                VALUES (:blog_id, :user_id, :content, :status, NOW())";
+        $stmt = $this->conn->prepare($sql);
+        if (!isset($data['status'])) {
+            $data['status'] = 0;
+        }
+        return $stmt->execute($data);
+    }
+
 }

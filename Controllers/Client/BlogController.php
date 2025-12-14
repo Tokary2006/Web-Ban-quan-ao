@@ -1,9 +1,11 @@
 <?php
 require_once 'Models/BlogModel.php';
+require_once 'Models/BlogsCommentModel.php';
 
 class BlogController
 {
     private $BlogModel;
+    private $commentModel;
     public function __construct($connection)
     {
         $this->BlogModel = new BlogModel($connection);
@@ -24,6 +26,7 @@ class BlogController
 
         $slug = $_GET["slug"];
         $blog = $this->BlogModel->getBySlug($slug);
+        $comments = $this->BlogModel->getByBlogSlug($slug);
 
         if (!$blog) {
             require "Views/Client/error_404.php";

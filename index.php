@@ -123,6 +123,18 @@ switch ($page) {
         $controller = new ProfileController($connection);
         $controller->orderDetail();
         break;
+
+    case "commentBlog":
+        require "Controllers/Client/CommentBlogController.php";
+        $commentBlogController = new CommentBlogController($connection);
+        $commentBlogController->store();
+        break;
+    case "delete-comment":
+        require "Controllers/Client/CommentBlogController.php";
+        $commentBlogController = new CommentBlogController($connection);
+        $commentBlogController->delete(); 
+        break;
+
     case "checkout":
         require_once 'Controllers/Client/CheckoutController.php';
         $controller = new CheckoutController($connection);

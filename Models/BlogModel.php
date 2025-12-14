@@ -93,4 +93,18 @@ class BlogModel {
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([$id]);
     }
+
+    public function getByBlogSlug($slug)
+{
+    $sql = "SELECT cb.*, u.full_name, u.image
+            FROM comment_blogs cb
+            JOIN blogs b ON cb.blog_id = b.id
+            JOIN users u ON cb.user_id = u.id
+            WHERE b.slug = ?
+            ORDER BY cb.created_at DESC";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute([$slug]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }
