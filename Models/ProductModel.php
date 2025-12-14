@@ -21,7 +21,7 @@ class ProductModel
      */
     public function getAllProducts(
         $page = 1,
-        $limit = 50,
+        $limit = 10,
         $keyword = '',
         $status = null,
         $categoryId = null,
@@ -292,7 +292,7 @@ class ProductModel
         $stmt = $this->connection->prepare($sql);
 
         $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
-        
+
         return $stmt->execute();
     }
 

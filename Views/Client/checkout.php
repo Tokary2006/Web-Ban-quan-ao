@@ -1,10 +1,3 @@
-<?php
-// dữ liệu được controller truyền qua
-// $addresses
-// $cartItems
-// $total
-?>
-
 <form action="index.php?page=place-order" method="POST">
 
   <div class="bg-light py-3">
@@ -92,9 +85,6 @@
                 <?php foreach ($cartItems as $item): ?>
                   <tr>
                     <td><?= $item['title'] ?> x<?= $item['quantity'] ?></td>
-                    <?php
-                    $price = $item['discount_price'] ?? $item['price'];
-                    ?>
                     <td class="text-end"><?= number_format($price * $item['quantity']) ?>đ</td>
                   </tr>
                 <?php endforeach; ?>

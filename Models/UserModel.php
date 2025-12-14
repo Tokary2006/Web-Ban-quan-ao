@@ -126,7 +126,7 @@ class UserModel
     public function updateUserInfo($id, $fullname, $phone, $email, $avatar = null)
     {
         if ($avatar) {
-            $sql = "UPDATE users SET full_name=?, phone=?, email=?, avatar=? WHERE id=?";
+            $sql = "UPDATE users SET full_name=?, phone=?, email=?, image=? WHERE id=?";
             $stmt = $this->connection->prepare($sql);
             return $stmt->execute([$fullname, $phone, $email, $avatar, $id]);
         } else {

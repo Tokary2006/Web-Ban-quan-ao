@@ -5,32 +5,30 @@
   </div>
   <?php unset($_SESSION['success']); ?>
 <?php endif; ?>
+
+<?php if (!empty($_SESSION['error'])): ?>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <?= $_SESSION['error'] ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php unset($_SESSION['error']); ?>
+<?php endif; ?>
+
 <?php
 // Avatar
-$avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x150";
+$avatar = !empty($user['image']) ? $user['image'] : "https://placehold.co/150x150";
 ?>
 
 <div id="globalConfirmBox" class="border rounded shadow-sm p-3 mt-3 d-none bg-white">
   <div class="d-flex align-items-center justify-content-between">
-    <!-- Nội dung -->
-    <div class="text-secondary fw-semibold" id="confirmMessage">
-      <!-- nội dung động -->
-    </div>
-    <!-- Nút -->
+    <div class="text-secondary fw-semibold" id="confirmMessage"></div>
     <form id="confirmForm" method="POST" class="d-flex gap-2 ms-3" style="gap: 0.5rem;">
       <input type="hidden" name="id" id="confirmId">
-      <button class="btn btn-sm btn-primary px-3">
-        Xác nhận
-      </button>
-      <button type="button" class="btn btn-sm btn-outline-secondary px-3" onclick="hideConfirm()">
-        Hủy
-      </button>
+      <button class="btn btn-sm btn-primary px-3">Xác nhận</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary px-3" onclick="hideConfirm()">Hủy</button>
     </form>
-
   </div>
 </div>
-
-
 
 <div class="container py-5">
   <div class="row g-4">
@@ -41,8 +39,8 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
 
         <!-- User info -->
         <div class="text-center mb-3">
-          <img src="Uploads/Avatars/<?= $avatar ?>" class="rounded-circle border mb-2"
-            style="width:70px; height:70px; object-fit:cover;">
+          <img src="<?= !empty($user['image']) ? 'Uploads/Avatars/' . $user['image'] : 'https://placehold.co/150x150' ?>" 
+               class="rounded-circle border mb-2" style="width:70px; height:70px; object-fit:cover;">
           <h6 class="mb-0"><?= $user['full_name'] ?></h6>
           <small class="text-muted"><?= $user['email'] ?></small>
         </div>
@@ -51,23 +49,13 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
 
         <ul class="nav nav-pills flex-column">
           <li class="nav-item">
-            <a class="nav-link <?= $activeTab === 'account' ? 'active' : '' ?>"
-              href="index.php?page=profile&tab=account">
-              Thông tin tài khoản
-            </a>
+            <a class="nav-link <?= $activeTab === 'account' ? 'active' : '' ?>" href="index.php?page=profile&tab=account">Thông tin tài khoản</a>
           </li>
-
           <li class="nav-item">
-            <a class="nav-link <?= $activeTab === 'orders' ? 'active' : '' ?>" href="index.php?page=profile&tab=orders">
-              Lịch sử mua hàng
-            </a>
+            <a class="nav-link <?= $activeTab === 'orders' ? 'active' : '' ?>" href="index.php?page=profile&tab=orders">Lịch sử mua hàng</a>
           </li>
-
           <li class="nav-item">
-            <a class="nav-link <?= $activeTab === 'address' ? 'active' : '' ?>"
-              href="index.php?page=profile&tab=address">
-              Địa chỉ giao hàng
-            </a>
+            <a class="nav-link <?= $activeTab === 'address' ? 'active' : '' ?>" href="index.php?page=profile&tab=address">Địa chỉ giao hàng</a>
           </li>
           <li class="nav-item">
             <a href="/logout.php" class="nav-link text-danger">Đăng xuất</a>
@@ -95,14 +83,13 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
                 <?php if (!empty($errors['avatar'])): ?>
                   <small class="text-danger"><?= $errors['avatar'] ?></small>
                 <?php endif; ?>
-                <img src="Uploads/Avatars/<?= $avatar ?>" class="rounded-circle mt-3 border"
-                  style="width:85px; height:85px; object-fit:cover;">
+                <img src="<?= !empty($user['image']) ? 'Uploads/Avatars/' . $user['image'] : 'https://placehold.co/150x150' ?>" 
+                     class="rounded-circle mt-3 border" style="width:85px; height:85px; object-fit:cover;">
               </div>
 
               <div class="col-md-6">
                 <label class="form-label">Họ tên</label>
-                <input class="form-control" name="fullname"
-                  value="<?= htmlspecialchars($_POST['fullname'] ?? $user['full_name']) ?>">
+                <input class="form-control" name="fullname" value="<?= htmlspecialchars($_POST['fullname'] ?? $user['full_name']) ?>">
                 <?php if (!empty($errors['fullname'])): ?>
                   <small class="text-danger"><?= $errors['fullname'] ?></small>
                 <?php endif; ?>
@@ -110,8 +97,7 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
 
               <div class="col-md-6">
                 <label class="form-label">Số điện thoại</label>
-                <input class="form-control" name="phone"
-                  value="<?= htmlspecialchars($_POST['phone'] ?? $user['phone'] ?? '') ?>">
+                <input class="form-control" name="phone" value="<?= htmlspecialchars($_POST['phone'] ?? $user['phone'] ?? '') ?>">
                 <?php if (!empty($errors['phone'])): ?>
                   <small class="text-danger"><?= $errors['phone'] ?></small>
                 <?php endif; ?>
@@ -119,8 +105,7 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
 
               <div class="col-12">
                 <label class="form-label">Email</label>
-                <input class="form-control" name="email"
-                  value="<?= htmlspecialchars($_POST['email'] ?? $user['email']) ?>">
+                <input class="form-control" name="email" value="<?= htmlspecialchars($_POST['email'] ?? $user['email']) ?>">
                 <?php if (!empty($errors['email'])): ?>
                   <small class="text-danger"><?= $errors['email'] ?></small>
                 <?php endif; ?>
@@ -187,10 +172,10 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
                 <tbody>
                   <?php foreach ($orders as $o): ?>
                     <tr>
-                      <td class="align-middle">#<?= htmlspecialchars($o['order_code']) ?></td>
-                      <td class="align-middle"><?= date('d/m/Y H:i', strtotime($o['created_at'])) ?></td>
-                      <td class="align-middle"><?= number_format($o['total_price'], 0, ',', '.') ?>₫</td>
-                      <td class="align-middle">
+                      <td class="text-center align-middle">#<?= htmlspecialchars($o['order_code']) ?></td>
+                      <td class="text-center align-middle"><?= date('d/m/Y H:i', strtotime($o['created_at'])) ?></td>
+                      <td class="text-center align-middle"><?= number_format($o['total_price'], 0, ',', '.') ?>₫</td>
+                      <td class="text-center align-middle">
                         <?php if ($o['order_status'] == 0): ?>
                           <span class="badge">Chờ xử lý</span>
                         <?php elseif ($o['order_status'] == 1): ?>
@@ -198,29 +183,19 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
                         <?php elseif ($o['order_status'] == 2): ?>
                           <span class="badge">Đã nhận</span>
                         <?php endif; ?>
-
                       </td>
                       <td class="text-end">
-
-                        <!-- NÚT XÁC NHẬN ĐÃ NHẬN -->
                         <?php if ($o['order_status'] == 1): ?>
-                          <form action="index.php?page=confirm-received" method="POST" class="d-inline">
-                            <input type="hidden" name="order_id" value="<?= $o['id'] ?>">
-                            <button type="button" class="btn btn-sm btn-success" onclick="showConfirm({
-                                message: 'Xác nhận bạn đã nhận được đơn hàng này?',
-                                action: 'index.php?page=confirm-received',
-                                id: <?= $o['id'] ?>,
-                                method: 'POST',
-                                field: 'order_id'
-                                })">
-                              Đã nhận hàng
-                            </button>
-
-                          </form>
+                          <button type="button" class="btn btn-sm btn-success" onclick="showConfirm({
+                            message: 'Xác nhận bạn đã nhận được đơn hàng này?',
+                            action: 'index.php?page=confirm-received',
+                            id: <?= $o['id'] ?>,
+                            method: 'POST',
+                            field: 'order_id'
+                          })">Đã nhận hàng</button>
                         <?php else: ?>
                           <span class="text-muted">—</span>
                         <?php endif; ?>
-
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -231,7 +206,6 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
             <?php endif; ?>
           </div>
         </div>
-
 
         <!-- ADDRESS TAB -->
         <div id="address" class="tab-pane fade <?= $activeTab === 'address' ? 'show active' : '' ?>">
@@ -247,19 +221,15 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
                       <div class="small text-muted"><?= htmlspecialchars($a['full_address'] . ", " . $a['city']) ?></div>
                       <div class="small text-muted">SĐT: <?= htmlspecialchars($a['recipient_phone']) ?></div>
                     </div>
-                    <div class="d-flex align-items-center gap-2" style="gap: 0.5rem;">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"
-                        onclick="showEditAddress(<?= $a['id'] ?>)">Sửa</button>
-                      <button type="button" class="btn btn-sm btn-danger"
-                        onclick="showConfirm({
-                          message: 'Bạn có chắc muốn xóa địa chỉ này?',
-                          action: 'index.php?page=delete-address',
-                          id: <?= $a['id'] ?>,
-                          method: 'POST',
-                          field: 'id'
-                        })">
-                        Xóa
-                      </button>
+                    <div class="d-flex align-items-center gap-2">
+                      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="showEditAddress(<?= $a['id'] ?>)">Sửa</button>
+                      <button type="button" class="btn btn-sm btn-danger" onclick="showConfirm({
+                        message: 'Bạn có chắc muốn xóa địa chỉ này?',
+                        action: 'index.php?page=delete-address',
+                        id: <?= $a['id'] ?>,
+                        method: 'POST',
+                        field: 'id'
+                      })">Xóa</button>
                     </div>
                   </div>
 
@@ -269,8 +239,7 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
                       <input type="hidden" name="id" value="<?= $a['id'] ?>">
                       <div class="mb-2">
                         <label class="form-label">Tên địa chỉ</label>
-                        <input type="text" name="address_name" class="form-control"
-                          value="<?= htmlspecialchars($a['address_name']) ?>">
+                        <input type="text" name="address_name" class="form-control" value="<?= htmlspecialchars($a['address_name']) ?>">
                       </div>
                       <div class="mb-2">
                         <label class="form-label">Thành phố</label>
@@ -278,18 +247,15 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
                       </div>
                       <div class="mb-2">
                         <label class="form-label">Địa chỉ chi tiết</label>
-                        <textarea name="full_address"
-                          class="form-control"><?= htmlspecialchars($a['full_address']) ?></textarea>
+                        <textarea name="full_address" class="form-control"><?= htmlspecialchars($a['full_address']) ?></textarea>
                       </div>
                       <div class="mb-2">
                         <label class="form-label">Số điện thoại người nhận</label>
-                        <input type="text" name="recipient_phone" class="form-control"
-                          value="<?= htmlspecialchars($a['recipient_phone']) ?>">
+                        <input type="text" name="recipient_phone" class="form-control" value="<?= htmlspecialchars($a['recipient_phone']) ?>">
                       </div>
                       <div class="text-end">
                         <button class="btn btn-success btn-sm">Lưu</button>
-                        <button type="button" class="btn btn-secondary btn-sm"
-                          onclick="hideEditAddress(<?= $a['id'] ?>)">Hủy</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="hideEditAddress(<?= $a['id'] ?>)">Hủy</button>
                       </div>
                     </form>
                   </div>
@@ -300,45 +266,37 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
             <?php endif; ?>
 
             <!-- Nút thêm địa chỉ -->
-            <button type="button" class="btn btn-primary btn-sm mt-2" id="showAddAddressForm"
-              style="display: <?= $showAddForm ? 'none' : 'inline-block' ?>;">
-              Thêm địa chỉ
-            </button>
+            <button type="button" class="btn btn-primary btn-sm mt-2" id="showAddAddressForm" style="display: <?= $showAddForm ? 'none' : 'inline-block' ?>;">Thêm địa chỉ</button>
           </div>
 
           <!-- FORM THÊM ĐỊA CHỈ (ẨN) -->
-          <div id="addAddressForm" class="border rounded p-4 shadow-sm bg-white mt-3"
-            style="display: <?= $showAddForm ? 'block' : 'none' ?>;">
+          <div id="addAddressForm" class="border rounded p-4 shadow-sm bg-white mt-3" style="display: <?= $showAddForm ? 'block' : 'none' ?>;">
             <h5 class="mb-3">Thêm địa chỉ mới</h5>
             <form action="index.php?page=address-add" method="POST">
               <div class="mb-3">
                 <label class="form-label">Tên địa chỉ</label>
-                <input type="text" name="title" class="form-control"
-                  value="<?= htmlspecialchars($oldData['title'] ?? '') ?>">
+                <input type="text" name="title" class="form-control" value="<?= htmlspecialchars($oldData['title'] ?? '') ?>">
                 <?php if (!empty($errors['title'])): ?>
                   <small class="text-danger"><?= $errors['title'] ?></small>
                 <?php endif; ?>
               </div>
               <div class="mb-3">
                 <label class="form-label">Thành phố</label>
-                <input type="text" name="city" class="form-control"
-                  value="<?= htmlspecialchars($oldData['city'] ?? '') ?>">
+                <input type="text" name="city" class="form-control" value="<?= htmlspecialchars($oldData['city'] ?? '') ?>">
                 <?php if (!empty($errors['city'])): ?>
                   <small class="text-danger"><?= $errors['city'] ?></small>
                 <?php endif; ?>
               </div>
               <div class="mb-3">
                 <label class="form-label">Địa chỉ chi tiết</label>
-                <textarea name="full_address"
-                  class="form-control"><?= htmlspecialchars($oldData['full_address'] ?? '') ?></textarea>
+                <textarea name="full_address" class="form-control"><?= htmlspecialchars($oldData['full_address'] ?? '') ?></textarea>
                 <?php if (!empty($errors['full_address'])): ?>
                   <small class="text-danger"><?= $errors['full_address'] ?></small>
                 <?php endif; ?>
               </div>
               <div class="mb-3">
                 <label class="form-label">Số điện thoại người nhận</label>
-                <input type="text" name="recipient_phone" class="form-control"
-                  value="<?= htmlspecialchars($oldData['recipient_phone'] ?? '') ?>">
+                <input type="text" name="recipient_phone" class="form-control" value="<?= htmlspecialchars($oldData['recipient_phone'] ?? '') ?>">
                 <?php if (!empty($errors['recipient_phone'])): ?>
                   <small class="text-danger"><?= $errors['recipient_phone'] ?></small>
                 <?php endif; ?>
@@ -350,6 +308,7 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
             </form>
           </div>
         </div>
+
       </div>
     </main>
   </div>
@@ -373,7 +332,7 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
     });
   }
 
-  // Hàm hiển thị form edit
+  // Hiển thị form edit
   function showEditAddress(id) {
     document.getElementById('editAddressForm-' + id).style.display = 'block';
   }
@@ -381,6 +340,7 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
     document.getElementById('editAddressForm-' + id).style.display = 'none';
   }
 
+  // Confirm box
   function showConfirm({ message, action, id, method = 'POST', field = 'id' }) {
     const box = document.getElementById('globalConfirmBox');
     const form = document.getElementById('confirmForm');
@@ -395,9 +355,7 @@ $avatar = !empty($user['avatar']) ? $user['avatar'] : "https://placehold.co/150x
 
     box.classList.remove('d-none');
   }
-
   function hideConfirm() {
     document.getElementById('globalConfirmBox').classList.add('d-none');
   }
-
 </script>

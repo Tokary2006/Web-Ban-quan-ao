@@ -19,24 +19,20 @@ class CartControlller
 
         $user_id = $_SESSION['user']['id'];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Xử lý các hành động
             if (isset($_POST['remove_item_id'])) {
                 $this->handleRemoveAction();
             } elseif (isset($_POST['update_cart'])) {
                 $this->handleUpdateAction();
             } elseif (isset($_POST['checkout'])) {
-                // Cập nhật giỏ hàng trước khi checkout
                 $this->handleUpdateAction();
                 header("Location: index.php?page=checkout");
                 exit;
             }
 
-            // Nếu không phải checkout, quay lại giỏ hàng
             header("Location: index.php?page=cart");
             exit;
         }
 
-        // Lấy dữ liệu giỏ hàng để hiển thị
         $carts = $this->cartModel->getAllCart($user_id);
 
         include 'Views/Client/cart.php';
@@ -44,7 +40,6 @@ class CartControlller
 
     public function addToCart()
     {
-        // (Giữ nguyên logic addToCart)
         if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
             $_SESSION['error'] = 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.';
             header("location: index.php?page=login");
@@ -84,7 +79,7 @@ class CartControlller
      */
     private function handleRemoveAction()
     {
-        // Lấy cart_item_id từ POST
+    
         $cart_item_id = (int) $_POST['remove_item_id'];
 
         if ($this->cartModel->removeFromCart($cart_item_id)) {
@@ -104,7 +99,6 @@ class CartControlller
 
         foreach ($quantities as $cart_item_id => $new_quantity) {
             $cart_item_id = (int) $cart_item_id;
-            // Đảm bảo số lượng luôn là số nguyên dương tối thiểu là 1
             $new_quantity = max(1, (int) $new_quantity);
 
             if ($this->cartModel->updateQuantity($cart_item_id, $new_quantity)) {

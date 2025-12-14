@@ -47,16 +47,16 @@ class ProfileController
         if ($email === '')
             $errors['email'] = "Email không được để trống.";
 
-        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] !== 4) {
-            if ($_FILES['avatar']['error'] !== 0) {
-                $errors['avatar'] = "Không thể upload ảnh.";
-            } else {
-                $allowed = ['jpg', 'jpeg', 'png', 'gif'];
-                $extension = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
-                if (!in_array($extension, $allowed)) {
-                    $errors['avatar'] = "Chỉ cho phép JPG, JPEG, PNG, GIF.";
-                }
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
+            $oldImage = $this->userModel->getOneUser($userId, 1)['image']; 
+            if (!empty($oldImage) && file_exists("Uploads/Avatars/" . $oldImage)) {
+                unlink("Uploads/Avatars/" . $oldImage); 
             }
+
+            $extension = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
+            $fileName = time() . "_" . $userId . "." . $extension;
+            move_uploaded_file($_FILES['avatar']['tmp_name'], "Uploads/Avatars/" . $fileName);
+            $avatarPath = $fileName;
         }
 
         if (!empty($errors)) {
@@ -234,8 +234,7 @@ class ProfileController
             exit;
         }
 
-        // **Sửa: dùng getOrderById()**
-        $order = $this->orderModel->getOrderById($order_id, $userId);
+        $order = $this->orderModel->getOrder($order_id, $userId);
         if (!$order) {
             $_SESSION['error'] = "Đơn hàng không thuộc quyền của bạn!";
             header("Location: index.php?page=profile&tab=orders");

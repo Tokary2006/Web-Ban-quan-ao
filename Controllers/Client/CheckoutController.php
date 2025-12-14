@@ -28,9 +28,11 @@ class CheckoutController
     // HIỂN THỊ CHECKOUT
     public function index()
     {
+       
+
         $user_id = $_SESSION['user']['id'];
 
-        $cartItems = $this->cartModel->getAllCart($user_id, 1, 1000);
+        $cartItems = $this->cartModel->getAllCart($user_id);
         if (empty($cartItems)) {
             header("Location: index.php?page=error");
             exit;
@@ -40,7 +42,7 @@ class CheckoutController
 
         $total = 0;
         foreach ($cartItems as $item) {
-            $price = $item['discount_price'] ?? $item['price'];
+            $price = ($item['discount_price'] > 0) ? $item['discount_price'] : $item['price'];
             $total += $price * $item['quantity'];
         }
 
@@ -95,7 +97,7 @@ class CheckoutController
             $addresses = $this->addressModel->getAddressesByUser($user_id);
             $total = 0;
             foreach ($cartItems as $item) {
-                $price = $item['discount_price'] ?? $item['price'];
+                $price = ($item['discount_price'] > 0) ? $item['discount_price'] : $item['price'];
                 $total += $price * $item['quantity'];
             }
             require "Views/Client/checkout.php";
@@ -105,7 +107,7 @@ class CheckoutController
         // Không có lỗi, tiến hành tạo order
         $total = 0;
         foreach ($cartItems as $item) {
-            $price = $item['discount_price'] ?? $item['price'];
+            $price = ($item['discount_price'] > 0) ? $item['discount_price'] : $item['price'];
             $total += $price * $item['quantity'];
         }
 
@@ -129,7 +131,7 @@ class CheckoutController
         $order_code = $result['order_code'];
 
         foreach ($cartItems as $item) {
-            $price = $item['discount_price'] ?? $item['price'];
+            $price = ($item['discount_price'] > 0) ? $item['discount_price'] : $item['price'];
             $this->checkoutModel->createOrderDetail(
                 $order_id,
                 $item['product_id'],
@@ -158,7 +160,7 @@ class CheckoutController
             exit;
         }
 
-        $order = $this->orderModel->getOrderByCode($order_code, $user_id);
+        $order = $this->orderModel->getOrder($order_code, $user_id, 'code');
 
         if (!$order) {
             header("Location: index.php?page=error");
