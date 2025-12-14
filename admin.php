@@ -107,16 +107,18 @@ switch ($page) {
             default:       $blogscmControl->index();  break;
         }
         break;
-    case "productscomment":
-        require "Controllers/Admin/ProductsCommentController.php";
-        $pcmControl = new ProductsCommentController();
-        switch ($action) {
-            case "index":  $pcmControl->index();  break;
-            case "create": $pcmControl->create(); break;
-            case "edit":   $pcmControl->store();  break;
-            default:       $pcmControl->index();  break;
-        }
-        break;
+  case "productscomment":
+    require "Controllers/Admin/ProductsCommentController.php";
+    $pcmControl = new ProductsCommentController($connection); 
+    switch ($action) {
+        case "index":  $pcmControl->index();  break;
+        case "edit":   $pcmControl->edit();   break;
+        case "update": $pcmControl->update(); break;
+        case "delete": $pcmControl->delete(); break;
+        default:       $pcmControl->index();  break;
+    }
+    break;
+
     case "variant":
         require "Controllers/Admin/VariantController.php";
         $variantControl = new VariantController();
