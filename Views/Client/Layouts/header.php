@@ -53,7 +53,7 @@
               <ul class="site-menu js-clone-nav d-none d-lg-block">
                 <li><a href="index.php?page=home">Trang chủ</a></li>
                 <li><a href="index.php?page=shop">Cửa hàng</a></li>
-                <li><a href="#">Danh mục sản phẩm</a></li>
+                <li><a href="index.php?page=blog">Bài viết</a></li>
                 <li><a href="#">Sản phẩm mới về</a></li>
                 <li><a href="index.php?page=contact">Liên hệ</a></li>
               </ul>
