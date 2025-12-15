@@ -12,7 +12,7 @@ require_once 'Models/Database.php';
 
 if (
     !isset($_SESSION["user"]) ||
-    $_SESSION["user"]["role"] !== 1
+    $_SESSION["user"]["role"] !== 0
 ) {
     header("location: index.php");
     exit;

@@ -1,7 +1,7 @@
 <?php
 require_once 'Models/UserModel.php';
 
-class AuthControlller
+class AuthController
 {
     private $userModel;
 
@@ -23,31 +23,36 @@ class AuthControlller
 
     public function handleLogin()
     {
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+        $email = trim($_POST["email"] ?? "");
+        $password = trim($_POST["password"] ?? "");
+
+        if (empty($email) || empty($password)) {
+            $_SESSION["error"] = "Vui lòng nhập đầy đủ Email và Mật khẩu!";
+            $_SESSION["old_email"] = $email;
+            header("location: index.php?page=login");
+            return;
+        }
 
         $user = $this->userModel->getOneUser($email);
 
-        $_SESSION["old_email"] = $email;
+        if (empty($user) || !password_verify($password, $user["password"])) {
+            $_SESSION["error"] = "Tài khoản hoặc mật khẩu của bạn không đúng!";
+            header("location: index.php?page=login");
+            return;
+        }
 
         if ($user["active"] == 0) {
             $_SESSION["error"] = "Tài khoản bị vô hiệu hóa!";
             header("location: index.php?page=login");
             return;
         }
-        
-        if (empty($user) || !password_verify($password, $user["password"])) {
-            $_SESSION["error"] = "Tài khoản hoặc mật khẩu của bạn không đúng!";
-            header("location: index.php?page=login");
-            return;
-        } else {
-            $_SESSION["user"] = $user;
-            $_SESSION["success"] = "Chúc mừng " . $user["username"] . " đăng nhập thành công!";
-            unset($_SESSION['old_email']);
-            header("location: index.php?page=home");
-            return;
-        }
+
+        $_SESSION["user"] = $user;
+        $_SESSION["success"] = "Chúc mừng " . $user["username"] . " đăng nhập thành công!";
+        unset($_SESSION["old_email"]);
+        header("location: index.php?page=home");
     }
+
 
     public function register()
     {
@@ -62,25 +67,39 @@ class AuthControlller
 
     public function handleRegister()
     {
-        $email = $_POST["email"] ?? "";
-        $fullname = $_POST["fullname"] ?? "";
-        $password = $_POST["password"] ?? "";
-        $confirmPassword = $_POST["confirm_password"] ?? "";
+        $errors = [];
 
-        $_SESSION["old"] = [
-            "fullname" => $fullname,
-            "email" => $email
-        ];
+        $fullname = trim($_POST["fullname"] ?? "");
+        $email = trim($_POST["email"] ?? "");
+        $password = trim($_POST["password"] ?? "");
+        $confirmPassword = trim($_POST["confirm_password"] ?? "");
 
-        $user = $this->userModel->getOneUser($email);
-        if (!empty($user)) {
-            $_SESSION["error"] = "Email đã tồn tại, vui lòng chọn Email khác!";
-            header("location: index.php?page=register");
-            return;
+        $_SESSION["old"] = compact("fullname", "email");
+
+        if ($fullname === "") {
+            $errors["fullname"] = "Họ và tên không được để trống";
         }
 
-        if ($password != $confirmPassword) {
-            $_SESSION["error"] = "Mật khẩu và xác nhận mật khẩu không khớp!";
+        if ($email === "") {
+            $errors["email"] = "Email không được để trống";
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors["email"] = "Email không hợp lệ";
+        } elseif ($this->userModel->getOneUser($email)) {
+            $errors["email"] = "Email đã tồn tại";
+        }
+
+        if ($password === "") {
+            $errors["password"] = "Mật khẩu không được để trống";
+        }
+
+        if ($confirmPassword === "") {
+            $errors["confirm_password"] = "Vui lòng xác nhận mật khẩu";
+        } elseif ($password !== $confirmPassword) {
+            $errors["confirm_password"] = "Mật khẩu xác nhận không khớp";
+        }
+
+        if (!empty($errors)) {
+            $_SESSION["errors"] = $errors;
             header("location: index.php?page=register");
             return;
         }
@@ -88,9 +107,8 @@ class AuthControlller
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
         $this->userModel->createUser($fullname, $passwordHash, $email, 1);
 
-        unset($_SESSION["old"]);
-
         $_SESSION["success"] = "Đăng ký thành công, vui lòng đăng nhập!";
         header("location: index.php?page=login");
     }
+
 }

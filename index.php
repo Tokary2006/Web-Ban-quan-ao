@@ -55,7 +55,7 @@ switch ($page) {
         break;
     case "register":
         require_once 'Controllers/Client/AuthController.php';
-        $authController = new AuthControlller($connection);
+        $authController = new AuthController($connection);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $authController->handleRegister();
@@ -66,7 +66,7 @@ switch ($page) {
         break;
     case "login":
         require_once 'Controllers/Client/AuthController.php';
-        $authController = new AuthControlller($connection);
+        $authController = new AuthController($connection);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $authController->handleLogin();
