@@ -18,95 +18,105 @@ class ProductController
     }
 
     // CREATE PRODUCT
-    public function create()
-    {
-        $errors = [];
+public function create()
+{
+    if (session_status() === PHP_SESSION_NONE) session_start();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (empty($_POST['title']))
-                $errors['title'] = "Tên sản phẩm không được để trống";
-            if (empty($_POST['description']))
-                $errors['description'] = "Mô tả không được để trống";
-            if (empty($_POST['short_description']))
-                $errors['short_description'] = "Mô tả ngắn không được để trống";
-            if (!isset($_POST['category_id']) || $_POST['category_id'] == '')
-                $errors['category_id'] = "Danh mục không được để trống";
-            if (!isset($_POST['featured_id']))
-                $errors['featured_id'] = "Trạng thái nổi bật không được để trống";
+    $errors = [];
+    $categories = $this->productModel->getAllCategories();
 
-            $stock = isset($_POST['stock']) && $_POST['stock'] !== '' ? (int) $_POST['stock'] : 0;
-            if ($stock < 0) {
-                $errors['stock'] = "Số lượng tồn kho phải >= 0";
-            }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $discount_price = isset($_POST['discount_price']) && $_POST['discount_price'] !== '' ? (float) $_POST['discount_price'] : 0;
-            if ($discount_price < 0) {
-                $errors['discount_price'] = "Giá giảm phải >= 0";
-            }
+        // Validate
+        if (empty($_POST['title'])) $errors['title'] = "Tên sản phẩm không được để trống";
+        if (empty($_POST['description'])) $errors['description'] = "Mô tả không được để trống";
+        if (empty($_POST['short_description'])) $errors['short_description'] = "Mô tả ngắn không được để trống";
+        if (!isset($_POST['category_id']) || $_POST['category_id'] == '') $errors['category_id'] = "Danh mục không được để trống";
+        if (!isset($_POST['featured_id'])) $errors['featured_id'] = "Trạng thái nổi bật không được để trống";
 
-            $price = isset($_POST['price']) && $_POST['price'] !== '' ? (float) $_POST['price'] : 0;
-            if ($price < 0) {
-                $errors['price'] = "Giá phải >= 0";
-            }
+        $stock = isset($_POST['stock']) && $_POST['stock'] !== '' ? (int) $_POST['stock'] : 0;
+        if ($stock < 0) $errors['stock'] = "Số lượng tồn kho phải >= 0";
 
+        $price = isset($_POST['price']) && $_POST['price'] !== '' ? (float) $_POST['price'] : 0;
+        if ($price < 0) $errors['price'] = "Giá phải >= 0";
 
-            if (empty($_FILES['image']['name'])) {
-                $errors['image'] = "Vui lòng chọn hình ảnh sản phẩm";
-            }
+        $discount_price = isset($_POST['discount_price']) && $_POST['discount_price'] !== '' ? (float) $_POST['discount_price'] : 0;
+        if ($discount_price < 0) $errors['discount_price'] = "Giá giảm phải >= 0";
 
-            $slug = !empty($_POST['slug']) ? $_POST['slug'] : $this->createSlug($_POST['title']);
+        // Slug
+        $slug = !empty($_POST['slug']) ? $_POST['slug'] : $this->createSlug($_POST['title']);
+        if ($this->productModel->checkDuplicateSlug($slug)) $errors['slug'] = "Slug đã tồn tại";
 
-            $slugErrors = $this->validateSlug($slug);
-            if (!empty($slugErrors)) {
-                $errors['slug'] = implode(', ', $slugErrors);
-            }
-
-            if (!empty($_POST['title']) && $this->productModel->checkDuplicateTitle($_POST['title'])) {
-                $errors['title'] = "Tên sản phẩm đã tồn tại";
-            }
-
-            if (empty($errors)) {
-                $image = $_POST['old_image'] ?? "no_image.png";
-                if (!empty($_FILES['image']['name'])) {
-                    $image = time() . "_" . $_FILES['image']['name'];
-                    $uploadDir = "Uploads/Product/";
-                    if (!is_dir($uploadDir))
-                        mkdir($uploadDir, 0755, true);
-                    move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $image);
-                }
-
-                $status = $stock == 0 ? 0 : 1;
-
-                $data = [
-                    'category_id' => $_POST['category_id'],
-                    'title' => $_POST['title'],
-                    'slug' => $slug,
-                    'stock' => $stock,
-                    'price' => $price,
-                    'discount_price' => $discount_price,
-                    'description' => $_POST['description'],
-                    'short_description' => $_POST['short_description'],
-                    'image' => $image,
-                    'status' => $status,
-                    'featured_id' => $_POST['featured_id'] ?? 0
-                ];
-
-
-                try {
-                    $this->productModel->create($data);
-                    $_SESSION['success'] = "Thêm sản phẩm thành công!";
-                    header("Location: admin.php?page=product");
-                    exit;
-                } catch (PDOException $e) {
-                    $errors['db'] = "Lỗi lưu sản phẩm: " . $e->getMessage();
-                }
-            }
-
-            $categories = $this->productModel->getAllCategories();
-            
+        // Kiểm tra trùng tên
+        if (!empty($_POST['title']) && $this->productModel->checkDuplicateTitle($_POST['title'])) {
+            $errors['title'] = "Tên sản phẩm đã tồn tại";
         }
-        require "Views/Admin/Product/create.php";
+
+        // Nếu không có lỗi
+        if (empty($errors)) {
+
+            // Xử lý hình ảnh
+// Xử lý hình ảnh
+$image = "no_image.png"; // mặc định nếu không upload
+if (!empty($_FILES['image']['name'])) {
+    $file = $_FILES['image'];
+
+    // Kiểm tra lỗi upload
+    if ($file['error'] === 0) {
+
+        $uploadDir = "Uploads/Product/";
+        // Tạo folder nếu chưa tồn tại
+        if (!is_dir($uploadDir)) {
+            if (!mkdir($uploadDir, 0777, true)) {
+                $errors['image'] = "Không tạo được thư mục Uploads/Product/";
+            }
+        }
+
+        // Đặt tên file mới
+        $image = time() . "_" . basename($file['name']);
+        $uploadPath = $uploadDir . $image;
+
+        // Di chuyển file từ tmp lên folder
+        if (!move_uploaded_file($file['tmp_name'], $uploadPath)) {
+            $errors['image'] = "Upload file thất bại, kiểm tra quyền thư mục!";
+        }
+
+    } else {
+        // Nếu có lỗi upload
+        $errors['image'] = "Upload file lỗi, code: " . $file['error'];
     }
+}
+
+
+            $status = $stock == 0 ? 0 : 1;
+
+            $data = [
+                'category_id' => $_POST['category_id'],
+                'title' => $_POST['title'],
+                'slug' => $slug,
+                'stock' => $stock,
+                'price' => $price,
+                'discount_price' => $discount_price,
+                'description' => $_POST['description'],
+                'short_description' => $_POST['short_description'],
+                'image' => $image,
+                'status' => $status,
+                'featured_id' => $_POST['featured_id'] ?? 0
+            ];
+
+            try {
+                $this->productModel->create($data);
+                $_SESSION['success'] = "Thêm sản phẩm thành công!";
+                header("Location: admin.php?page=product");
+                exit;
+            } catch (PDOException $e) {
+                $errors['db'] = "Lỗi lưu sản phẩm: " . $e->getMessage();
+            }
+        }
+    }
+
+    require "Views/Admin/Product/create.php";
+}
 
     // EDIT PRODUCT
     public function edit()
