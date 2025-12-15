@@ -103,8 +103,9 @@ class ProductController
             }
 
             $categories = $this->productModel->getAllCategories();
-            require "Views/Admin/Product/create.php";
+            
         }
+        require "Views/Admin/Product/create.php";
     }
 
     // EDIT PRODUCT
