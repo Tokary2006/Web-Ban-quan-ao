@@ -75,7 +75,7 @@
                         <!-- Mô tả -->
                         <div class="mb-3">
                             <label class="form-label">Mô tả</label>
-                            <textarea class="form-control" name="description"
+                            <textarea class="form-control" name="description" id="editor"
                                 placeholder="Nhập mô tả"><?= htmlspecialchars($_POST['description'] ?? '') ?></textarea>
                             <small class="text-danger"><?= $errors['description'] ?? '' ?></small>
                         </div>
@@ -83,7 +83,7 @@
                         <!-- Mô tả ngắn -->
                         <div class="mb-3">
                             <label class="form-label">Mô tả ngắn</label>
-                            <textarea class="form-control" name="short_description"
+                            <textarea class="form-control" name="short_description" id="shortEditor"
                                 placeholder="Nhập mô tả ngắn"><?= htmlspecialchars($_POST['short_description'] ?? '') ?></textarea>
                             <small class="text-danger"><?= $errors['short_description'] ?? '' ?></small>
                         </div>

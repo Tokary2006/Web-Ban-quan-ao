@@ -81,7 +81,7 @@ class ProductController
         $product = $this->productModel->getProductBySlug($slug, 1);
 
         if (!$product) {
-            echo "Lỗi: Không tìm thấy sản phẩm này.";
+            header('Location: index.php?page=error');
             exit;
         }
 
